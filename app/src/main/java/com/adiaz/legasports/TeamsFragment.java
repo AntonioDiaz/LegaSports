@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adiaz.legasports.entities.JornadaEntity;
+import com.adiaz.legasports.entities.TeamEntity;
 
 import java.util.List;
 
 /* Created by toni on 21/03/2017. */
 
-public class CalendarFragment extends Fragment {
+public class TeamsFragment extends Fragment {
 
-	public CalendarFragment() { }
+	public TeamsFragment() { }
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,18 +25,17 @@ public class CalendarFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_calendar, container, false);
+		return inflater.inflate(R.layout.fragment_teams, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		NonScrollExpandableListView expandableListView = (NonScrollExpandableListView) getActivity().findViewById(R.id.elv_jornadas);
-//		ExpandableListView expandableListView = (ExpandableListView) getActivity().findViewById(R.id.elv_jornadas);
-		List<JornadaEntity> jornadas = Utils.initCalendar(getActivity());
-		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), jornadas);
-		expandableListView.setAdapter(calendarAdapter);
-		calendarAdapter.notifyDataSetChanged();
+		NonScrollExpandableListView expandableListView = (NonScrollExpandableListView) getActivity().findViewById(R.id.elv_teams);
+		List<TeamEntity> teams = Utils.initTeams(getActivity());
+		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), teams);
+		expandableListView.setAdapter(teamsAdapter);
+		teamsAdapter.notifyDataSetChanged();
 	}
 
 }

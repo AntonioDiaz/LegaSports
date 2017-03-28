@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.entities;
 
 import java.util.List;
 

@@ -58,4 +58,9 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="teams_list">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/colorGrey</item>
+    </style>
+
 </resources>

@@ -1,6 +1,8 @@
 package com.adiaz.legasports;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,9 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ChampionshipActivity extends AppCompatActivity {
 
@@ -54,6 +60,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 	private void setupViewPager(ViewPager viewPager) {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+		adapter.addFragment(new TeamsFragment(), getString(R.string.teams));
 		adapter.addFragment(new ClassificationFragment(), getString(R.string.classification));
 		adapter.addFragment(new CalendarFragment(), getString(R.string.calendar));
 		viewPager.setAdapter(adapter);
@@ -67,6 +74,27 @@ public class ChampionshipActivity extends AppCompatActivity {
 				onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void selectFavorite(View view) {
+		String str = (String)view.getTag();
+		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
+		String myTeamName = (String)imageView.getTag();
+//		imageView.setImageResource(R.drawable.ic_favorite_fill);
+		String keyFavorites = getString(R.string.key_favorites);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		Set<String> setDefault = new HashSet<>();
+		Set<String> favoritesSet = preferences.getStringSet(keyFavorites, setDefault);
+		SharedPreferences.Editor editor = preferences.edit();
+		if (favoritesSet.contains(myTeamName)) {
+			favoritesSet.remove(myTeamName);
+			imageView.setImageResource(R.drawable.ic_favorite);
+		} else {
+			favoritesSet.add(myTeamName);
+			imageView.setImageResource(R.drawable.ic_favorite_fill);
+		}
+		editor.putStringSet(keyFavorites, favoritesSet);
+		editor.apply();
 	}
 
 

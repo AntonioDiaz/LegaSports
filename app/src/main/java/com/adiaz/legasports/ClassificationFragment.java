@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /* Created by toni on 21/03/2017. */
@@ -42,8 +43,8 @@ public class ClassificationFragment extends Fragment {
 
 	}
 
-	private static final List<String[]> generateClassificationSample() {
-		List<String[]> myList = new ArrayList();
+	public static final List<String[]> generateClassificationSample() {
+		List<String[]> myList = new ArrayList<>();
 		myList.add(new String[]{"", "Equipo", "PJ", "PG", "PE", "PP", "F", "C", "PF", "PC", "PS", "PT", "Sanciones"});
 		myList.add(new String[]{"1", "AD CEPA SPORT", "19", "16", "1", "2", "76", "18", "0", "0", "0", "49", "0"});
 		myList.add(new String[]{"2", "CD OLIMPICO PIZARRO", "19", "14", "1", "4", "68", "24", "0", "0", "0", "43", "0"});
@@ -58,5 +59,15 @@ public class ClassificationFragment extends Fragment {
 		myList.add(new String[]{"11", "UNION DEPORTIVA LEGANES", "19", "4", "1", "14", "36", "68", "0", "0", "0", "13", "0"});
 		myList.add(new String[]{"12", "ADCR ATLETICO LEGANES 78", "19", "0", "1", "18", "17", "98", "0", "0", "0", "1", "0"});
 		return myList;
+	}
+
+	public static final List<String> generateTeamsList() {
+		List<String> teams = new ArrayList<>();
+		List<String[]> strings = generateClassificationSample();
+		for (String[] string : strings) {
+			teams.add(string[1]);
+		}
+		Collections.sort(teams);
+		return teams;
 	}
 }

@@ -4,14 +4,16 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-        android:textStyle="bold"
+        android:paddingBottom="16dp"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+        android:textSize="22sp"
+        android:textStyle="bold"
         tools:text="Jornada 12"/>
 </LinearLayout>

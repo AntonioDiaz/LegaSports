@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.adiaz.legasports.entities.JornadaEntity;
+import com.adiaz.legasports.entities.MatchEntity;
+
 import java.util.List;
 
 /* Created by toni on 23/03/2017. */

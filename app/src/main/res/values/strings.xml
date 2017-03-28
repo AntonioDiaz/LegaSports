@@ -15,6 +15,7 @@
     <string name="choose_catogory">Elige categoria</string>
     <string name="classification">Clasificación</string>
     <string name="calendar">Calendario</string>
+    <string name="teams">Equipos</string>
     <string name="subtitle_example_category">Baloncesto</string>
     <string name="subtitle_example_championship">Baloncesto (Benjamin)</string>
 
@@ -29,5 +30,7 @@
     <string name="classification_points">Puntos</string>
 
     <string name="jornada_header">Jornada %1$d</string>
+
+    <string name="key_favorites">key_favorites</string>
 
 </resources>
