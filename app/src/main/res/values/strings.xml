@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">LegaSport</string>
+    <string name="football">Fútbol</string>
+    <string name="basketball">Baloncesto</string>
+    <string name="volleyball">Voleibol</string>
+    <string name="handball">Balonmano</string>
+    <string name="snack_msg">Seleccione Voleibol, por favor.</string>
+    <string name="benjamin">Benjamin</string>
+    <string name="alevin">Alevin</string>
+    <string name="infantil">Infantil</string>
+    <string name="cadete">Cadete</string>
+    <string name="juvenil">Juvenil</string>
+    <string name="absoluta">Absoluta</string>
+    <string name="veterano">Veterano</string>
+    <string name="choose_catogory">Elige categoria</string>
+    <string name="classification">Clasificación</string>
+    <string name="calendar">Calendario</string>
+    <string name="subtitle_example_category">Baloncesto</string>
+    <string name="subtitle_example_championship">Baloncesto (Benjamin)</string>
+
+    <string name="classification_position">Posición</string>
+    <string name="classification_team">Equipo</string>
+    <string name="classification_pj">PJ</string>
+    <string name="classification_pg">PG</string>
+    <string name="classification_pe">PE</string>
+    <string name="classification_pp">PP</string>
+    <string name="classification_f">F</string>
+    <string name="classification_c">C</string>
+    <string name="classification_points">Puntos</string>
+
+    <string name="jornada_header">Jornada %1$d</string>
+
+</resources>

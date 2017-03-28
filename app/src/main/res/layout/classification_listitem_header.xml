@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="35dp"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              style="@style/ListHeader">
+
+    <TextView
+        android:id="@+id/tv_classification_position"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="1"
+        style="@style/ListHeader"/>
+
+    <TextView
+        android:id="@+id/tv_classification_team"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        style="@style/ListHeader"/>
+
+    <TextView
+        android:id="@+id/tv_classification_pj"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/ListHeader"/>
+    <TextView
+        android:id="@+id/tv_classification_pg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/ListHeader"/>
+
+    <TextView
+        android:id="@+id/tv_classification_pe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/ListHeader"/>
+
+    <TextView
+        android:id="@+id/tv_classification_pp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/ListHeader"/>
+    <TextView
+        android:id="@+id/tv_classification_pt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/ListHeader"/>
+</LinearLayout>
