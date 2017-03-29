@@ -25,9 +25,9 @@ public class ClassificationAdapter extends ArrayAdapter<String[]> {
 		if (convertView==null) {
 			LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 			if (getItemViewType(position)==0) {
-				convertView = layoutInflater.inflate(R.layout.classification_listitem_header, parent, false);
+				convertView = layoutInflater.inflate(R.layout.listitem_header_classification, parent, false);
 			} else {
-				convertView = layoutInflater.inflate(R.layout.classification_listitem, parent, false);
+				convertView = layoutInflater.inflate(R.layout.listitem_classification, parent, false);
 			}
 		}
 		TextView tvPosition = (TextView) convertView.findViewById(R.id.tv_classification_position);

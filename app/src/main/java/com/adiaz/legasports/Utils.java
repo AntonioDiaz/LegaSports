@@ -1,7 +1,10 @@
 package com.adiaz.legasports;
 
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.adiaz.legasports.entities.JornadaEntity;
@@ -20,6 +23,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /* Created by toni on 28/03/2017. */
 
@@ -53,12 +58,15 @@ public class Utils {
 							teamMatchEntity.setLocal(false);
 							teamMatchEntity.setOpponent(matchEntity.getTeamLocal());
 						}
+						teamMatchEntity.setPlace(matchEntity.getPlace());
 						DateFormat dateFormat = new SimpleDateFormat(LegaSportsConstants.DATE_FORMAT);
 						try {
 							teamMatchEntity.setDate(dateFormat.parse(matchEntity.getDate() + " " + matchEntity.getHour()));
 						} catch (ParseException e) {
 							Log.e(TAG, "initTeams: error in parse", e);
 						}
+						teamMatchEntity.setTeamScore(0);
+						teamMatchEntity.setOpponentScore(0);
 						matches.add(teamMatchEntity);
 					}
 				}
@@ -103,4 +111,70 @@ public class Utils {
 	}
 
 
+	public static boolean checkIfFavoritSelected(Context context, String teamName) {
+		SharedPreferences preferences = getDefaultSharedPreferences(context);
+		Set<String> defaultSet = new HashSet<>();
+		String key = context.getString(R.string.key_favorites);
+		Set<String> stringsSet = preferences.getStringSet(key, defaultSet);
+		Log.d(TAG, "checkIfFavoritSelected: stringsSet " + stringsSet);
+		return stringsSet.contains(teamName);
+	}
+
+
+	public static void unMarkFavorite(ChampionshipActivity context, String myTeamName) {
+		Utils.updateListFavorites(context, myTeamName, false);
+	}
+
+
+	public static void markFavorite(Context context, String myTeamName) {
+		Utils.updateListFavorites(context, myTeamName, true);
+	}
+
+	private static void updateListFavorites(Context context, String myTeamName, boolean addFavorite) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String key = context.getString(R.string.key_favorites);
+		Set<String> stringsSetCopy = new HashSet<String>(preferences.getStringSet(key, new HashSet<String>()));
+		if (addFavorite) {
+			stringsSetCopy.add(myTeamName);
+		} else {
+			stringsSetCopy.remove(myTeamName);
+		}
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putStringSet(key, stringsSetCopy);
+		editor.commit();
+	}
+
+	public static List<String> favoritesList(Context context) {
+		SharedPreferences preferences = getDefaultSharedPreferences(context);
+		String key = context.getString(R.string.key_favorites);
+		Set<String> favoritesSet = preferences.getStringSet(key, new HashSet<String>());
+		List<String> favoritesList = new ArrayList<>(favoritesSet);
+		Collections.sort(favoritesList);
+		return favoritesList;
+	}
+
+	public static TeamEntity initTeam(Context context, String teamName) {
+		TeamEntity teamEntity = null;
+		List<TeamEntity> teamEntities = initTeams(context);
+		for (TeamEntity entity : teamEntities) {
+			if (teamName.equals(teamName)) {
+				teamEntity = entity;
+			}
+		}
+		return teamEntity;
+	}
+
+	public static List<TeamEntity> initFavoritesTeams(Context context) {
+		List<TeamEntity> teamEntitiesFavorites = new ArrayList<>();
+		List<TeamEntity> teamEntities = initTeams(context);
+		Set<String> teamsFavoritesSet = new HashSet<String>(favoritesList(context));
+		for (TeamEntity teamEntity : teamEntities) {
+			if (teamsFavoritesSet.contains(teamEntity.getTeamName())) {
+				teamEntitiesFavorites.add(teamEntity);
+			}
+		}
+		return teamEntitiesFavorites;
+	}
 }
+
+

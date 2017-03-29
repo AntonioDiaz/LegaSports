@@ -63,4 +63,20 @@
         <item name="android:textColor">@color/colorGrey</item>
     </style>
 
+    <style name="text_header">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body2</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="text_subheader" parent="text_header">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="text_small">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+
 </resources>

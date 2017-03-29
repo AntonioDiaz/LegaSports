@@ -98,6 +98,22 @@ public class ChampionshipActivity extends AppCompatActivity {
 	}
 
 
+/*
+	public void selectFavorite(View view) {
+		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
+		String myTeamName = (String)imageView.getTag();
+		Log.d(TAG, "selectFavorite: myTeamName " + myTeamName);
+		if (Utils.checkIfFavoritSelected(this, myTeamName)) {
+			imageView.setImageResource(R.drawable.ic_favorite);
+			Utils.unMarkFavorite(this, myTeamName);
+		} else {
+			imageView.setImageResource(R.drawable.ic_favorite_fill);
+			Utils.markFavorite(this, myTeamName);
+		}
+	}
+*/
+
+
 	class ViewPagerAdapter extends FragmentPagerAdapter {
 
 		private final List<Fragment> mFragmentList = new ArrayList<>();

@@ -24,9 +24,9 @@ public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<Clas
 
 	@Override
 	public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		int itemType = R.layout.classification_listitem;
+		int itemType = R.layout.listitem_classification;
 		if (viewType==TYPE_HEADER) {
-			itemType = R.layout.classification_listitem_header;
+			itemType = R.layout.listitem_header_classification;
 		}
 		LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 		View view = layoutInflater.inflate(itemType, parent, false);

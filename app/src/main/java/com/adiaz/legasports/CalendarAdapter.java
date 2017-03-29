@@ -41,7 +41,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 		MatchEntity matchEntity = (MatchEntity) getChild(groupPosition, childPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = layoutInflater.inflate(R.layout.child_row, null);
+			view = layoutInflater.inflate(R.layout.listitem_child_calendar, null);
 		}
 		TextView localTeam = (TextView) view.findViewById(R.id.childItem_teamlocal);
 		TextView visitorTeam = (TextView) view.findViewById(R.id.childItem_teamvisitor);
@@ -82,7 +82,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 		JornadaEntity jornadaEntity = (JornadaEntity) getGroup(groupPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = layoutInflater.inflate(R.layout.group_header, null);
+			view = layoutInflater.inflate(R.layout.listitem_header_calendar, null);
 		}
 		TextView textView = (TextView) view.findViewById(R.id.heading);
 		String jornadaStr = mContext.getString(R.string.jornada_header, groupPosition + 1);

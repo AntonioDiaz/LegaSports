@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:scrollbars="none"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<android.support.v7.widget.RecyclerView
+    android:scrollbars="none">
+
+    <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/rv_classification"
@@ -13,5 +14,5 @@
         android:layout_height="match_parent"
         android:layout_margin="0dp"
         android:padding="0dp"
-        tools:listitem="@layout/classification_listitem"/>
+        tools:listitem="@layout/listitem_classification"/>
 </android.support.v4.widget.NestedScrollView>

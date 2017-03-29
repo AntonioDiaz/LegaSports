@@ -44,7 +44,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		TeamMatchEntity teamMatchEntity = (TeamMatchEntity) getChild(groupPosition, childPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = layoutInflater.inflate(R.layout.teams_child_row, null);
+			view = layoutInflater.inflate(R.layout.listitem_child_teams, null);
 		}
 		TextView tvLocal = (TextView) view.findViewById(R.id.tv_local);
 		TextView tvVisitor = (TextView) view.findViewById(R.id.tv_visitor);
@@ -109,11 +109,17 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		TeamEntity teamEntity = (TeamEntity) getGroup(groupPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = layoutInflater.inflate(R.layout.teams_group_header, null);
+			view = layoutInflater.inflate(R.layout.listitem_header_teams, null);
 		}
 		TextView textView = (TextView) view.findViewById(R.id.tv_heading);
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
+
 		textView.setText(teamEntity.getTeamName());
+		if (Utils.checkIfFavoritSelected(mContext, teamEntity.getTeamName())) {
+			imageView.setImageResource(R.drawable.ic_favorite_fill);
+		} else {
+			imageView.setImageResource(R.drawable.ic_favorite);
+		}
 		imageView.setTag(teamEntity.getTeamName());
 		return view;
 	}

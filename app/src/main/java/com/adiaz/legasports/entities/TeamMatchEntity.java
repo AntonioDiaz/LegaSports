@@ -8,15 +8,10 @@ public class TeamMatchEntity {
 
 	private boolean isLocal;
 	private Date date;
+	private String place;
 	private String opponent;
 	private Integer opponentScore;
 	private Integer teamScore;
-
-	public TeamMatchEntity(boolean isLocal, Date date, String opponent) {
-		this.isLocal = isLocal;
-		this.date = date;
-		this.opponent = opponent;
-	}
 
 	public TeamMatchEntity() {
 		super();
@@ -61,5 +56,13 @@ public class TeamMatchEntity {
 
 	public void setTeamScore(Integer teamScore) {
 		this.teamScore = teamScore;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
 	}
 }
