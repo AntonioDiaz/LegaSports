@@ -12,4 +12,5 @@
     <dimen name="header_title_text_size">32sp</dimen>
     <dimen name="toolbar_viewpager_margin">24dp</dimen>
     <dimen name="toolbar_top_margin">32dp</dimen>
+    <dimen name="main_text_size">20sp</dimen>
 </resources>

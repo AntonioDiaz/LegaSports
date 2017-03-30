@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adiaz.legasports.entities.TeamEntity;
@@ -57,7 +58,9 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvTeamVisitor.setText(teamEntity.getTeamName());
 			holder.tvTeamVisitorScore.setText(teamMatchEntity.getTeamScore().toString());
 		}
-
+		holder.ivLocation.setTag(teamMatchEntity);
+		holder.ivCalendar.setTag(teamMatchEntity);
+		holder.ivShare.setTag(teamMatchEntity);
 	}
 
 	@Override
@@ -75,7 +78,9 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 		private TextView tvTeamVisitor;
 		private TextView tvTeamLocalScore;
 		private TextView tvTeamVisitorScore;
-
+		private ImageView ivCalendar;
+		private ImageView ivLocation;
+		private ImageView ivShare;
 
 		public ViewHolder(View itemView) {
 			super(itemView);
@@ -86,6 +91,9 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			tvTeamVisitor = (TextView) itemView.findViewById(R.id.tv_fav_team_visitor);
 			tvTeamLocalScore = (TextView) itemView.findViewById(R.id.tv_fav_team_local_score);
 			tvTeamVisitorScore = (TextView) itemView.findViewById(R.id.tv_fav_team_visitor_score);
+			ivCalendar = (ImageView) itemView.findViewById(R.id.iv_fav_team_visitor_calendar);
+			ivLocation = (ImageView) itemView.findViewById(R.id.iv_fav_team_location);
+			ivShare = (ImageView) itemView.findViewById(R.id.iv_fav_team_visitor_share);
 		}
 	}
 }

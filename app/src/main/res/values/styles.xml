@@ -78,5 +78,12 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="main_sports">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+        <item name="android:gravity">center</item>
+    </style>
 
 </resources>

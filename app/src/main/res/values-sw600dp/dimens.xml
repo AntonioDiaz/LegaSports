@@ -5,5 +5,5 @@
     <dimen name="toolbar_viewpager_margin">44dp</dimen>
     <dimen name="calendar_item_padding_left">16dp</dimen>
     <dimen name="toolbar_top_margin">64dp</dimen>
-
+    <dimen name="main_text_size">32sp</dimen>
 </resources>

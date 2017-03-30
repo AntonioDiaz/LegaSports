@@ -154,10 +154,11 @@ public class Utils {
 	}
 
 	public static TeamEntity initTeam(Context context, String teamName) {
+		Log.d(TAG, "initTeam: teamName " + teamName);
 		TeamEntity teamEntity = null;
 		List<TeamEntity> teamEntities = initTeams(context);
 		for (TeamEntity entity : teamEntities) {
-			if (teamName.equals(teamName)) {
+			if (entity.getTeamName().equals(teamName)) {
 				teamEntity = entity;
 			}
 		}

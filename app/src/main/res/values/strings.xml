@@ -41,5 +41,10 @@
     <string name="example_date">12/09/2017 12:30</string>
     <string name="example_place">Mercacentro CP1</string>
 
+    <string name="calendar_title">%1$s - %2$s</string>
+    <string name="calendar_description">Partido de la liga municipal de leganes entre los equipos %1$s y %2$s</string>
+    <string name="share_description">Partido: %1$s y %2$s, Fecha: %3$s, Lugar: %4$s</string>
+
+
 
 </resources>

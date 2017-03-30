@@ -52,14 +52,6 @@
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_football"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/football"
-                style="@style/main_sports"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -80,14 +72,6 @@
                 android:contentDescription="@string/basketball"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_basketball"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/basketball"
-                style="@style/main_sports"/>
 
         </LinearLayout>
 
@@ -110,14 +94,6 @@
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_volleyball"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/volleyball"
-                style="@style/main_sports"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -139,14 +115,6 @@
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_handball"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/handball"
-                style="@style/main_sports"/>
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -166,14 +134,6 @@
                 android:contentDescription="@string/others"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_hockey"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/others"
-                style="@style/main_sports"/>
 
         </LinearLayout>
         <LinearLayout
@@ -195,15 +155,6 @@
                 android:layout_margin="8dp"
                 android:tint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_favorite_fill"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text= "@string/favorites"
-                style="@style/main_sports"/>
-
         </LinearLayout>
 
 
