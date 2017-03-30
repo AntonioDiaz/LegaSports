@@ -33,7 +33,8 @@
 
     <string name="jornada_header">Jornada %1$d</string>
 
-    <string name="key_favorites">key_favorites</string>
+    <string name="key_favorites_teams">key_favorites_teams</string>
+    <string name="key_favorites_championship">key_favorites_championship</string>
     <string name="not_implemented">Not implemented</string>
     <string name="example_team_name">Atletico Madrid</string>
     <string name="example_sport_category">Futbol (Infantil)</string>

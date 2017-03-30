@@ -1,25 +1,27 @@
 package com.adiaz.legasports;
 
-import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ChampionshipActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
+	private String sportTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 		String sport = getIntent().getStringExtra(MainActivity.EXTRA_SPORT_CHOSEN);
 		String category = getIntent().getStringExtra(CategoriesActivity.EXTRA_CATEGORY_CHOSEN);
-		String sportTitle = sport + " (" + category + ")";
+		sportTitle = sport + " (" + category + ")";
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -52,6 +55,28 @@ public class ChampionshipActivity extends AppCompatActivity {
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_championship, menu);
+		Log.d(TAG, "onCreateOptionsMenu: " +  menu.size());
+		for(int i = 0; i < menu.size(); i++) {
+			Log.d(TAG, "onCreateOptionsMenu: i" + i);
+			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
+				Log.d(TAG, "onCreateOptionsMenu: pasa " + i);
+				String key = getString(R.string.key_favorites_championship);
+				if (Utils.checkIfFavoritSelected(this, sportTitle, key)) {
+					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
+					menu.getItem(i).setIcon(drawable);
+				}
+				Drawable icon = menu.getItem(i).getIcon();
+				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
+				final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+				icon.setColorFilter(colorFilter);
+			}
+		}
+		return true;
+	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -70,6 +95,23 @@ public class ChampionshipActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(TAG, "onOptionsItemSelected: item.getItemId() " + item.getItemId());
 		switch (item.getItemId()) {
+			case R.id.action_favorites:
+				String key = getString(R.string.key_favorites_championship);
+				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+				Drawable drawable;
+				if (Utils.checkIfFavoritSelected(this, sportTitle, key)) {
+					Utils.unMarkFavoriteTeam(this, sportTitle, key);
+					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
+				} else {
+					Utils.markFavoriteTeam(this, sportTitle, key);
+					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
+				}
+				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
+				final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+				drawable.setColorFilter(colorFilter);
+				item.setIcon(drawable);
+
+				break;
 			case android.R.id.home:
 				onBackPressed();
 		}
@@ -77,42 +119,17 @@ public class ChampionshipActivity extends AppCompatActivity {
 	}
 
 	public void selectFavorite(View view) {
-		String str = (String)view.getTag();
 		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
 		String myTeamName = (String)imageView.getTag();
-//		imageView.setImageResource(R.drawable.ic_favorite_fill);
-		String keyFavorites = getString(R.string.key_favorites);
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		Set<String> setDefault = new HashSet<>();
-		Set<String> favoritesSet = preferences.getStringSet(keyFavorites, setDefault);
-		SharedPreferences.Editor editor = preferences.edit();
-		if (favoritesSet.contains(myTeamName)) {
-			favoritesSet.remove(myTeamName);
+		String keyFavorites = getString(R.string.key_favorites_teams);
+		if (Utils.checkIfFavoritSelected(this, myTeamName, keyFavorites)) {
 			imageView.setImageResource(R.drawable.ic_favorite);
-		} else {
-			favoritesSet.add(myTeamName);
-			imageView.setImageResource(R.drawable.ic_favorite_fill);
-		}
-		editor.putStringSet(keyFavorites, favoritesSet);
-		editor.apply();
-	}
-
-
-/*
-	public void selectFavorite(View view) {
-		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
-		String myTeamName = (String)imageView.getTag();
-		Log.d(TAG, "selectFavorite: myTeamName " + myTeamName);
-		if (Utils.checkIfFavoritSelected(this, myTeamName)) {
-			imageView.setImageResource(R.drawable.ic_favorite);
-			Utils.unMarkFavorite(this, myTeamName);
+			Utils.unMarkFavoriteTeam(this, myTeamName, keyFavorites);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			Utils.markFavorite(this, myTeamName);
+			Utils.markFavoriteTeam(this, myTeamName, keyFavorites);
 		}
 	}
-*/
-
 
 	class ViewPagerAdapter extends FragmentPagerAdapter {
 

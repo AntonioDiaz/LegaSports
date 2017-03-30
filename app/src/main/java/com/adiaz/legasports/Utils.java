@@ -41,7 +41,6 @@ public class Utils {
 			teamsSet.add(matchEntity.getTeamLocal());
 			teamsSet.add(matchEntity.getTeamVisitor());
 		}
-		Log.d(TAG, "initTeams: teamsSet " + teamsSet.size());
 		List<String> teamsList = new ArrayList<>();
 		teamsList.addAll(teamsSet);
 		Collections.sort(teamsList);
@@ -111,28 +110,25 @@ public class Utils {
 	}
 
 
-	public static boolean checkIfFavoritSelected(Context context, String teamName) {
+	public static boolean checkIfFavoritSelected(Context context, String teamName, String key) {
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
 		Set<String> defaultSet = new HashSet<>();
-		String key = context.getString(R.string.key_favorites);
 		Set<String> stringsSet = preferences.getStringSet(key, defaultSet);
-		Log.d(TAG, "checkIfFavoritSelected: stringsSet " + stringsSet);
 		return stringsSet.contains(teamName);
 	}
 
 
-	public static void unMarkFavorite(ChampionshipActivity context, String myTeamName) {
-		Utils.updateListFavorites(context, myTeamName, false);
+	public static void unMarkFavoriteTeam(ChampionshipActivity context, String myTeamName, String key) {
+		Utils.updateListFavoritesTeam(context, myTeamName, key, false);
 	}
 
 
-	public static void markFavorite(Context context, String myTeamName) {
-		Utils.updateListFavorites(context, myTeamName, true);
+	public static void markFavoriteTeam(Context context, String myTeamName, String key) {
+		Utils.updateListFavoritesTeam(context, myTeamName, key, true);
 	}
 
-	private static void updateListFavorites(Context context, String myTeamName, boolean addFavorite) {
+	private static void updateListFavoritesTeam(Context context, String myTeamName, String key, boolean addFavorite) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String key = context.getString(R.string.key_favorites);
 		Set<String> stringsSetCopy = new HashSet<String>(preferences.getStringSet(key, new HashSet<String>()));
 		if (addFavorite) {
 			stringsSetCopy.add(myTeamName);
@@ -144,9 +140,8 @@ public class Utils {
 		editor.commit();
 	}
 
-	public static List<String> favoritesList(Context context) {
+	public static List<String> favoritesListTeams(Context context, String key) {
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
-		String key = context.getString(R.string.key_favorites);
 		Set<String> favoritesSet = preferences.getStringSet(key, new HashSet<String>());
 		List<String> favoritesList = new ArrayList<>(favoritesSet);
 		Collections.sort(favoritesList);
@@ -154,7 +149,6 @@ public class Utils {
 	}
 
 	public static TeamEntity initTeam(Context context, String teamName) {
-		Log.d(TAG, "initTeam: teamName " + teamName);
 		TeamEntity teamEntity = null;
 		List<TeamEntity> teamEntities = initTeams(context);
 		for (TeamEntity entity : teamEntities) {
@@ -168,7 +162,8 @@ public class Utils {
 	public static List<TeamEntity> initFavoritesTeams(Context context) {
 		List<TeamEntity> teamEntitiesFavorites = new ArrayList<>();
 		List<TeamEntity> teamEntities = initTeams(context);
-		Set<String> teamsFavoritesSet = new HashSet<String>(favoritesList(context));
+		String key = context.getString(R.string.key_favorites_teams);
+		Set<String> teamsFavoritesSet = new HashSet<String>(favoritesListTeams(context, key));
 		for (TeamEntity teamEntity : teamEntities) {
 			if (teamsFavoritesSet.contains(teamEntity.getTeamName())) {
 				teamEntitiesFavorites.add(teamEntity);

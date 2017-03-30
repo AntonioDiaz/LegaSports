@@ -115,7 +115,8 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
 
 		textView.setText(teamEntity.getTeamName());
-		if (Utils.checkIfFavoritSelected(mContext, teamEntity.getTeamName())) {
+		String key = mContext.getString(R.string.key_favorites_teams);
+		if (Utils.checkIfFavoritSelected(mContext, teamEntity.getTeamName(), key)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite);
