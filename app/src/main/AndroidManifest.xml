@@ -39,6 +39,8 @@
         </activity>
         <activity android:name=".FavoriteTeamActivity">
         </activity>
+        <activity android:name=".FootballActivity">
+        </activity>
     </application>
 
 </manifest>

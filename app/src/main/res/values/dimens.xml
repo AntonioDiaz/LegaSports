@@ -13,4 +13,5 @@
     <dimen name="toolbar_viewpager_margin">24dp</dimen>
     <dimen name="toolbar_top_margin">32dp</dimen>
     <dimen name="main_text_size">20sp</dimen>
+    <dimen name="heart_size">24dp</dimen>
 </resources>

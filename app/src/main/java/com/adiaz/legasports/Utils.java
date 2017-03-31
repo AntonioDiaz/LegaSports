@@ -25,13 +25,19 @@ import java.util.List;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.legasports.LegaSportsConstants.DEFAULT_SPORT;
+import static com.adiaz.legasports.LegaSportsConstants.TAB;
 
 /* Created by toni on 28/03/2017. */
 
 public class Utils {
 
 	private static final String TAG = Utils.class.getSimpleName();
-	
+
+
+	private static List<JornadaEntity> calendar;
+
+
 	public static List<TeamEntity> initTeams(Context context) {
 		List<TeamEntity> teams = new ArrayList<>();
 		List<JornadaEntity> jornadas = initCalendar(context);
@@ -45,7 +51,7 @@ public class Utils {
 		teamsList.addAll(teamsSet);
 		Collections.sort(teamsList);
 		for (String s : teamsList) {
-			List <TeamMatchEntity> matches = new ArrayList<>();
+			List<TeamMatchEntity> matches = new ArrayList<>();
 			for (JornadaEntity jornada : jornadas) {
 				for (MatchEntity matchEntity : jornada.getMatches()) {
 					if (s.equals(matchEntity.getTeamLocal()) || s.equals(matchEntity.getTeamVisitor())) {
@@ -79,32 +85,33 @@ public class Utils {
 	}
 
 
-
 	public static List<JornadaEntity> initCalendar(Context context) {
-		List<JornadaEntity> calendar = new ArrayList<>();
-		AssetManager assetManager = context.getResources().getAssets();
-		try {
-			InputStreamReader inputStream = new InputStreamReader(assetManager.open("calendar.txt"));
-			BufferedReader reader = new BufferedReader(inputStream);
-			boolean started = false;
-			String line;
-			List<MatchEntity> matches = new ArrayList<>();
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("Jornada")) {
-					if (started) {
-						//save previous jornada
-						calendar.add(new JornadaEntity(matches));
+		if (calendar == null) {
+			calendar = new ArrayList<>();
+			AssetManager assetManager = context.getResources().getAssets();
+			try {
+				InputStreamReader inputStream = new InputStreamReader(assetManager.open("calendar.txt"));
+				BufferedReader reader = new BufferedReader(inputStream);
+				boolean started = false;
+				String line;
+				List<MatchEntity> matches = new ArrayList<>();
+				while ((line = reader.readLine()) != null) {
+					if (line.startsWith("Jornada")) {
+						if (started) {
+							//save previous jornada
+							calendar.add(new JornadaEntity(matches));
+						}
+						matches = new ArrayList<>();
+						started = true;
+					} else {
+						// is a match
+						MatchEntity matchEntity = new MatchEntity(line);
+						matches.add(matchEntity);
 					}
-					matches = new ArrayList<>();
-					started = true;
-				} else {
-					// is a match
-					MatchEntity matchEntity = new MatchEntity(line);
-					matches.add(matchEntity);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return calendar;
 	}
@@ -170,6 +177,52 @@ public class Utils {
 			}
 		}
 		return teamEntitiesFavorites;
+	}
+
+
+	public static List<String> getCategories (Context context, String sport) {
+		List<String> categories = new ArrayList<>();
+		AssetManager assetManager = context.getResources().getAssets();
+		InputStreamReader inputStream = null;
+		try {
+			inputStream = new InputStreamReader(assetManager.open("categories.txt"));
+			BufferedReader reader = new BufferedReader(inputStream);
+			String line;
+			boolean started = false;
+			while ((line = reader.readLine()) != null) {
+				if (sport.equals(line)) {
+					started = true;
+				} else {
+					if (started) {
+						if (line.startsWith(TAB)) {
+							categories.add(line.replaceAll(TAB, ""));
+						} else {
+							started = false;
+						}
+					}
+				}
+			}
+			inputStream = new InputStreamReader(assetManager.open("categories.txt"));
+			reader = new BufferedReader(inputStream);
+			if (categories.size()==0) {
+				while ((line = reader.readLine()) != null) {
+					if (DEFAULT_SPORT.equals(line)) {
+						started = true;
+					} else {
+						if (started) {
+							if (line.startsWith(TAB)) {
+								categories.add(line.replaceAll(TAB, ""));
+							} else {
+								started = false;
+							}
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return categories;
 	}
 }
 

@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,10 +37,19 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		/*getSupportActionBar().setTitle(null);*/
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+		/*getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+		TextView text = new TextView(this);
+		text.setText(sport);
+		text.setTextAppearance(this, android.R.style.TextAppearance_Material_Widget_ActionBar_Title_Inverse);
+		toolbar.addView(text);*/
+
 		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-		collapsingToolbar.setTitle(sportTitle);
+		collapsingToolbar.setTitle(category + " - " + sport);
+		/*collapsingToolbar.setTitleEnabled(true);*/
 
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		setupViewPager(viewPager);
@@ -50,6 +60,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.d(TAG, "onCreateOptionsMenu: sportTitle " + sportTitle);
 		getMenuInflater().inflate(R.menu.menu_championship, menu);
 		for(int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {

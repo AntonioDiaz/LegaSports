@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">LegaSports 2017</string>
     <string name="football">Fútbol</string>
+    <string name="football_11">Fútbol 11</string>
+    <string name="football_7">Fútbol 7</string>
+    <string name="football_sala">Fútbol sala</string>
     <string name="basketball">Baloncesto</string>
     <string name="volleyball">Voleibol</string>
     <string name="handball">Balonmano</string>
-    <string name="others">Otros</string>
+    <string name="unihockey">Unihockey</string>
     <string name="favorites">Favoritos</string>
     <string name="snack_msg">Seleccione Voleibol, por favor.</string>
     <string name="benjamin">Benjamin</string>
@@ -48,7 +51,6 @@
     <string name="calendar_title">%1$s - %2$s</string>
     <string name="calendar_description">Partido de la liga municipal de leganes entre los equipos %1$s y %2$s</string>
     <string name="share_description">Partido: %1$s y %2$s, Fecha: %3$s, Lugar: %4$s</string>
-
 
 
 </resources>

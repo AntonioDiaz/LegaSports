@@ -39,7 +39,7 @@
             android:layout_margin="8dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:onClick="openSport"
+            android:onClick="openSportFootball"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -69,6 +69,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
+            android:tag="@string/basketball"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -98,6 +99,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
+            android:tag="@string/volleyball"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -127,6 +129,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
+            android:tag="@string/handball"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -154,7 +157,8 @@
             android:layout_margin="8dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
-            android:onClick="openSportOthers"
+            android:onClick="openSport"
+            android:tag="@string/unihockey"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -163,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/others"
+                android:contentDescription="@string/unihockey"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_hockey"/>
 
@@ -172,7 +176,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text= "@string/others"
+                android:text= "@string/unihockey"
                 style="@style/main_sports"/>
 
         </LinearLayout>
@@ -191,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/others"
+                android:contentDescription="@string/unihockey"
                 android:layout_margin="8dp"
                 android:tint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_favorite_fill"/>

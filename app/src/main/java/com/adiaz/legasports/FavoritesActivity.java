@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import static com.adiaz.legasports.CategoriesActivity.EXTRA_CATEGORY_CHOSEN;
@@ -62,11 +63,12 @@ public class FavoritesActivity extends AppCompatActivity {
 	public void openFavoriteChampionShip(View view) {
 		Intent intent = new Intent(this, ChampionshipActivity.class);
 		String championshipName = (String)view.getTag();
-		championshipName = championshipName.replaceAll("\\(", "");
-		championshipName = championshipName.replaceAll("\\)", "");
-
-		intent.putExtra(EXTRA_SPORT_CHOSEN, championshipName.split(" ")[0]);
-		intent.putExtra(EXTRA_CATEGORY_CHOSEN, championshipName.split(" ")[1]);
+		String sport = championshipName.split("\\(")[0].trim();
+		String championship = championshipName.split("\\(")[1].replaceAll("\\)","");
+		Log.d(TAG, "openFavoriteChampionShip: sport [" + sport + "]");
+		Log.d(TAG, "openFavoriteChampionShip: championship [" + championship + "]");
+		intent.putExtra(EXTRA_SPORT_CHOSEN, sport);
+		intent.putExtra(EXTRA_CATEGORY_CHOSEN, championship);
 		startActivity(intent);
 	}
 

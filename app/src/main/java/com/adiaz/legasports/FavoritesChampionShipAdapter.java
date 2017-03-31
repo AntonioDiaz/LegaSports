@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by toni on 31/03/2017.
- */
+/* Created by toni on 31/03/2017. */
 
 public class FavoritesChampionShipAdapter extends RecyclerView.Adapter<FavoritesChampionShipAdapter.ViewHolder> {
 
