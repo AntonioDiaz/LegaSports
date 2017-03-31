@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     tools:context="com.adiaz.legasports.FavoritesActivity">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_top_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorPrimary"
+        app:layout_anchor="@+id/appBar"
+        app:layout_anchorGravity="bottom"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -23,7 +42,6 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleTextAppearance="@style/HeaderTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
 
             <TextView
                 android:id="@+id/tv_title"
@@ -46,20 +64,4 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fillViewport="true"
-        android:scrollbars="none">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_favorites"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:padding="0dp"
-            tools:listitem="@layout/listitem_classification"/>
-
-    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LegaSports</string>
+    <string name="app_name">LegaSports 2017</string>
     <string name="football">Fútbol</string>
     <string name="basketball">Baloncesto</string>
     <string name="volleyball">Voleibol</string>
@@ -16,6 +16,7 @@
     <string name="veterano">Veterano</string>
     <string name="choose_catogory">Elige categoria</string>
     <string name="classification">Clasificación</string>
+    <string name="championship">Competiciones</string>
     <string name="calendar">Calendario</string>
     <string name="teams">Equipos</string>
     <string name="subtitle_example_category">Baloncesto</string>
@@ -38,6 +39,8 @@
     <string name="not_implemented">Not implemented</string>
     <string name="example_team_name">Atletico Madrid</string>
     <string name="example_sport_category">Futbol (Infantil)</string>
+    <string name="example_championship">Benjamín Grupo 1</string>
+    <string name="example_sport">Futbol 7</string>
     <string name="example_jornada">Jornada 23</string>
     <string name="example_date">12/09/2017 12:30</string>
     <string name="example_place">Mercacentro CP1</string>

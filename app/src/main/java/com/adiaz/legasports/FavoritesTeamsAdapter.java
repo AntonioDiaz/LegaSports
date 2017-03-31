@@ -14,12 +14,12 @@ import java.util.List;
 
 /** Created by toni on 29/03/2017. */
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolderFavorites> {
+public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAdapter.ViewHolderFavorites> {
 
 	List<TeamEntity> teamsFavorites;
 	Context context;
 
-	public FavoritesAdapter(Context context) {
+	public FavoritesTeamsAdapter(Context context) {
 		this.context = context;
 	}
 
@@ -30,7 +30,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
 	@Override
 	public ViewHolderFavorites onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(context).inflate(R.layout.listitem_favorites, parent, false);
+		View view = LayoutInflater.from(context).inflate(R.layout.listitem_favorites_teams, parent, false);
 		return new ViewHolderFavorites(view);
 	}
 

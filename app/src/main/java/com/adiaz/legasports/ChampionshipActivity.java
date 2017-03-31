@@ -6,22 +6,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChampionshipActivity extends AppCompatActivity {
 
@@ -33,7 +26,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 	private String sportTitle;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void 	onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_championship);
 
@@ -51,18 +44,15 @@ public class ChampionshipActivity extends AppCompatActivity {
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		setupViewPager(viewPager);
 
-		tabLayout = (TabLayout) findViewById(R.id.detail_tabs);
+		tabLayout = (TabLayout) findViewById(R.id.tabs);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_championship, menu);
-		Log.d(TAG, "onCreateOptionsMenu: " +  menu.size());
 		for(int i = 0; i < menu.size(); i++) {
-			Log.d(TAG, "onCreateOptionsMenu: i" + i);
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
-				Log.d(TAG, "onCreateOptionsMenu: pasa " + i);
 				String key = getString(R.string.key_favorites_championship);
 				if (Utils.checkIfFavoritSelected(this, sportTitle, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -93,7 +83,6 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "onOptionsItemSelected: item.getItemId() " + item.getItemId());
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
 				String key = getString(R.string.key_favorites_championship);
@@ -130,35 +119,4 @@ public class ChampionshipActivity extends AppCompatActivity {
 			Utils.markFavoriteTeam(this, myTeamName, keyFavorites);
 		}
 	}
-
-	class ViewPagerAdapter extends FragmentPagerAdapter {
-
-		private final List<Fragment> mFragmentList = new ArrayList<>();
-		private final List<String> mFragmentTitleList = new ArrayList<>();
-
-		public ViewPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return mFragmentList.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			return mFragmentList.size();
-		}
-
-		public void addFragment (Fragment fragment, String title) {
-			mFragmentList.add(fragment);
-			mFragmentTitleList.add(title);
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return mFragmentTitleList.get(position);
-		}
-	}
-
 }
