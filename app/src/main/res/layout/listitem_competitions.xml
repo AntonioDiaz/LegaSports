@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="openCategory">
+        android:onClick="openCompetition">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-
                 style="@style/text_header"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

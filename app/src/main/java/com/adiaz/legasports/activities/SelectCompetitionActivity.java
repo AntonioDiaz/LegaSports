@@ -44,7 +44,7 @@ public class SelectCompetitionActivity extends AppCompatActivity {
 		recyclerView.setNestedScrollingEnabled(false);
 	}
 
-	public void openCategory(View view) {
+	public void openCompetition(View view) {
 		Intent intent = new Intent(this, ChampionshipActivity.class);
 		intent.putExtra(EXTRA_COMPETITION_CHOSEN, (String)view.getTag());
 		intent.putExtra(EXTRA_SPORT_CHOSEN, sportTitle);
