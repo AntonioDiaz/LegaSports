@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adiaz.legasports.adapters.FavoritesTeamsAdapter;
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.entities.TeamEntity;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.adapters;
 
 /* Created by toni on 22/03/2017. */
 
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.adiaz.legasports.R;
 
 public class ClassificationAdapter extends ArrayAdapter<String[]> {
 

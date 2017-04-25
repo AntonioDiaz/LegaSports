@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.adiaz.legasports">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -20,26 +22,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CategoriesActivity"
+            android:name=".activities.CategoriesActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adiaz.legasports.CategoriesActivity"/>
+                android:value="com.adiaz.legasports.activities.CategoriesActivity"/>
         </activity>
         <activity
-            android:name=".ChampionshipActivity"
+            android:name=".activities.ChampionshipActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".CategoriesActivity">
+            android:parentActivityName=".activities.CategoriesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adiaz.legasports.CategoriesActivity"/>
+                android:value="com.adiaz.legasports.activities.CategoriesActivity"/>
         </activity>
-        <activity android:name=".FavoritesActivity">
+        <activity android:name=".activities.FavoritesActivity">
         </activity>
-        <activity android:name=".FavoriteTeamActivity">
+        <activity android:name=".activities.FavoriteTeamActivity">
         </activity>
-        <activity android:name=".FootballActivity">
+        <activity android:name=".activities.FootballActivity">
         </activity>
     </application>
 

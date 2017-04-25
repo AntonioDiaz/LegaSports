@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import static com.adiaz.legasports.MainActivity.EXTRA_SPORT_CHOSEN;
+import com.adiaz.legasports.R;
+
+import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
 
 public class FootballActivity extends AppCompatActivity {
 

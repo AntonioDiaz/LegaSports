@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.utilities;
 
 /* Created by toni on 28/03/2017. */
 

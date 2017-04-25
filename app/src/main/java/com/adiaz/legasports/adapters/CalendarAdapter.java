@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.adiaz.legasports.R;
 import com.adiaz.legasports.entities.JornadaEntity;
 import com.adiaz.legasports.entities.MatchEntity;
 

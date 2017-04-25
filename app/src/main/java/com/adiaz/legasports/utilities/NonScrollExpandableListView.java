@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.utilities;
 
 import android.content.Context;
 import android.util.AttributeSet;

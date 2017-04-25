@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.adiaz.legasports.adapters.FavoriteTeamAdapter;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
 

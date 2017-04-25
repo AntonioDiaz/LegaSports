@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <com.adiaz.legasports.NonScrollExpandableListView
+    <com.adiaz.legasports.utilities.NonScrollExpandableListView
         android:id="@+id/elv_teams"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

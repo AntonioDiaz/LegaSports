@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import static com.adiaz.legasports.CategoriesActivity.EXTRA_CATEGORY_CHOSEN;
-import static com.adiaz.legasports.MainActivity.EXTRA_SPORT_CHOSEN;
+import com.adiaz.legasports.fragments.FavoritesChampionshipFragment;
+import com.adiaz.legasports.fragments.FavoritesTeamsFragment;
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.utilities.ViewPagerAdapter;
+
+import static com.adiaz.legasports.activities.CategoriesActivity.EXTRA_CATEGORY_CHOSEN;
+import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
 
 public class FavoritesActivity extends AppCompatActivity {
 

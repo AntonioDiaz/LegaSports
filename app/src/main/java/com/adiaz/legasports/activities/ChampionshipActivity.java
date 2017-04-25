@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.activities;
 
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -16,6 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.adiaz.legasports.fragments.CalendarFragment;
+import com.adiaz.legasports.fragments.ClassificationFragment;
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.fragments.TeamsFragment;
+import com.adiaz.legasports.utilities.Utils;
+import com.adiaz.legasports.utilities.ViewPagerAdapter;
 
 public class ChampionshipActivity extends AppCompatActivity {
 

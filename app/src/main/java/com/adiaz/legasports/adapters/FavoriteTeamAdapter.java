@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.adapters;
 
 /* Created by toni on 29/03/2017. */
 
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.adiaz.legasports.utilities.LegaSportsConstants;
+import com.adiaz.legasports.R;
 import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
 

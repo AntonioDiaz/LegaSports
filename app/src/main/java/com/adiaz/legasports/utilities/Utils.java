@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.utilities;
 
 
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.content.res.AssetManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.activities.ChampionshipActivity;
 import com.adiaz.legasports.entities.JornadaEntity;
 import com.adiaz.legasports.entities.MatchEntity;
 import com.adiaz.legasports.entities.TeamEntity;
@@ -25,8 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static com.adiaz.legasports.LegaSportsConstants.DEFAULT_SPORT;
-import static com.adiaz.legasports.LegaSportsConstants.TAB;
 
 /* Created by toni on 28/03/2017. */
 
@@ -194,8 +194,8 @@ public class Utils {
 					started = true;
 				} else {
 					if (started) {
-						if (line.startsWith(TAB)) {
-							categories.add(line.replaceAll(TAB, ""));
+						if (line.startsWith(LegaSportsConstants.TAB)) {
+							categories.add(line.replaceAll(LegaSportsConstants.TAB, ""));
 						} else {
 							started = false;
 						}
@@ -206,12 +206,12 @@ public class Utils {
 			reader = new BufferedReader(inputStream);
 			if (categories.size()==0) {
 				while ((line = reader.readLine()) != null) {
-					if (DEFAULT_SPORT.equals(line)) {
+					if (LegaSportsConstants.DEFAULT_SPORT.equals(line)) {
 						started = true;
 					} else {
 						if (started) {
-							if (line.startsWith(TAB)) {
-								categories.add(line.replaceAll(TAB, ""));
+							if (line.startsWith(LegaSportsConstants.TAB)) {
+								categories.add(line.replaceAll(LegaSportsConstants.TAB, ""));
 							} else {
 								started = false;
 							}

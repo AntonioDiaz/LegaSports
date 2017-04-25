@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,6 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
 

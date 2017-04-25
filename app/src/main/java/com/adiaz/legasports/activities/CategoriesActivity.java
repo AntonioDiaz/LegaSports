@@ -1,4 +1,4 @@
-package com.adiaz.legasports;
+package com.adiaz.legasports.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.adiaz.legasports.adapters.CategoriesAdapter;
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.utilities.Utils;
+
 import java.util.List;
 
-import static com.adiaz.legasports.MainActivity.EXTRA_SPORT_CHOSEN;
+import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
 
 public class CategoriesActivity extends AppCompatActivity {
 
