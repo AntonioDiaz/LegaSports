@@ -17,7 +17,7 @@ public class MatchEntity {
 
 
 	public MatchEntity(String line) {
-		Log.d(TAG, "MatchEntity: "  + line);
+		Log.d(TAG, "MatchRestEntity: "  + line);
 		String[] strings = line.split("\\t");
 		date = strings[0];
 		hour = strings[1];

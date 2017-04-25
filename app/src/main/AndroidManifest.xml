@@ -3,6 +3,8 @@
           package="com.adiaz.legasports">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -43,6 +45,17 @@
         </activity>
         <activity android:name=".activities.FootballActivity">
         </activity>
+
+        <service android:name=".sync.LegaSportsSyncIntentService" android:exported="false"></service>
+        <service android:name=".sync.LegaSportsFirebaseJobService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"></action>
+            </intent-filter>
+        </service>
+        <provider
+            android:authorities="com.adiaz.legasports"
+            android:name="com.adiaz.legasports.contentproviders.LegaSportContentProvider"
+            android:exported="false"></provider>
     </application>
 
 </manifest>
