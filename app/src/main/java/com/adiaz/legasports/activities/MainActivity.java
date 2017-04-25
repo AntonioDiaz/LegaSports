@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void openSport(View view) {
-		Intent intent = new Intent(this, CategoriesActivity.class);
+		Intent intent = new Intent(this, SelectCompetitionActivity.class);
 		intent.putExtra(EXTRA_SPORT_CHOSEN, (String)view.getTag());
 		startActivity(intent);
 	}

@@ -15,7 +15,7 @@ import com.adiaz.legasports.fragments.FavoritesTeamsFragment;
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.utilities.ViewPagerAdapter;
 
-import static com.adiaz.legasports.activities.CategoriesActivity.EXTRA_CATEGORY_CHOSEN;
+import static com.adiaz.legasports.activities.SelectCompetitionActivity.EXTRA_COMPETITION_CHOSEN;
 import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
 
 public class FavoritesActivity extends AppCompatActivity {
@@ -73,7 +73,7 @@ public class FavoritesActivity extends AppCompatActivity {
 		Log.d(TAG, "openFavoriteChampionShip: sport [" + sport + "]");
 		Log.d(TAG, "openFavoriteChampionShip: championship [" + championship + "]");
 		intent.putExtra(EXTRA_SPORT_CHOSEN, sport);
-		intent.putExtra(EXTRA_CATEGORY_CHOSEN, championship);
+		intent.putExtra(EXTRA_COMPETITION_CHOSEN, championship);
 		startActivity(intent);
 	}
 

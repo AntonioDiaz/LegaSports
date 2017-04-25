@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.adiaz.legasports.adapters.CategoriesAdapter;
+import com.adiaz.legasports.adapters.CompetitionsAdapter;
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.utilities.Utils;
 
@@ -17,36 +17,36 @@ import java.util.List;
 
 import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class SelectCompetitionActivity extends AppCompatActivity {
 
-	public static final String EXTRA_CATEGORY_CHOSEN = "extra_category_chosen";
-	private static final String TAG = CategoriesActivity.class.getSimpleName();
+	public static final String EXTRA_COMPETITION_CHOSEN = "extra_competition_chosen";
+	private static final String TAG = SelectCompetitionActivity.class.getSimpleName();
 	private String sportTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_categories);
+		setContentView(R.layout.activity_select_competition);
 		sportTitle = getIntent().getStringExtra(MainActivity.EXTRA_SPORT_CHOSEN);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 		collapsingToolbar.setTitle(sportTitle);
-
+		// TODO: 25/04/2017 should get the competitions from the contentprovider.
 		List<String> categories = Utils.getCategories(this, sportTitle);
-		CategoriesAdapter categoriesAdapter = new CategoriesAdapter(this);
-		categoriesAdapter.setCategories(categories);
-		RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_categories);
+		CompetitionsAdapter competitionsAdapter = new CompetitionsAdapter(this);
+		competitionsAdapter.setCompetitions(categories);
+		RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_competitions);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setHasFixedSize(true);
-		recyclerView.setAdapter(categoriesAdapter);
+		recyclerView.setAdapter(competitionsAdapter);
 		recyclerView.setNestedScrollingEnabled(false);
 	}
 
 	public void openCategory(View view) {
 		Intent intent = new Intent(this, ChampionshipActivity.class);
-		intent.putExtra(EXTRA_CATEGORY_CHOSEN, (String)view.getTag());
+		intent.putExtra(EXTRA_COMPETITION_CHOSEN, (String)view.getTag());
 		intent.putExtra(EXTRA_SPORT_CHOSEN, sportTitle);
 		startActivity(intent);
 	}
@@ -56,5 +56,4 @@ public class CategoriesActivity extends AppCompatActivity {
 		onBackPressed();
 		return true;
 	}
-
 }

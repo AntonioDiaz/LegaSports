@@ -39,7 +39,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_championship);
 
 		String sport = getIntent().getStringExtra(MainActivity.EXTRA_SPORT_CHOSEN);
-		String category = getIntent().getStringExtra(CategoriesActivity.EXTRA_CATEGORY_CHOSEN);
+		String category = getIntent().getStringExtra(SelectCompetitionActivity.EXTRA_COMPETITION_CHOSEN);
 		sportTitle = sport + " (" + category + ")";
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
