@@ -1,26 +1,27 @@
 package com.adiaz.legasports.entities;
 
-import android.util.Log;
+import java.util.Date;
 
 /** Created by toni on 23/03/2017. */
 
 public class MatchEntity {
 
 	private static final String TAG = MatchEntity.class.getSimpleName();
-	private String date;
-	private String hour;
+	private Date date;
 	private String teamLocal;
 	private String teamVisitor;
 	private int scoreLocal;
 	private int scoreVisitor;
 	private String place;
 
+	public MatchEntity() { }
 
 	public MatchEntity(String line) {
-		Log.d(TAG, "MatchRestEntity: "  + line);
 		String[] strings = line.split("\\t");
-		date = strings[0];
-		hour = strings[1];
+		/*
+				date = strings[0];
+				hour = strings[1];
+		*/
 		teamLocal = strings[2];
 		teamVisitor = strings[3];
 		if (strings.length>=5) {
@@ -28,20 +29,12 @@ public class MatchEntity {
 		}
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public String getHour() {
-		return hour;
-	}
-
-	public void setHour(String hour) {
-		this.hour = hour;
 	}
 
 	public String getTeamLocal() {

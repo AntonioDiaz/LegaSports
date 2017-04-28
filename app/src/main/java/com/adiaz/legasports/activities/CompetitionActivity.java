@@ -1,8 +1,10 @@
 package com.adiaz.legasports.activities;
 
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -11,36 +13,49 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.entities.JornadaEntity;
+import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.fragments.CalendarFragment;
 import com.adiaz.legasports.fragments.ClassificationFragment;
-import com.adiaz.legasports.R;
 import com.adiaz.legasports.fragments.TeamsFragment;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.utilities.ViewPagerAdapter;
 
-public class ChampionshipActivity extends AppCompatActivity {
+import java.util.List;
 
-	private static final String TAG = ChampionshipActivity.class.getSimpleName();
+import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
+
+public class CompetitionActivity extends AppCompatActivity {
+
+	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
 	private String sportTitle;
+	public static String idCompetitionServer;
+	public static List<TeamEntity> teams;
+	public static List<JornadaEntity> jornadas;
 
 	@Override
 	protected void 	onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_championship);
+		setContentView(R.layout.activity_competition);
 
-		String sport = getIntent().getStringExtra(MainActivity.EXTRA_SPORT_CHOSEN);
-		String category = getIntent().getStringExtra(SelectCompetitionActivity.EXTRA_COMPETITION_CHOSEN);
-		sportTitle = sport + " (" + category + ")";
+		String sportTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_SPORT_TAG);
+		String categoryTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_CATEGORY_TAG);
+		String competitionName = getIntent().getStringExtra(LegaSportsConstants.INTENT_COMPETITION_NAME);
+		String sport = Utils.getStringResourceByName(this, sportTag);
+		String category = Utils.getStringResourceByName(this, categoryTag);
+		idCompetitionServer = getIntent().getStringExtra(LegaSportsConstants.INTENT_ID_COMPETITION_SERVER);
+		sportTitle = sportTag + " (" + categoryTag + ")";
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -55,7 +70,7 @@ public class ChampionshipActivity extends AppCompatActivity {
 		toolbar.addView(text);*/
 
 		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-		collapsingToolbar.setTitle(category + " - " + sport);
+		collapsingToolbar.setTitle(competitionName + " (" + category + ") " + sport);
 		/*collapsingToolbar.setTitleEnabled(true);*/
 
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -63,16 +78,22 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 		tabLayout = (TabLayout) findViewById(R.id.tabs);
 		tabLayout.setupWithViewPager(viewPager);
+
+		/*loading structures for the tabs: */
+		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+		Cursor cursorMatches = getContentResolver().query(uriMatches, null, null, null, null);
+		teams = Utils.initTeams(cursorMatches);
+		jornadas = Utils.initCalendar(cursorMatches);
+		cursorMatches.close();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.d(TAG, "onCreateOptionsMenu: sportTitle " + sportTitle);
-		getMenuInflater().inflate(R.menu.menu_championship, menu);
+		getMenuInflater().inflate(R.menu.menu_competition, menu);
 		for(int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
-				String key = getString(R.string.key_favorites_championship);
-				if (Utils.checkIfFavoritSelected(this, sportTitle, key)) {
+				String key = getString(R.string.key_favorites_competitions);
+				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -103,14 +124,14 @@ public class ChampionshipActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
-				String key = getString(R.string.key_favorites_championship);
+				String key = getString(R.string.key_favorites_competitions);
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				if (Utils.checkIfFavoritSelected(this, sportTitle, key)) {
-					Utils.unMarkFavoriteTeam(this, sportTitle, key);
+				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
+					Utils.unMarkFavoriteTeam(this, idCompetitionServer, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					Utils.markFavoriteTeam(this, sportTitle, key);
+					Utils.markFavoriteTeam(this, idCompetitionServer, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
@@ -127,14 +148,14 @@ public class ChampionshipActivity extends AppCompatActivity {
 
 	public void selectFavorite(View view) {
 		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
-		String myTeamName = (String)imageView.getTag();
+		String myTeamId = Utils.generateTeamKey((String)imageView.getTag(), idCompetitionServer);
 		String keyFavorites = getString(R.string.key_favorites_teams);
-		if (Utils.checkIfFavoritSelected(this, myTeamName, keyFavorites)) {
+		if (Utils.checkIfFavoritSelected(this, myTeamId, keyFavorites)) {
 			imageView.setImageResource(R.drawable.ic_favorite);
-			Utils.unMarkFavoriteTeam(this, myTeamName, keyFavorites);
+			Utils.unMarkFavoriteTeam(this, myTeamId, keyFavorites);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			Utils.markFavoriteTeam(this, myTeamName, keyFavorites);
+			Utils.markFavoriteTeam(this, myTeamId, keyFavorites);
 		}
 	}
 }

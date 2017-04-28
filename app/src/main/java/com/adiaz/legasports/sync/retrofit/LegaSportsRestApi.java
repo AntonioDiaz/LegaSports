@@ -1,5 +1,7 @@
 package com.adiaz.legasports.sync.retrofit;
 
+import com.adiaz.legasports.sync.retrofit.entities.CompetitionRestEntity;
+
 import java.util.List;
 
 import retrofit2.Call;

@@ -22,10 +22,12 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 	private Context mContext;
 	private List<TeamEntity> teams;
+	private String idCompetitionServer;
 
-	public TeamsAdapter(Context mContext, List<TeamEntity> teams) {
+	public TeamsAdapter(Context mContext, List<TeamEntity> teams, String idCompetitionServer) {
 		this.mContext = mContext;
 		this.teams = teams;
+		this.idCompetitionServer = idCompetitionServer;
 	}
 
 	@Override
@@ -118,7 +120,8 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 		textView.setText(teamEntity.getTeamName());
 		String key = mContext.getString(R.string.key_favorites_teams);
-		if (Utils.checkIfFavoritSelected(mContext, teamEntity.getTeamName(), key)) {
+		String teamName = Utils.generateTeamKey(teamEntity.getTeamName(), idCompetitionServer);
+		if (Utils.checkIfFavoritSelected(mContext, teamName, key)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite);

@@ -6,8 +6,8 @@ import android.content.Context;
 import android.util.Log;
 
 
-import com.adiaz.legasports.sync.retrofit.CompetitionRestEntity;
-import com.adiaz.legasports.sync.retrofit.MatchRestEntity;
+import com.adiaz.legasports.sync.retrofit.entities.CompetitionRestEntity;
+import com.adiaz.legasports.sync.retrofit.entities.MatchRestEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,15 +38,15 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 
 	@Override
 	public void onResponse(Call<List<CompetitionRestEntity>> call, Response<List<CompetitionRestEntity>> response) {
-		Log.d(TAG, "onResponse: 01");
 		List<ContentValues> newsCompetitions = new ArrayList<>();
 		List<ContentValues> newsMatches = new ArrayList<>();
 		for (CompetitionRestEntity competitionsEntity : response.body()) {
 			ContentValues cv = new ContentValues();
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, competitionsEntity.getId());
 			cv.put(CompetitionsEntry.COLUMN_NAME, competitionsEntity.getName());
-			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportStr());
-			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionsEntity.getCategoryStr().toUpperCase());
+			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportEntity().getName());
+			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionsEntity.getCategoryEntity().getName().toLowerCase());
+			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE, new Date().toString());
 			newsCompetitions.add(cv);
 			Log.d(TAG, "onResponse: for ->" + competitionsEntity.getId() + " there are " + competitionsEntity.getMatches().size());
@@ -70,6 +70,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 		ContentValues[] matches = newsMatches.toArray(new ContentValues[newsMatches.size()]);
 		legaSportContentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
 		legaSportContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matches);
+		Log.d(TAG, "onResponse: finished");
 	}
 
 	@Override

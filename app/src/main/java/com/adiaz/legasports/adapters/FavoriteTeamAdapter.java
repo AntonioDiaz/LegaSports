@@ -45,8 +45,11 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 		String jornadaStr = context.getString(R.string.jornada_header, position + 1);
 		holder.tvJornada.setText(jornadaStr);
 		TeamMatchEntity teamMatchEntity = teamEntity.getMatches().get(position);
-		DateFormat dateFormat = new SimpleDateFormat(LegaSportsConstants.DATE_FORMAT);
-		String dateStr = dateFormat.format(teamMatchEntity.getDate());
+		String dateStr = "";
+		if (teamMatchEntity.getDate()!=null) {
+			DateFormat dateFormat = new SimpleDateFormat(LegaSportsConstants.DATE_FORMAT);
+			dateStr = dateFormat.format(teamMatchEntity.getDate());
+		}
 		holder.tvDate.setText(dateStr);
 		holder.tvPlace.setText(teamMatchEntity.getPlace());
 		if (teamMatchEntity.isLocal()) {

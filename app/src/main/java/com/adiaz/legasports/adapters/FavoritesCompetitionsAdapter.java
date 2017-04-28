@@ -9,55 +9,51 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.legasports.R;
-import com.adiaz.legasports.entities.TeamFavoriteEntity;
+import com.adiaz.legasports.entities.CompetitionEntity;
 import com.adiaz.legasports.utilities.Utils;
 
 import java.util.List;
 
-/** Created by toni on 29/03/2017. */
+/* Created by toni on 31/03/2017. */
 
-public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAdapter.ViewHolder> {
+public class FavoritesCompetitionsAdapter extends RecyclerView.Adapter<FavoritesCompetitionsAdapter.ViewHolder> {
 
-	List<TeamFavoriteEntity> teamsFavorites;
-	Context context;
+	private Context context;
 	private ListItemClickListener listItemClickListener;
 
-	public FavoritesTeamsAdapter(Context context, ListItemClickListener listItemClickListener) {
+	private List<CompetitionEntity> competitionsFavorites;
+
+	public FavoritesCompetitionsAdapter(Context context, ListItemClickListener listItemClickListener) {
 		this.context = context;
 		this.listItemClickListener = listItemClickListener;
 	}
 
-	public void setTeamsFavorites(List<TeamFavoriteEntity> teamsFavorites) {
-		this.teamsFavorites = teamsFavorites;
+	public void setCompetitionsFavorites(List<CompetitionEntity> competitionsFavorites) {
+		this.competitionsFavorites = competitionsFavorites;
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(context).inflate(R.layout.listitem_favorites, parent, false);
+		LayoutInflater layoutInflater = LayoutInflater.from(context);
+		View view = layoutInflater.inflate(R.layout.listitem_favorites, parent, false);
 		return new ViewHolder(view);
 	}
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		String teamName = teamsFavorites.get(position).getName();
-		String sportTag = teamsFavorites.get(position).getSportTag();
-		String categoryTag = teamsFavorites.get(position).getCategoryTag();
-		String competitionName = teamsFavorites.get(position).getCompetitionName();
-		String subtitle = Utils.getStringResourceByName(context, sportTag);
-		subtitle += " - " + Utils.getStringResourceByName(context, categoryTag);
-		holder.tvTitle.setText(teamName);
-		holder.tvSubTitle01.setText(competitionName);
-		holder.tvSubTitle02.setText(subtitle);
-		holder.cvCompetitions.setTag(teamName);
+		holder.tvTitle.setText(competitionsFavorites.get(position).getName());
+		holder.tvSubTitle01.setText(Utils.getStringResourceByName(context, competitionsFavorites.get(position).getSportName()));
+		holder.tvSubTitle02.setText(Utils.getStringResourceByName(context,competitionsFavorites.get(position).getCategoryName()));
+		holder.cvCompetitions.setTag(competitionsFavorites.get(position).getServerId());
 	}
 
 	@Override
 	public int getItemCount() {
-		return teamsFavorites.size();
+		return competitionsFavorites.size();
 	}
 
-	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		private TextView tvTitle;
 		private TextView tvSubTitle02;
 		private TextView tvSubTitle01;

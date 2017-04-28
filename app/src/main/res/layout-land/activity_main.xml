@@ -65,13 +65,13 @@
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
-            android:tag="@string/basketball">
+            android:tag="@string/basketball_tag">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/basketball"
+                android:contentDescription="@string/BALONCESTO"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_basketball"/>
 
@@ -84,7 +84,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
-            android:tag="@string/volleyball"
+            android:tag="@string/volleyball_tag"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/volleyball"
+                android:contentDescription="@string/VOLEIBOL"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_volleyball"/>
 
@@ -106,7 +106,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
-            android:tag="@string/handball"
+            android:tag="@string/handball_tag"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/handball"
+                android:contentDescription="@string/BALONMANO"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_ball_handball"/>
 
@@ -127,7 +127,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="openSport"
-            android:tag="@string/unihockey"
+            android:tag="@string/unihockey_tag"
             android:orientation="vertical"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1">
@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:contentDescription="@string/unihockey"
+                android:contentDescription="@string/UNIHOCKEY"
                 android:layout_margin="8dp"
                 app:srcCompat="@drawable/ic_hockey"/>
 

@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.entities.JornadaEntity;
 import com.adiaz.legasports.entities.MatchEntity;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /* Created by toni on 23/03/2017. */
@@ -51,7 +54,8 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 
 		localTeam.setText(matchEntity.getTeamLocal());
 		visitorTeam.setText(matchEntity.getTeamVisitor());
-		date.setText(matchEntity.getDate() + " " + matchEntity.getHour());
+		DateFormat df = new SimpleDateFormat(LegaSportsConstants.DATE_FORMAT);
+		date.setText(df.format(matchEntity.getDate()));
 		place.setText(matchEntity.getPlace());
 
 		return view;

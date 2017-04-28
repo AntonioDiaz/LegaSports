@@ -1,5 +1,5 @@
 
-package com.adiaz.legasports.sync.retrofit;
+package com.adiaz.legasports.sync.retrofit.entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,15 +14,12 @@ public class CompetitionRestEntity {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("sportStr")
+    @SerializedName("sportEntity")
     @Expose
-    private String sportStr;
-    @SerializedName("categoryStr")
+    private SportEntity sportEntity;
+    @SerializedName("categoryEntity")
     @Expose
-    private String categoryStr;
-    @SerializedName("matchesSize")
-    @Expose
-    private Long matchesSize;
+    private CategoryEntity categoryEntity;
     @SerializedName("matches")
     @Expose
     private List<MatchRestEntity> matches = null;
@@ -43,28 +40,20 @@ public class CompetitionRestEntity {
         this.name = name;
     }
 
-    public String getSportStr() {
-        return sportStr;
+    public SportEntity getSportEntity() {
+        return sportEntity;
     }
 
-    public void setSportStr(String sportStr) {
-        this.sportStr = sportStr;
+    public void setSportEntity(SportEntity sportEntity) {
+        this.sportEntity = sportEntity;
     }
 
-    public String getCategoryStr() {
-        return categoryStr;
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
     }
 
-    public void setCategoryStr(String categoryStr) {
-        this.categoryStr = categoryStr;
-    }
-
-    public Long getMatchesSize() {
-        return matchesSize;
-    }
-
-    public void setMatchesSize(Long matchesSize) {
-        this.matchesSize = matchesSize;
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 
     public List<MatchRestEntity> getMatches() {

@@ -3,7 +3,7 @@ package com.adiaz.legasports.sync;
 import android.content.Context;
 import android.util.Log;
 
-import com.adiaz.legasports.sync.retrofit.CompetitionRestEntity;
+import com.adiaz.legasports.sync.retrofit.entities.CompetitionRestEntity;
 import com.adiaz.legasports.sync.retrofit.LegaSportsRestApi;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.NetworkUtilities;

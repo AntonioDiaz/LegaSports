@@ -7,19 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adiaz.legasports.utilities.NonScrollExpandableListView;
 import com.adiaz.legasports.R;
+import com.adiaz.legasports.activities.CompetitionActivity;
 import com.adiaz.legasports.adapters.TeamsAdapter;
-import com.adiaz.legasports.utilities.Utils;
-import com.adiaz.legasports.entities.TeamEntity;
+import com.adiaz.legasports.utilities.NonScrollExpandableListView;
 
-import java.util.List;
 
 /* Created by toni on 21/03/2017. */
 
 public class TeamsFragment extends Fragment {
 
-	public TeamsFragment() { }
+	private static final String TAG = TeamsFragment.class.getSimpleName();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +34,8 @@ public class TeamsFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		NonScrollExpandableListView expandableListView = (NonScrollExpandableListView) getActivity().findViewById(R.id.elv_teams);
-		List<TeamEntity> teams = Utils.initTeams(getActivity());
-		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), teams);
+		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.teams, CompetitionActivity.idCompetitionServer);
 		expandableListView.setAdapter(teamsAdapter);
 		teamsAdapter.notifyDataSetChanged();
 	}
-
 }

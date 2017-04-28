@@ -10,8 +10,7 @@
     android:orientation="horizontal"
     android:paddingBottom="0dp"
     android:paddingLeft="@dimen/calendar_item_padding_left"
-    android:paddingTop="0dp"
-    >
+    android:paddingTop="0dp">
 
     <TextView
         android:id="@+id/tv_local"

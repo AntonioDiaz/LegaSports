@@ -1,22 +1,22 @@
 package com.adiaz.legasports.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
-import com.adiaz.legasports.fragments.FavoritesChampionshipFragment;
-import com.adiaz.legasports.fragments.FavoritesTeamsFragment;
 import com.adiaz.legasports.R;
+import com.adiaz.legasports.entities.CompetitionEntity;
+import com.adiaz.legasports.entities.TeamFavoriteEntity;
+import com.adiaz.legasports.fragments.FavoritesCompetitionsFragment;
+import com.adiaz.legasports.fragments.FavoritesTeamsFragment;
+import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.utilities.ViewPagerAdapter;
 
-import static com.adiaz.legasports.activities.SelectCompetitionActivity.EXTRA_COMPETITION_CHOSEN;
-import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
+import java.util.List;
+
 
 public class FavoritesActivity extends AppCompatActivity {
 
@@ -25,6 +25,9 @@ public class FavoritesActivity extends AppCompatActivity {
 
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
+
+	public static List<CompetitionEntity> competitionsFavorites;
+	public static List<TeamFavoriteEntity> teamsFavorites;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +44,19 @@ public class FavoritesActivity extends AppCompatActivity {
 		viewPager = (ViewPager)findViewById(R.id.viewpager);
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
-
-
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		competitionsFavorites = Utils.getCompetitionsFavorites(this);
+		teamsFavorites = Utils.getTeamsFavorites(this);
+	}
 
 	private void setupViewPager(ViewPager viewPager) {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new FavoritesTeamsFragment(), getString(R.string.teams));
-		adapter.addFragment(new FavoritesChampionshipFragment(), getString(R.string.championship));
+		adapter.addFragment(new FavoritesCompetitionsFragment(), getString(R.string.competitions));
 		viewPager.setAdapter(adapter);
 	}
 
@@ -58,23 +65,4 @@ public class FavoritesActivity extends AppCompatActivity {
 		onBackPressed();
 		return true;
 	}
-
-	public void openFavoriteTeam(View view) {
-		Intent intent = new Intent(this, FavoriteTeamActivity.class);
-		intent.putExtra(TEAM_NAME, (String)view.getTag());
-		startActivity(intent);
-	}
-
-	public void openFavoriteChampionShip(View view) {
-		Intent intent = new Intent(this, ChampionshipActivity.class);
-		String championshipName = (String)view.getTag();
-		String sport = championshipName.split("\\(")[0].trim();
-		String championship = championshipName.split("\\(")[1].replaceAll("\\)","");
-		Log.d(TAG, "openFavoriteChampionShip: sport [" + sport + "]");
-		Log.d(TAG, "openFavoriteChampionShip: championship [" + championship + "]");
-		intent.putExtra(EXTRA_SPORT_CHOSEN, sport);
-		intent.putExtra(EXTRA_COMPETITION_CHOSEN, championship);
-		startActivity(intent);
-	}
-
 }

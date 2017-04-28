@@ -8,8 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.adiaz.legasports.R;
-
-import static com.adiaz.legasports.activities.MainActivity.EXTRA_SPORT_CHOSEN;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
 
 public class FootballActivity extends AppCompatActivity {
 
@@ -33,7 +32,7 @@ public class FootballActivity extends AppCompatActivity {
 
 	public void openFootball(View view) {
 		Intent intent = new Intent(this, SelectCompetitionActivity.class);
-		intent.putExtra(EXTRA_SPORT_CHOSEN, (String)view.getTag());
+		intent.putExtra(LegaSportsConstants.INTENT_SPORT_TAG, (String)view.getTag());
 		startActivity(intent);
 	}
 }

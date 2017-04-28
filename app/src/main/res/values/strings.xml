@@ -1,14 +1,23 @@
 <resources>
     <string name="app_name">LegaSports 2017</string>
     <string name="football">Fútbol</string>
-    <string name="football_11">Fútbol 11</string>
-    <string name="football_7">Fútbol 7</string>
-    <string name="football_sala">Fútbol sala</string>
-    <string name="basketball">Baloncesto</string>
-    <string name="volleyball">Voleibol</string>
-    <string name="handball">Balonmano</string>
-    <string name="unihockey">Unihockey</string>
+    <string name="FUTBOL_11">Fútbol 11</string>
+    <string name="FUTBOL_7">Fútbol 7</string>
+    <string name="FUTBOL_SALA">Fútbol sala</string>
+    <string name="BALONCESTO">Baloncesto</string>
+    <string name="VOLEIBOL">Voleibol</string>
+    <string name="BALONMANO">Balonmano</string>
+    <string name="UNIHOCKEY">Unihockey</string>
     <string name="favorites">Favoritos</string>
+
+    <string name="football_11_tag">FUTBOL_11</string>
+    <string name="football_7_tag">FUTBOL_7</string>
+    <string name="football_sala_tag">FUTBOL_SALA</string>
+    <string name="basketball_tag">BALONCESTO</string>
+    <string name="volleyball_tag">VOLEIBOL</string>
+    <string name="handball_tag">BALONMANO</string>
+    <string name="unihockey_tag">UNIHOCKEY</string>
+
     <string name="snack_msg">Seleccione Voleibol, por favor.</string>
     <string name="benjamin">Benjamin</string>
     <string name="alevin">Alevin</string>
@@ -19,11 +28,11 @@
     <string name="veterano">Veterano</string>
     <string name="choose_catogory">Elige categoria</string>
     <string name="classification">Clasificación</string>
-    <string name="championship">Competiciones</string>
+    <string name="competitions">Competiciones</string>
     <string name="calendar">Calendario</string>
     <string name="teams">Equipos</string>
     <string name="subtitle_example_category">Baloncesto</string>
-    <string name="subtitle_example_championship">Baloncesto (Benjamin)</string>
+    <string name="subtitle_example_competition">Baloncesto (Benjamin)</string>
 
     <string name="classification_position">Posición</string>
     <string name="classification_team">Equipo</string>
@@ -38,11 +47,12 @@
     <string name="jornada_header">Jornada %1$d</string>
 
     <string name="key_favorites_teams">key_favorites_teams</string>
-    <string name="key_favorites_championship">key_favorites_championship</string>
+    <string name="key_favorites_competitions">key_favorites_competitions</string>
     <string name="not_implemented">Not implemented</string>
     <string name="example_team_name">Atletico Madrid</string>
     <string name="example_sport_category">Futbol (Infantil)</string>
-    <string name="example_championship">Benjamín Grupo 1</string>
+    <string name="example_competition">Campeonato de Primavera</string>
+    <string name="example_category">Benjamín</string>
     <string name="example_sport">Futbol 7</string>
     <string name="example_jornada">Jornada 23</string>
     <string name="example_date">12/09/2017 12:30</string>
@@ -52,5 +62,7 @@
     <string name="calendar_description">Partido de la liga municipal de leganes entre los equipos %1$s y %2$s</string>
     <string name="share_description">Partido: %1$s y %2$s, Fecha: %3$s, Lugar: %4$s</string>
 
+    <string name="internet_required">Se necesita conexión a internet</string>
 
+    <string name="NOT_FOUND">not found</string>
 </resources>

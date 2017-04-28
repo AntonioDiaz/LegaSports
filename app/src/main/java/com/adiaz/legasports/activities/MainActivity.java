@@ -1,18 +1,21 @@
 package com.adiaz.legasports.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.adiaz.legasports.R;
-import com.adiaz.legasports.utilities.Utils;
+import com.adiaz.legasports.database.LegaSportsDbContract;
+import com.adiaz.legasports.sync.LegaSportsSyncUtils;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
+import com.adiaz.legasports.utilities.NetworkUtilities;
 
 public class MainActivity extends AppCompatActivity {
 
-	public static final String EXTRA_SPORT_CHOSEN = "extra_sport_chosen";
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	@Override
@@ -23,14 +26,29 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.ic_launcher);
+	}
 
-		Log.d(TAG, "onCreate: " + Utils.getCategories(this, getString(R.string.football_7)));
-		
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (NetworkUtilities.isNetworkAvailable(this)) {
+			LegaSportsSyncUtils.initialize(this);
+		} else {
+			Cursor cursor = getContentResolver().query(
+					LegaSportsDbContract.CompetitionsEntry.CONTENT_URI, null, null, null, null);
+			if (cursor.getCount()==0) {
+				View view = findViewById(R.id.layout_activity_main);
+				String strError = getString(R.string.internet_required);
+				final Snackbar snackbar = Snackbar.make(view, strError, Snackbar.LENGTH_LONG);
+				snackbar.show();
+				// TODO: 26/04/2017 should disabled all link (sports and favorites).
+			}
+		}
 	}
 
 	public void openSport(View view) {
 		Intent intent = new Intent(this, SelectCompetitionActivity.class);
-		intent.putExtra(EXTRA_SPORT_CHOSEN, (String)view.getTag());
+		intent.putExtra(LegaSportsConstants.INTENT_SPORT_TAG, (String)view.getTag());
 		startActivity(intent);
 	}
 

@@ -1,5 +1,5 @@
 
-package com.adiaz.legasports.sync.retrofit;
+package com.adiaz.legasports.sync.retrofit.entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

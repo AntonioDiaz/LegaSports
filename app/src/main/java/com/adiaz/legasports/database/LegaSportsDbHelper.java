@@ -14,7 +14,7 @@ public class LegaSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "legasports.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	public LegaSportsDbHelper(Context context) {	
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,6 +29,7 @@ public class LegaSportsDbHelper extends SQLiteOpenHelper {
 							CompetitionsEntry.COLUMN_NAME + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_SPORT + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_CATEGORY + " TEXT NOT NULL, " +
+							CompetitionsEntry.COLUMN_CATEGORY_ORDER + " INTEGER NOT NULL, " +
 							CompetitionsEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
 							"UNIQUE (" + CompetitionsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";

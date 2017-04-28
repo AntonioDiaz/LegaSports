@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adiaz.legasports.R;
+import com.adiaz.legasports.activities.CompetitionActivity;
 import com.adiaz.legasports.adapters.CalendarAdapter;
 import com.adiaz.legasports.utilities.NonScrollExpandableListView;
-import com.adiaz.legasports.R;
-import com.adiaz.legasports.utilities.Utils;
-import com.adiaz.legasports.entities.JornadaEntity;
 
-import java.util.List;
+
 
 /* Created by toni on 21/03/2017. */
 
@@ -36,11 +35,8 @@ public class CalendarFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		NonScrollExpandableListView expandableListView = (NonScrollExpandableListView) getActivity().findViewById(R.id.elv_jornadas);
-//		ExpandableListView expandableListView = (ExpandableListView) getActivity().findViewById(R.id.elv_jornadas);
-		List<JornadaEntity> jornadas = Utils.initCalendar(getActivity());
-		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), jornadas);
+		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), CompetitionActivity.jornadas);
 		expandableListView.setAdapter(calendarAdapter);
 		calendarAdapter.notifyDataSetChanged();
 	}
-
 }
