@@ -20,8 +20,6 @@ import com.adiaz.legasports.entities.TeamMatchEntity;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -86,52 +84,6 @@ public class Utils {
 		return teams;
 	}
 
-	public static List<TeamEntity> initTeams(Context context) {
-		List<TeamEntity> teams = new ArrayList<>();
-		List<JornadaEntity> jornadas = initCalendar(context);
-		JornadaEntity jornadaEntity = jornadas.get(0);
-		Set<String> teamsSet = new HashSet<>();
-		for (MatchEntity matchEntity : jornadaEntity.getMatches()) {
-			teamsSet.add(matchEntity.getTeamLocal());
-			teamsSet.add(matchEntity.getTeamVisitor());
-		}
-		List<String> teamsList = new ArrayList<>();
-		teamsList.addAll(teamsSet);
-		Collections.sort(teamsList);
-		for (String s : teamsList) {
-			List<TeamMatchEntity> matches = new ArrayList<>();
-			for (JornadaEntity jornada : jornadas) {
-				for (MatchEntity matchEntity : jornada.getMatches()) {
-					if (s.equals(matchEntity.getTeamLocal()) || s.equals(matchEntity.getTeamVisitor())) {
-						TeamMatchEntity teamMatchEntity = new TeamMatchEntity();
-						if (s.equals(matchEntity.getTeamLocal())) {
-							teamMatchEntity.setLocal(true);
-							teamMatchEntity.setOpponent(matchEntity.getTeamVisitor());
-						} else {
-							teamMatchEntity.setLocal(false);
-							teamMatchEntity.setOpponent(matchEntity.getTeamLocal());
-						}
-						teamMatchEntity.setPlace(matchEntity.getPlace());
-						DateFormat dateFormat = new SimpleDateFormat(LegaSportsConstants.DATE_FORMAT);
-	/*					try {
-							teamMatchEntity.setDate(dateFormat.parse(matchEntity.getDate() + " " + matchEntity.getHour()));
-						} catch (ParseException e) {
-							Log.e(TAG, "initTeams: error in parse", e);
-						}*/
-						teamMatchEntity.setTeamScore(0);
-						teamMatchEntity.setOpponentScore(0);
-						matches.add(teamMatchEntity);
-					}
-				}
-
-			}
-			TeamEntity teamEntity = new TeamEntity(s);
-			teamEntity.setMatches(matches);
-			teams.add(teamEntity);
-		}
-		return teams;
-	}
-
 	public static List<JornadaEntity> initCalendar(Cursor cursorMatches) {
 		List<JornadaEntity> calendar = new ArrayList<>();
 		int weekNumber = 1;
@@ -187,14 +139,12 @@ public class Utils {
 		return calendar;
 	}
 
-
 	public static boolean checkIfFavoritSelected(Context context, String teamName, String key) {
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
 		Set<String> defaultSet = new HashSet<>();
 		Set<String> stringsSet = preferences.getStringSet(key, defaultSet);
 		return stringsSet.contains(teamName);
 	}
-
 
 	public static void unMarkFavoriteTeam(Context context, String myTeamName, String key) {
 		Utils.updateListFavoritesTeam(context, myTeamName, key, false);
@@ -256,78 +206,7 @@ public class Utils {
 		return teamEntity;
 	}
 
-	public static TeamEntity initTeam(Context context, String teamName) {
-		TeamEntity teamEntity = null;
-		List<TeamEntity> teamEntities = initTeams(context);
-		for (TeamEntity entity : teamEntities) {
-			if (entity.getTeamName().equals(teamName)) {
-				teamEntity = entity;
-			}
-		}
-		return teamEntity;
-	}
-
-	public static List<TeamEntity> initFavoritesTeams(Context context) {
-		List<TeamEntity> teamEntitiesFavorites = new ArrayList<>();
-		List<TeamEntity> teamEntities = initTeams(context);
-		String key = context.getString(R.string.key_favorites_teams);
-		Set<String> teamsFavoritesSet = new HashSet<String>(getFavorites(context, key));
-		for (TeamEntity teamEntity : teamEntities) {
-			if (teamsFavoritesSet.contains(teamEntity.getTeamName())) {
-				teamEntitiesFavorites.add(teamEntity);
-			}
-		}
-		return teamEntitiesFavorites;
-	}
-
-
-	public static List<String> getCategories (Context context, String sport) {
-		List<String> categories = new ArrayList<>();
-		AssetManager assetManager = context.getResources().getAssets();
-		InputStreamReader inputStream = null;
-		try {
-			inputStream = new InputStreamReader(assetManager.open("categories.txt"));
-			BufferedReader reader = new BufferedReader(inputStream);
-			String line;
-			boolean started = false;
-			while ((line = reader.readLine()) != null) {
-				if (sport.equals(line)) {
-					started = true;
-				} else {
-					if (started) {
-						if (line.startsWith(LegaSportsConstants.TAB)) {
-							categories.add(line.replaceAll(LegaSportsConstants.TAB, ""));
-						} else {
-							started = false;
-						}
-					}
-				}
-			}
-			inputStream = new InputStreamReader(assetManager.open("categories.txt"));
-			reader = new BufferedReader(inputStream);
-			if (categories.size()==0) {
-				while ((line = reader.readLine()) != null) {
-					if (LegaSportsConstants.DEFAULT_SPORT.equals(line)) {
-						started = true;
-					} else {
-						if (started) {
-							if (line.startsWith(LegaSportsConstants.TAB)) {
-								categories.add(line.replaceAll(LegaSportsConstants.TAB, ""));
-							} else {
-								started = false;
-							}
-						}
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return categories;
-	}
-
 	public static String getStringResourceByName(Context context, String aString) {
-		Log.d(TAG, "getStringResourceByName: " + aString);
 		String packageName = context.getPackageName();
 		int resId = context.getResources().getIdentifier(aString, "string", packageName);
 		String strResource = context.getString(R.string.NOT_FOUND);
