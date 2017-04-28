@@ -29,8 +29,8 @@
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="88dp"
+                android:layout_marginLeft="@dimen/title_marginLeft"
+                android:layout_marginTop="@dimen/title_marginTop"
                 android:textColor="@color/colorWhite"
                 android:text="@string/app_name"/>
 
@@ -39,7 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="pin"
+                app:contentInsetStart="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStartWithNavigation="0dp">
 
             </android.support.v7.widget.Toolbar>
 
