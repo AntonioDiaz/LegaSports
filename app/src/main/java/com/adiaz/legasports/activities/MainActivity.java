@@ -14,15 +14,22 @@ import com.adiaz.legasports.sync.LegaSportsSyncUtils;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.NetworkUtilities;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
+
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView((R.id.layout_activity_main)) View activityView;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		ButterKnife.bind(this);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		getSupportActionBar().setIcon(R.drawable.ic_launcher);
@@ -37,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
 			Cursor cursor = getContentResolver().query(
 					LegaSportsDbContract.CompetitionsEntry.CONTENT_URI, null, null, null, null);
 			if (cursor.getCount()==0) {
-				View view = findViewById(R.id.layout_activity_main);
 				String strError = getString(R.string.internet_required);
-				final Snackbar snackbar = Snackbar.make(view, strError, Snackbar.LENGTH_LONG);
+				final Snackbar snackbar = Snackbar.make(activityView, strError, Snackbar.LENGTH_LONG);
 				snackbar.show();
 				// TODO: 26/04/2017 should disabled all link (sports and favorites).
 			}

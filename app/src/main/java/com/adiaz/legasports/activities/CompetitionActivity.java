@@ -30,15 +30,21 @@ import com.adiaz.legasports.utilities.ViewPagerAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
 
 public class CompetitionActivity extends AppCompatActivity {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
-	private Toolbar toolbar;
-	private TabLayout tabLayout;
-	private ViewPager viewPager;
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.tabs) TabLayout tabLayout;
+	@BindView(R.id.viewpager) ViewPager viewPager;
+
+
 	private String sportTitle;
 	public static String idCompetitionServer;
 	public static List<TeamEntity> teams;
@@ -48,7 +54,7 @@ public class CompetitionActivity extends AppCompatActivity {
 	protected void 	onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_competition);
-
+		ButterKnife.bind(this);
 		String sportTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_SPORT_TAG);
 		String categoryTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(LegaSportsConstants.INTENT_COMPETITION_NAME);
@@ -57,26 +63,10 @@ public class CompetitionActivity extends AppCompatActivity {
 		idCompetitionServer = getIntent().getStringExtra(LegaSportsConstants.INTENT_ID_COMPETITION_SERVER);
 		sportTitle = sportTag + " (" + categoryTag + ")";
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		/*getSupportActionBar().setTitle(null);*/
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		/*getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-		TextView text = new TextView(this);
-		text.setText(sport);
-		text.setTextAppearance(this, android.R.style.TextAppearance_Material_Widget_ActionBar_Title_Inverse);
-		toolbar.addView(text);*/
-
-		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 		collapsingToolbar.setTitle(competitionName + " (" + category + ") " + sport);
-		/*collapsingToolbar.setTitleEnabled(true);*/
-
-		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		setupViewPager(viewPager);
-
-		tabLayout = (TabLayout) findViewById(R.id.tabs);
 		tabLayout.setupWithViewPager(viewPager);
 
 		/*loading structures for the tabs: */

@@ -2,6 +2,7 @@ package com.adiaz.legasports.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import com.adiaz.legasports.entities.TeamMatchEntity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /* Created by toni on 23/03/2017. */
 
 public class TeamsAdapter extends BaseExpandableListAdapter {
@@ -23,6 +27,13 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 	private Context mContext;
 	private List<TeamEntity> teams;
 	private String idCompetitionServer;
+
+	@Nullable @BindView(R.id.tv_local) TextView tvLocal;
+	@Nullable @BindView(R.id.tv_visitor) TextView tvVisitor;
+	@Nullable @BindView(R.id.tv_local_score) TextView tvLocalScore;
+	@Nullable @BindView(R.id.tv_visitor_score) TextView tvVisitorScore;
+	@Nullable @BindView(R.id.tv_heading) TextView tvHeading;
+	@Nullable @BindView(R.id.iv_favorites) ImageView imageView;
 
 	public TeamsAdapter(Context mContext, List<TeamEntity> teams, String idCompetitionServer) {
 		this.mContext = mContext;
@@ -50,10 +61,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = layoutInflater.inflate(R.layout.listitem_child_teams, null);
 		}
-		TextView tvLocal = (TextView) view.findViewById(R.id.tv_local);
-		TextView tvVisitor = (TextView) view.findViewById(R.id.tv_visitor);
-		TextView tvLocalScore = (TextView) view.findViewById(R.id.tv_local_score);
-		TextView tvVisitorScore = (TextView) view.findViewById(R.id.tv_visitor_score);
+		ButterKnife.bind(this, view);
 		String localStr;
 		String visitorStr;
 		String localScoreStr;
@@ -83,7 +91,6 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		tvLocalScore.setText(localScoreStr);
 		tvVisitor.setText(visitorStr);
 		tvVisitorScore.setText(visitorScoreStr);
-
 		return view;
 	}
 
@@ -115,10 +122,8 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = layoutInflater.inflate(R.layout.listitem_header_teams, null);
 		}
-		TextView textView = (TextView) view.findViewById(R.id.tv_heading);
-		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
-
-		textView.setText(teamEntity.getTeamName());
+		ButterKnife.bind(this, view);
+		tvHeading.setText(teamEntity.getTeamName());
 		String key = mContext.getString(R.string.key_favorites_teams);
 		String teamName = Utils.generateTeamKey(teamEntity.getTeamName(), idCompetitionServer);
 		if (Utils.checkIfFavoritSelected(mContext, teamName, key)) {

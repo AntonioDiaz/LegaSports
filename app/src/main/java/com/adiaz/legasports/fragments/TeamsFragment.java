@@ -12,12 +12,17 @@ import com.adiaz.legasports.activities.CompetitionActivity;
 import com.adiaz.legasports.adapters.TeamsAdapter;
 import com.adiaz.legasports.utilities.NonScrollExpandableListView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /* Created by toni on 21/03/2017. */
 
 public class TeamsFragment extends Fragment {
 
 	private static final String TAG = TeamsFragment.class.getSimpleName();
+
+	@BindView(R.id.elv_teams) NonScrollExpandableListView expandableListView;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,13 +32,14 @@ public class TeamsFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_teams, container, false);
+		View view = inflater.inflate(R.layout.fragment_teams, container, false);
+		ButterKnife.bind(this, view);
+		return view;
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		NonScrollExpandableListView expandableListView = (NonScrollExpandableListView) getActivity().findViewById(R.id.elv_teams);
 		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.teams, CompetitionActivity.idCompetitionServer);
 		expandableListView.setAdapter(teamsAdapter);
 		teamsAdapter.notifyDataSetChanged();

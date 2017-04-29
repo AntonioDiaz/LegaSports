@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
+import com.adiaz.legasports.utilities.LegaSportsConstants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapter.ViewHolder> {
 
@@ -76,29 +79,20 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
 
-		private TextView tvJornada;
-		private TextView tvDate;
-		private TextView tvPlace;
-		private TextView tvTeamLocal;
-		private TextView tvTeamVisitor;
-		private TextView tvTeamLocalScore;
-		private TextView tvTeamVisitorScore;
-		private ImageView ivCalendar;
-		private ImageView ivLocation;
-		private ImageView ivShare;
+		@BindView(R.id.tv_fav_team_jornada) TextView tvJornada;
+		@BindView(R.id.tv_fav_team_date) TextView tvDate;
+		@BindView(R.id.tv_fav_team_place) TextView tvPlace;
+		@BindView(R.id.tv_fav_team_local) TextView tvTeamLocal;
+		@BindView(R.id.tv_fav_team_visitor) TextView tvTeamVisitor;
+		@BindView(R.id.tv_fav_team_local_score) TextView tvTeamLocalScore;
+		@BindView(R.id.tv_fav_team_visitor_score) TextView tvTeamVisitorScore;
+		@BindView(R.id.iv_fav_team_visitor_calendar) ImageView ivCalendar;
+		@BindView(R.id.iv_fav_team_location) ImageView ivLocation;
+		@BindView(R.id.iv_fav_team_visitor_share) ImageView ivShare;
 
-		public ViewHolder(View itemView) {
-			super(itemView);
-			tvJornada = (TextView) itemView.findViewById(R.id.tv_fav_team_jornada);
-			tvDate = (TextView) itemView.findViewById(R.id.tv_fav_team_date);
-			tvPlace = (TextView) itemView.findViewById(R.id.tv_fav_team_place);
-			tvTeamLocal = (TextView) itemView.findViewById(R.id.tv_fav_team_local);
-			tvTeamVisitor = (TextView) itemView.findViewById(R.id.tv_fav_team_visitor);
-			tvTeamLocalScore = (TextView) itemView.findViewById(R.id.tv_fav_team_local_score);
-			tvTeamVisitorScore = (TextView) itemView.findViewById(R.id.tv_fav_team_visitor_score);
-			ivCalendar = (ImageView) itemView.findViewById(R.id.iv_fav_team_visitor_calendar);
-			ivLocation = (ImageView) itemView.findViewById(R.id.iv_fav_team_location);
-			ivShare = (ImageView) itemView.findViewById(R.id.iv_fav_team_visitor_share);
+		public ViewHolder(View view) {
+			super(view);
+			ButterKnife.bind(this, view);
 		}
 	}
 }

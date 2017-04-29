@@ -10,17 +10,21 @@ import android.view.View;
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FootballActivity extends AppCompatActivity {
+
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_football);
-
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		ButterKnife.bind(this);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 		collapsingToolbar.setTitle(getString(R.string.football));
 	}
 

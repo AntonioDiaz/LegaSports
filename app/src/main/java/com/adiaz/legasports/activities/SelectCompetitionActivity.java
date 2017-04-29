@@ -16,9 +16,16 @@ import com.adiaz.legasports.database.LegaSportsDbContract;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 
 public class SelectCompetitionActivity extends AppCompatActivity implements CompetitionsAdapter.ListItemClickListener {
+
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.rv_competitions) RecyclerView recyclerView;
 
 	private static final String TAG = SelectCompetitionActivity.class.getSimpleName();
 	private String sportTag;
@@ -29,20 +36,17 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_competition);
+		ButterKnife.bind(this);
 		sportTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_SPORT_TAG);
 		sportTitle = Utils.getStringResourceByName(this, sportTag);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 		collapsingToolbar.setTitle(sportTitle);
 		// TODO: 25/04/2017 should get the competitions from the contentprovider.
 		Uri uriWithSport = LegaSportsDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
 		mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
-		//List<String> categories = Utils.getCategories(this, sportTitle);
 		CompetitionsAdapter competitionsAdapter = new CompetitionsAdapter(this, this);
 		competitionsAdapter.setCompetitions(mCursor);
-		RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_competitions);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(competitionsAdapter);

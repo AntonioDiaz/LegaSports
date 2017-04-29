@@ -30,8 +30,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FavoriteTeamActivity extends AppCompatActivity {
 
+	@BindView(R.id.toolbar) Toolbar toolbar;
+	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
 	private String teamName;
 	private String idCompetitionServer;
 
@@ -39,20 +45,14 @@ public class FavoriteTeamActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorite_team);
-
-		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+		ButterKnife.bind(this);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
 		teamName = getIntent().getStringExtra(LegaSportsConstants.INTENT_TEAM_NAME);
 		idCompetitionServer = getIntent().getStringExtra(LegaSportsConstants.INTENT_ID_COMPETITION_SERVER);
-		collapsingToolbarLayout.setTitle(teamName);
-
+		collapsingToolbar.setTitle(teamName);
 		TeamEntity teamEntity = Utils.initTeamCompetition(this, teamName, idCompetitionServer);
-
 		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this);
-		RecyclerView recyclerView = (RecyclerView)findViewById(R.id.rv_fav_team_jornadas);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));

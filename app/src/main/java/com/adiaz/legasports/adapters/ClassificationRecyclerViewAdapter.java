@@ -10,6 +10,9 @@ import com.adiaz.legasports.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by toni on 25/03/2017.
  */
@@ -64,23 +67,17 @@ public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<Clas
 
 	public class MyViewHolder extends RecyclerView.ViewHolder {
 
-		private final TextView tvPosition;
-		private final TextView tvTeam;
-		private final TextView tvPj;
-		private final TextView tvPg;
-		private final TextView tvPe;
-		private final TextView tvPp;
-		private final TextView tvPt;
+		@BindView(R.id.tv_classification_position) TextView tvPosition;
+		@BindView(R.id.tv_classification_team) TextView tvTeam;
+		@BindView(R.id.tv_classification_pj) TextView tvPj;
+		@BindView(R.id.tv_classification_pg) TextView tvPg;
+		@BindView(R.id.tv_classification_pe) TextView tvPe;
+		@BindView(R.id.tv_classification_pp) TextView tvPp;
+		@BindView(R.id.tv_classification_pt) TextView tvPt;
 
-		public MyViewHolder(View itemView) {
-			super(itemView);
-			tvPosition = (TextView) itemView.findViewById(R.id.tv_classification_position);
-			tvTeam = (TextView) itemView.findViewById(R.id.tv_classification_team);
-			tvPj = (TextView) itemView.findViewById(R.id.tv_classification_pj);
-			tvPg = (TextView) itemView.findViewById(R.id.tv_classification_pg);
-			tvPe = (TextView) itemView.findViewById(R.id.tv_classification_pe);
-			tvPp = (TextView) itemView.findViewById(R.id.tv_classification_pp);
-			tvPt = (TextView) itemView.findViewById(R.id.tv_classification_pt);
+		public MyViewHolder(View view) {
+			super(view);
+			ButterKnife.bind(this, view);
 		}
 	}
 }

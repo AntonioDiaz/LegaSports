@@ -17,9 +17,14 @@ import com.adiaz.legasports.adapters.FavoritesCompetitionsAdapter;
 import com.adiaz.legasports.entities.CompetitionEntity;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /* Created by toni on 31/03/2017. */
 
 public class FavoritesCompetitionsFragment extends Fragment implements FavoritesCompetitionsAdapter.ListItemClickListener {
+
+	@BindView(R.id.rv_fav_competitions) RecyclerView recyclerView;
 
 	public FavoritesCompetitionsFragment() {
 	}
@@ -32,7 +37,9 @@ public class FavoritesCompetitionsFragment extends Fragment implements Favorites
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_fav_competitions, container, false);
+		View view = inflater.inflate(R.layout.fragment_fav_competitions, container, false);
+		ButterKnife.bind(this, view);
+		return view;
 	}
 
 
@@ -40,7 +47,6 @@ public class FavoritesCompetitionsFragment extends Fragment implements Favorites
 	public void onResume() {
 		super.onResume();
 		FavoritesCompetitionsAdapter favoritesCompetitionsAdapter = new FavoritesCompetitionsAdapter(getActivity(), this);
-		RecyclerView recyclerView = (RecyclerView)getActivity().findViewById(R.id.rv_fav_competitions);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(favoritesCompetitionsAdapter);

@@ -14,6 +14,9 @@ import com.adiaz.legasports.utilities.Utils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /** Created by toni on 29/03/2017. */
 
 public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAdapter.ViewHolder> {
@@ -58,16 +61,13 @@ public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAd
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		private TextView tvTitle;
-		private TextView tvSubTitle02;
-		private TextView tvSubTitle01;
-		private CardView cvCompetitions;
-		public ViewHolder(View itemView) {
-			super(itemView);
-			tvTitle = (TextView) itemView.findViewById(R.id.tv_fav_title);
-			tvSubTitle01 = (TextView) itemView.findViewById(R.id.tv_fav_subtitle01);
-			tvSubTitle02 = (TextView) itemView.findViewById(R.id.tv_fav_subtitle02);
-			cvCompetitions = (CardView) itemView.findViewById(R.id.cv_fav_competition);
+		@BindView(R.id.tv_fav_title) TextView tvTitle;
+		@BindView(R.id.tv_fav_subtitle01) TextView tvSubTitle01;
+		@BindView(R.id.tv_fav_subtitle02) TextView tvSubTitle02;
+		@BindView(R.id.cv_fav_competition) CardView cvCompetitions;
+		public ViewHolder(View view) {
+			super(view);
+			ButterKnife.bind(this, view);
 			cvCompetitions.setOnClickListener(this);
 		}
 

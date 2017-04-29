@@ -13,6 +13,9 @@ import com.adiaz.legasports.R;
 import com.adiaz.legasports.database.LegaSportsDbContract;
 import com.adiaz.legasports.utilities.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /* Created by toni on 31/03/2017. */
 
 public class CompetitionsAdapter extends RecyclerView.Adapter<CompetitionsAdapter.ViewHolder> {
@@ -53,14 +56,12 @@ public class CompetitionsAdapter extends RecyclerView.Adapter<CompetitionsAdapte
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		private TextView tvCompetitionName;
-		private TextView tvCategoryName;
-		private CardView cvCompetitions;
-		public ViewHolder(View itemView) {
-			super(itemView);
-			tvCompetitionName = (TextView) itemView.findViewById(R.id.tv_competition_name);
-			tvCategoryName = (TextView) itemView.findViewById(R.id.tv_category_name);
-			cvCompetitions = (CardView) itemView.findViewById(R.id.cv_competition);
+		@BindView(R.id.tv_competition_name)  TextView tvCompetitionName;
+		@BindView(R.id.tv_category_name)  TextView tvCategoryName;
+		@BindView(R.id.cv_competition)  CardView cvCompetitions;
+		public ViewHolder(View view) {
+			super(view);
+			ButterKnife.bind(this, view);
 			cvCompetitions.setOnClickListener(this);
 		}
 

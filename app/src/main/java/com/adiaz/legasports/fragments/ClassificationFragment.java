@@ -9,16 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adiaz.legasports.adapters.ClassificationRecyclerViewAdapter;
 import com.adiaz.legasports.R;
+import com.adiaz.legasports.adapters.ClassificationRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /* Created by toni on 21/03/2017. */
 
 public class ClassificationFragment extends Fragment {
+
+	@BindView(R.id.rv_classification) RecyclerView recyclerView;
 
 	public ClassificationFragment() {}
 
@@ -30,7 +35,9 @@ public class ClassificationFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_classification, container, false);
+		View view = inflater.inflate(R.layout.fragment_classification, container, false);
+		ButterKnife.bind(this, view);
+		return view;
 	}
 
 
@@ -38,8 +45,6 @@ public class ClassificationFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		ClassificationRecyclerViewAdapter adapter = new ClassificationRecyclerViewAdapter(generateClassificationSample());
-
-		RecyclerView recyclerView = (RecyclerView)getActivity().findViewById(R.id.rv_classification);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
