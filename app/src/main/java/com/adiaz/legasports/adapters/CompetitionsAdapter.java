@@ -56,9 +56,13 @@ public class CompetitionsAdapter extends RecyclerView.Adapter<CompetitionsAdapte
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-		@BindView(R.id.tv_competition_name)  TextView tvCompetitionName;
-		@BindView(R.id.tv_category_name)  TextView tvCategoryName;
-		@BindView(R.id.cv_competition)  CardView cvCompetitions;
+		@BindView(R.id.tv_competition_name)
+		TextView tvCompetitionName;
+		@BindView(R.id.tv_category_name)
+		TextView tvCategoryName;
+		@BindView(R.id.cv_competition)
+		CardView cvCompetitions;
+
 		public ViewHolder(View view) {
 			super(view);
 			ButterKnife.bind(this, view);

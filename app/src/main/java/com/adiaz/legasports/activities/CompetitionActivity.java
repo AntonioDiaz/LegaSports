@@ -6,6 +6,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +28,7 @@ import com.adiaz.legasports.fragments.TeamsFragment;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.Utils;
 import com.adiaz.legasports.utilities.ViewPagerAdapter;
+import com.adiaz.legasports.utilities.harcoPro.HeaderView;
 
 import java.util.List;
 
@@ -35,15 +37,19 @@ import butterknife.ButterKnife;
 
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
 
-public class CompetitionActivity extends AppCompatActivity {
+public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
+	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
 	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.toolbar_header_view) HeaderView toolbarHeaderView;
+	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.tabs) TabLayout tabLayout;
 	@BindView(R.id.viewpager) ViewPager viewPager;
 
+	private boolean isHideToolbarView = false;
 
 	private String sportTitle;
 	public static String idCompetitionServer;
@@ -61,11 +67,19 @@ public class CompetitionActivity extends AppCompatActivity {
 		String sport = Utils.getStringResourceByName(this, sportTag);
 		String category = Utils.getStringResourceByName(this, categoryTag);
 		idCompetitionServer = getIntent().getStringExtra(LegaSportsConstants.INTENT_ID_COMPETITION_SERVER);
-		sportTitle = sportTag + " (" + categoryTag + ")";
+		sportTitle = sport + " (" + category + ")";
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		collapsingToolbar.setTitle(competitionName + " (" + category + ") " + sport);
+		collapsingToolbar.setTitle(" ");
+
+
+		toolbarHeaderView.bindTo(competitionName, sportTitle, 0);
+		floatHeaderView.bindTo(competitionName, sportTitle, 16);
+
+		appBarLayout.addOnOffsetChangedListener(this);
+
+
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 
@@ -146,6 +160,19 @@ public class CompetitionActivity extends AppCompatActivity {
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 			Utils.markFavoriteTeam(this, myTeamId, keyFavorites);
+		}
+	}
+
+	@Override
+	public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+		int maxScroll = appBarLayout.getTotalScrollRange();
+		float percentage = (float) Math.abs(offset) / (float) maxScroll;
+		if (percentage == 1f && isHideToolbarView) {
+			toolbarHeaderView.setVisibility(View.VISIBLE);
+			isHideToolbarView = !isHideToolbarView;
+		} else if (percentage < 1f && !isHideToolbarView) {
+			toolbarHeaderView.setVisibility(View.GONE);
+			isHideToolbarView = !isHideToolbarView;
 		}
 	}
 }

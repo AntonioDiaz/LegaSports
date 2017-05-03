@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,7 @@ import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
 import com.adiaz.legasports.utilities.Utils;
+import com.adiaz.legasports.utilities.harcoPro.HeaderView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,13 +35,22 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteTeamActivity extends AppCompatActivity {
+public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
+	@BindView(R.id.app_bar_layout)
+	AppBarLayout appBarLayout;
 	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.toolbar_header_view)
+	HeaderView toolbarHeaderView;
+	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
 	private String teamName;
 	private String idCompetitionServer;
+	private String competitionName;
+	private String sportTag;
+	private String categoryTag;
+	private boolean isHideToolbarView = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +60,18 @@ public class FavoriteTeamActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		teamName = getIntent().getStringExtra(LegaSportsConstants.INTENT_TEAM_NAME);
+		competitionName = getIntent().getStringExtra(LegaSportsConstants.INTENT_COMPETITION_NAME);
 		idCompetitionServer = getIntent().getStringExtra(LegaSportsConstants.INTENT_ID_COMPETITION_SERVER);
-		collapsingToolbar.setTitle(teamName);
+		sportTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_SPORT_TAG);
+		categoryTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_CATEGORY_TAG);
+		String subTitle = competitionName;
+		subTitle += " - " + Utils.getStringResourceByName(this, categoryTag);
+		subTitle += " - " + Utils.getStringResourceByName(this, sportTag);
+		collapsingToolbar.setTitle(" ");
+
+		toolbarHeaderView.bindTo(teamName, subTitle, 0);
+		floatHeaderView.bindTo(teamName, subTitle, 16);
+		appBarLayout.addOnOffsetChangedListener(this);
 		TeamEntity teamEntity = Utils.initTeamCompetition(this, teamName, idCompetitionServer);
 		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this);
 		recyclerView.setHasFixedSize(true);
@@ -158,4 +179,16 @@ public class FavoriteTeamActivity extends AppCompatActivity {
 				.startChooser();
 	}
 
+	@Override
+	public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+		int maxScroll = appBarLayout.getTotalScrollRange();
+		float percentage = (float) Math.abs(offset) / (float) maxScroll;
+		if (percentage == 1f && isHideToolbarView) {
+			toolbarHeaderView.setVisibility(View.VISIBLE);
+			isHideToolbarView = !isHideToolbarView;
+		} else if (percentage < 1f && !isHideToolbarView) {
+			toolbarHeaderView.setVisibility(View.GONE);
+			isHideToolbarView = !isHideToolbarView;
+		}
+	}
 }
