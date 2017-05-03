@@ -23,6 +23,9 @@ public class CompetitionRestEntity {
     @SerializedName("matches")
     @Expose
     private List<MatchRestEntity> matches = null;
+    @SerializedName("classification")
+    @Expose
+    private List<ClassificationEntity> classification = null;
 
     public Long getId() {
         return id;
@@ -64,4 +67,11 @@ public class CompetitionRestEntity {
         this.matches = matches;
     }
 
+    public List<ClassificationEntity> getClassification() {
+        return classification;
+    }
+
+    public void setClassification(List<ClassificationEntity> classification) {
+        this.classification = classification;
+    }
 }

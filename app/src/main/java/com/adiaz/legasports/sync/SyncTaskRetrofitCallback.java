@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
-
+import com.adiaz.legasports.sync.retrofit.entities.ClassificationEntity;
 import com.adiaz.legasports.sync.retrofit.entities.CompetitionRestEntity;
 import com.adiaz.legasports.sync.retrofit.entities.MatchRestEntity;
 
@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
 
@@ -40,6 +41,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 	public void onResponse(Call<List<CompetitionRestEntity>> call, Response<List<CompetitionRestEntity>> response) {
 		List<ContentValues> newsCompetitions = new ArrayList<>();
 		List<ContentValues> newsMatches = new ArrayList<>();
+		List<ContentValues> classificationList = new ArrayList<>();
 		for (CompetitionRestEntity competitionsEntity : response.body()) {
 			ContentValues cv = new ContentValues();
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, competitionsEntity.getId());
@@ -49,7 +51,6 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE, new Date().toString());
 			newsCompetitions.add(cv);
-			Log.d(TAG, "onResponse: for ->" + competitionsEntity.getId() + " there are " + competitionsEntity.getMatches().size());
 			for (MatchRestEntity match : competitionsEntity.getMatches()) {
 				ContentValues cvMatch = new ContentValues();
 				cvMatch.put(MatchesEntry.COLUMN_LAST_UPDATE, new Date().toString());
@@ -64,13 +65,27 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 				cvMatch.put(MatchesEntry.COLUMN_ID_COMPETITION_SERVER, competitionsEntity.getId());
 				newsMatches.add(cvMatch);
 			}
+			for (ClassificationEntity classification : competitionsEntity.getClassification()) {
+				ContentValues cvClassification = new ContentValues();
+				cvClassification.put(ClassificationEntry.COLUMN_POSITION, classification.getPosition());
+				cvClassification.put(ClassificationEntry.COLUMN_TEAM, classification.getTeam());
+				cvClassification.put(ClassificationEntry.COLUMN_POINTS, classification.getPoints());
+				cvClassification.put(ClassificationEntry.COLUMN_MATCHES_PLAYED, classification.getMatchesPlayed());
+				cvClassification.put(ClassificationEntry.COLUMN_MATCHES_WON, classification.getMatchesWon());
+				cvClassification.put(ClassificationEntry.COLUMN_MATCHES_DRAWN, classification.getMatchesDrawn());
+				cvClassification.put(ClassificationEntry.COLUMN_MATCHES_LOST, classification.getMatchesLost());
+				cvClassification.put(ClassificationEntry.COLUMN_ID_COMPETITION_SERVER, competitionsEntity.getId());
+				classificationList.add(cvClassification);
+			}
 		}
 		ContentResolver legaSportContentResolver = mContext.getContentResolver();
 		ContentValues[] competitions = newsCompetitions.toArray(new ContentValues[newsCompetitions.size()]);
 		ContentValues[] matches = newsMatches.toArray(new ContentValues[newsMatches.size()]);
+		ContentValues[] classification = classificationList.toArray(new ContentValues[classificationList.size()]);
 		legaSportContentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
 		legaSportContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matches);
-		Log.d(TAG, "onResponse: finished");
+		legaSportContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classification);
+		Log.d(TAG, "onResponse: finished classification.length " + classification.length);
 	}
 
 	@Override

@@ -14,21 +14,6 @@ public class MatchEntity {
 	private int scoreVisitor;
 	private String place;
 
-	public MatchEntity() { }
-
-	public MatchEntity(String line) {
-		String[] strings = line.split("\\t");
-		/*
-				date = strings[0];
-				hour = strings[1];
-		*/
-		teamLocal = strings[2];
-		teamVisitor = strings[3];
-		if (strings.length>=5) {
-			place = strings[4];
-		}
-	}
-
 	public Date getDate() {
 		return date;
 	}

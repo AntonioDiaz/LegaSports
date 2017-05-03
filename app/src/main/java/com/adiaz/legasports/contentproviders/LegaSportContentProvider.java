@@ -14,6 +14,7 @@ import com.adiaz.legasports.database.LegaSportsDbHelper;
 
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 
 /**
  * Created by toni on 22/04/2017.
@@ -27,6 +28,8 @@ public class LegaSportContentProvider extends ContentProvider {
 	public static final int COMPETITIONS_WITH_SPORT = 101;
 	public static final int MATCHES = 200;
 	public static final int MATCHES_WITH_COMPETITION = 201;
+	public static final int CLASSIFICATION = 300;
+	public static final int CLASSIFICATION_WITH_COMPETITION = 301;
 
 
 	private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -37,6 +40,8 @@ public class LegaSportContentProvider extends ContentProvider {
 		uriMatcher.addURI(LegaSportsDbContract.AUTHORITY, LegaSportsDbContract.PATH_COMPETITIONS + "/*", COMPETITIONS_WITH_SPORT);
 		uriMatcher.addURI(LegaSportsDbContract.AUTHORITY, LegaSportsDbContract.PATH_MATCHES, MATCHES);
 		uriMatcher.addURI(LegaSportsDbContract.AUTHORITY, LegaSportsDbContract.PATH_MATCHES + "/*", MATCHES_WITH_COMPETITION);
+		uriMatcher.addURI(LegaSportsDbContract.AUTHORITY, LegaSportsDbContract.PATH_CLASSIFICATION, CLASSIFICATION);
+		uriMatcher.addURI(LegaSportsDbContract.AUTHORITY, LegaSportsDbContract.PATH_CLASSIFICATION + "/*", CLASSIFICATION_WITH_COMPETITION);
 		return uriMatcher;
 	}
 
@@ -72,6 +77,21 @@ public class LegaSportContentProvider extends ContentProvider {
 					db.delete(MatchesEntry.TABLE_NAME, null, null);
 					for (ContentValues contentValues : values) {
 						long id = db.insert(MatchesEntry.TABLE_NAME, null, contentValues);
+						if (id!=-1) {
+							rowsInserted++;
+						}
+					}
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
+				break;
+			case CLASSIFICATION:
+				try {
+					db.beginTransaction();
+					db.delete(ClassificationEntry.TABLE_NAME, null, null);
+					for (ContentValues contentValues : values) {
+						long id = db.insert(ClassificationEntry.TABLE_NAME, null, contentValues);
 						if (id!=-1) {
 							rowsInserted++;
 						}
@@ -120,6 +140,15 @@ public class LegaSportContentProvider extends ContentProvider {
 				selection = MatchesEntry.COLUMN_ID_COMPETITION_SERVER + "=?";
 				selectionArgs = new String[]{competitionServerId};
 				cursorReturned = db.query(MatchesEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
+			case CLASSIFICATION:
+				cursorReturned = db.query(ClassificationEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
+			case CLASSIFICATION_WITH_COMPETITION:
+				String competitionServerIdClassification = uri.getPathSegments().get(1);
+				selection = ClassificationEntry.COLUMN_ID_COMPETITION_SERVER + "=?";
+				selectionArgs = new String[]{competitionServerIdClassification};
+				cursorReturned = db.query(ClassificationEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
 				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);

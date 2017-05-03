@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.adiaz.legasports.R;
+import com.adiaz.legasports.entities.ClassificationEntity;
 import com.adiaz.legasports.entities.JornadaEntity;
 import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.fragments.CalendarFragment;
@@ -35,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
 
 public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
@@ -55,6 +57,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	public static String idCompetitionServer;
 	public static List<TeamEntity> teams;
 	public static List<JornadaEntity> jornadas;
+	public static List<ClassificationEntity> classificationList;
 
 	@Override
 	protected void 	onCreate(Bundle savedInstanceState) {
@@ -85,9 +88,15 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 
 		/*loading structures for the tabs: */
 		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
-		Cursor cursorMatches = getContentResolver().query(uriMatches, null, null, null, null);
+		Cursor cursorMatches = getContentResolver().query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
+
+		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
+		Cursor cursorClassification = getContentResolver().query(
+				uriClassification, ClassificationEntry.PROJECTION, null, null, ClassificationEntry.COLUMN_POSITION);
+
 		teams = Utils.initTeams(cursorMatches);
 		jornadas = Utils.initCalendar(cursorMatches);
+		classificationList = Utils.initClassification(cursorClassification);
 		cursorMatches.close();
 	}
 

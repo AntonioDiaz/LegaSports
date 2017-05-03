@@ -2,7 +2,6 @@ package com.adiaz.legasports.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -10,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.adiaz.legasports.R;
+import com.adiaz.legasports.entities.ClassificationEntity;
 import com.adiaz.legasports.entities.CompetitionEntity;
 import com.adiaz.legasports.entities.JornadaEntity;
 import com.adiaz.legasports.entities.MatchEntity;
@@ -17,9 +17,6 @@ import com.adiaz.legasports.entities.TeamEntity;
 import com.adiaz.legasports.entities.TeamFavoriteEntity;
 import com.adiaz.legasports.entities.TeamMatchEntity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -30,6 +27,7 @@ import java.util.Set;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 
 /* Created by toni on 28/03/2017. */
 
@@ -104,37 +102,6 @@ public class Utils {
 			matchEntity.setPlace(cursorMatches.getString(MatchesEntry.INDEX_PLACE));
 			matchEntity.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
 			matches.add(matchEntity);
-		}
-		return calendar;
-	}
-
-	public static List<JornadaEntity> initCalendar(Context context) {
-		if (calendar == null) {
-			calendar = new ArrayList<>();
-			AssetManager assetManager = context.getResources().getAssets();
-			try {
-				InputStreamReader inputStream = new InputStreamReader(assetManager.open("calendar.txt"));
-				BufferedReader reader = new BufferedReader(inputStream);
-				boolean started = false;
-				String line;
-				List<MatchEntity> matches = new ArrayList<>();
-				while ((line = reader.readLine()) != null) {
-					if (line.startsWith("Jornada")) {
-						if (started) {
-							//save previous jornada
-							calendar.add(new JornadaEntity(matches));
-						}
-						matches = new ArrayList<>();
-						started = true;
-					} else {
-						// is a match
-						MatchEntity matchEntity = new MatchEntity(line);
-						matches.add(matchEntity);
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 		return calendar;
 	}
@@ -277,6 +244,23 @@ public class Utils {
 			}
 		}
 		return teamsFavorites;
+	}
+
+	public static List<ClassificationEntity> initClassification(Cursor cursorClassification) {
+		List<ClassificationEntity> list = new ArrayList<>();
+		Log.d(TAG, "initClassification: " + cursorClassification.getCount());
+		while (cursorClassification.moveToNext()) {
+			ClassificationEntity classificationEntry = new ClassificationEntity();
+			classificationEntry.setPosition(cursorClassification.getInt(ClassificationEntry.INDEX_POSITION));
+			classificationEntry.setTeam(cursorClassification.getString(ClassificationEntry.INDEX_TEAM));
+			classificationEntry.setPoints(cursorClassification.getInt(ClassificationEntry.INDEX_POINTS));
+			classificationEntry.setMatchesPlayed(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_PLAYED));
+			classificationEntry.setMatchesWon(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_WON));
+			classificationEntry.setMatchesDrawn(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_DRAWN));
+			classificationEntry.setMatchesLost(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_LOST));
+			list.add(classificationEntry);
+		}
+		return list;
 	}
 }
 

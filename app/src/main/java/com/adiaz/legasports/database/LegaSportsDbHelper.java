@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 
 /**
  * Created by toni on 20/04/2017.
@@ -14,7 +15,7 @@ public class LegaSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "legasports.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	public LegaSportsDbHelper(Context context) {	
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,13 +49,28 @@ public class LegaSportsDbHelper extends SQLiteOpenHelper {
 						MatchesEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL," +
 						"UNIQUE (" + MatchesEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";
+
+		String SQL_CREATE_TABLE_CLASSIFICATION =
+				"CREATE TABLE " + ClassificationEntry.TABLE_NAME +
+						"(" +
+						ClassificationEntry.COLUMN_POSITION + " INTEGER NOT NULL, " +
+						ClassificationEntry.COLUMN_TEAM + " TEXT NOT NULL, " +
+						ClassificationEntry.COLUMN_POINTS + " INTEGER NOT NULL, " +
+						ClassificationEntry.COLUMN_MATCHES_PLAYED + " INTEGER, " +
+						ClassificationEntry.COLUMN_MATCHES_WON + " INTEGER, " +
+						ClassificationEntry.COLUMN_MATCHES_DRAWN + " INTEGER, " +
+						ClassificationEntry.COLUMN_MATCHES_LOST + " INTEGER, " +
+						ClassificationEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL "+
+						")";
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_COMPETITION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_MATCHES);
+		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_CLASSIFICATION);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MatchesEntry.TABLE_NAME);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ClassificationEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CompetitionsEntry.TABLE_NAME);
 		onCreate(sqLiteDatabase);
 	}

@@ -13,6 +13,7 @@ public class LegaSportsDbContract {
 	public static final Uri BASE_CONTENT = Uri.parse("content://" + AUTHORITY);
 	public static final String PATH_COMPETITIONS = "competitions";
 	public static final String PATH_MATCHES = "matches";
+	public static final String PATH_CLASSIFICATION = "classification";
 
 
 
@@ -91,4 +92,47 @@ public class LegaSportsDbContract {
 		public static final int INDEX_ID_SERVER = 8;
 		public static final int INDEX_ID_COMPETITION_SERVER = 9;
 	}
+
+	public static final	class ClassificationEntry implements BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_CLASSIFICATION).build();
+
+		public static Uri buildClassificationUriWithCompetitions(String competition) {
+			return CONTENT_URI.buildUpon()
+					.appendPath(competition)
+					.build();
+		}
+
+		public static final String TABLE_NAME = "classification";
+		public static final String COLUMN_POSITION = "position";
+		public static final String COLUMN_TEAM = "team";
+		public static final String COLUMN_POINTS = "points";
+		public static final String COLUMN_MATCHES_PLAYED = "matches_played";
+		public static final String COLUMN_MATCHES_WON = "matches_won";
+		public static final String COLUMN_MATCHES_DRAWN = "matches_drawn";
+		public static final String COLUMN_MATCHES_LOST = "matches_lost";
+		public static final String COLUMN_ID_COMPETITION_SERVER = "id_competition_server";
+
+
+		public static final String[] PROJECTION = {
+				COLUMN_POSITION,
+				COLUMN_TEAM,
+				COLUMN_POINTS,
+				COLUMN_MATCHES_PLAYED,
+				COLUMN_MATCHES_WON,
+				COLUMN_MATCHES_DRAWN,
+				COLUMN_MATCHES_LOST,
+				COLUMN_ID_COMPETITION_SERVER
+		};
+
+		public static final int INDEX_POSITION = 0;
+		public static final int INDEX_TEAM = 1;
+		public static final int INDEX_POINTS = 2;
+		public static final int INDEX_MACHES_PLAYED = 3;
+		public static final int INDEX_MACHES_WON = 4;
+		public static final int INDEX_MACHES_DRAWN = 5;
+		public static final int INDEX_MACHES_LOST = 6;
+		public static final int INDEX_ID_COMPETITION_SERVER = 7;
+	}
 }
+
+

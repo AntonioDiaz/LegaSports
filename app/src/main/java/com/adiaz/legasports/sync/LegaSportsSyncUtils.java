@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class LegaSportsSyncUtils {
 
 
-	private static final int SYNC_INTERVAL_MINUTES = 5;
+	private static final int SYNC_INTERVAL_MINUTES = 60;
 	private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.MINUTES.toSeconds(SYNC_INTERVAL_MINUTES);
 	private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
