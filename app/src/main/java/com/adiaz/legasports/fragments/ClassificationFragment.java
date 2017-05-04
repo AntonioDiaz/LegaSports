@@ -41,7 +41,7 @@ public class ClassificationFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		ClassificationRecyclerViewAdapter adapter = new ClassificationRecyclerViewAdapter(CompetitionActivity.classificationList);
+		ClassificationRecyclerViewAdapter adapter = new ClassificationRecyclerViewAdapter(getActivity(), CompetitionActivity.classificationList);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

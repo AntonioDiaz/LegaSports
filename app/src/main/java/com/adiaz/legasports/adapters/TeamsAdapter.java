@@ -75,7 +75,6 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 			tvLocalScore.setTypeface(null, Typeface.BOLD);
 			tvVisitor.setTypeface(null, Typeface.NORMAL);
 			tvVisitorScore.setTypeface(null, Typeface.NORMAL);
-
 		} else {
 			localStr = teamMatchEntity.getOpponent();
 			localScoreStr = teamMatchEntity.getOpponentScore()==null?"_":teamMatchEntity.getOpponentScore().toString();
@@ -85,7 +84,6 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 			tvLocalScore.setTypeface(null, Typeface.NORMAL);
 			tvVisitor.setTypeface(null, Typeface.BOLD);
 			tvVisitorScore.setTypeface(null, Typeface.BOLD);
-
 		}
 		tvLocal.setText(localStr);
 		tvLocalScore.setText(localScoreStr);

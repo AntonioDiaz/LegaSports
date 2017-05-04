@@ -1,48 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="35dp"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_classification_position"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        android:paddingRight="8dp"
+        tools:text="1"/>
 
     <TextView
         android:id="@+id/tv_classification_team"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4"/>
+        android:layout_weight="5"
+        style="@style/text_small_classification"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="PEREZ GALDOS BLANCO"/>
 
     <TextView
         android:id="@+id/tv_classification_pj"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        tools:text="11"/>
     <TextView
         android:id="@+id/tv_classification_pg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        tools:text="11"/>
 
     <TextView
         android:id="@+id/tv_classification_pe"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        tools:text="11"/>
 
     <TextView
         android:id="@+id/tv_classification_pp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        tools:text="11"/>
     <TextView
         android:id="@+id/tv_classification_pt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
+        android:layout_weight="1"
+        style="@style/text_small_classification"
+        android:gravity="right"
+        android:textAlignment="gravity"
+        android:paddingRight="8dp"
+        tools:text="11"/>
 </LinearLayout>

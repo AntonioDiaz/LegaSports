@@ -19,6 +19,11 @@
         android:layout_weight="9"
         style="@style/teams_list"
         android:paddingRight="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:lines="1"
+        android:textAlignment="textEnd"
+        android:layout_gravity="end"
         tools:text="BALOMPEDICA CF"/>
 
     <TextView
@@ -55,9 +60,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="9"
-        android:textAlignment="textEnd"
-        android:layout_gravity="end"
+        android:textAlignment="textStart"
+        android:layout_gravity="start"
         android:paddingLeft="8dp"
         style="@style/teams_list"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:lines="1"
         tools:text="ATLEICO DE MADRID"/>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.adiaz.legasports.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,14 @@ import butterknife.ButterKnife;
 
 public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<ClassificationRecyclerViewAdapter.MyViewHolder> {
 
+
+	Context mContext;
 	List<ClassificationEntity> classificationList;
 	private static final int TYPE_HEADER = 0;
 	private static final int TYPE_ITEM = 1;
 
-	public ClassificationRecyclerViewAdapter(List<ClassificationEntity> classificationList) {
+	public ClassificationRecyclerViewAdapter(Context mContext, List<ClassificationEntity> classificationList) {
+		this.mContext = mContext;
 		this.classificationList = classificationList;
 	}
 

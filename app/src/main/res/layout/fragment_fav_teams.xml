@@ -14,5 +14,5 @@
         android:layout_height="match_parent"
         android:layout_margin="0dp"
         android:padding="0dp"
-        tools:listitem="@layout/listitem_classification"/>
+        tools:listitem="@layout/listitem_favorites_teams"/>
 </android.support.v4.widget.NestedScrollView>
