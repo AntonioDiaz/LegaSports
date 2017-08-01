@@ -13,6 +13,6 @@ import retrofit2.http.GET;
 
 public interface LegaSportsRestApi {
 
-	@GET("/competitions/")
+	@GET("/server/competitions/")
 	Call<List<CompetitionRestEntity>> competitionsQuery();
 }

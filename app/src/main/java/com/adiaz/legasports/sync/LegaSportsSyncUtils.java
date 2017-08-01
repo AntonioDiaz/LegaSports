@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.adiaz.legasports.database.LegaSportsDbContract;
 import com.firebase.jobdispatcher.Constraint;
@@ -30,6 +31,7 @@ public class LegaSportsSyncUtils {
 	private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
 	private static final String LEGASPORTS_SYNC_TAG = "legasports-sync";
+	private static final String TAG = LegaSportsSyncUtils.class.getSimpleName();
 
 	private static boolean sInitialized;
 
@@ -52,11 +54,17 @@ public class LegaSportsSyncUtils {
 	}
 
 	synchronized public static void	initialize(@NonNull final Context context) {
+		startInmediateSync(context);
+	}
+	synchronized public static void	initializeAux(@NonNull final Context context) {
+		Log.d(TAG, "initialize: " + sInitialized);
+/*
 		if (sInitialized) {
 			return;
 		}
 		sInitialized = true;
 		scheduleFirebaseJobDispatcherSync(context);
+*/
 		new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... voids) {
@@ -64,8 +72,17 @@ public class LegaSportsSyncUtils {
 				Uri competitionQuery = LegaSportsDbContract.CompetitionsEntry.CONTENT_URI;
 				Cursor cursor = context.getContentResolver().query(competitionQuery, null, null, null, null);
 				if (cursor==null || cursor.getCount()==0) {
+					Log.d(TAG, "doInBackground: cursor is null starting sysn");
 					startInmediateSync(context);
+				} else {
+					Log.d(TAG, "doInBackground: cursor.getCount " + cursor.getCount());
+					while (cursor.moveToNext()) {
+						Log.d(TAG, "doInBackground: " + cursor.getString(LegaSportsDbContract.CompetitionsEntry.INDEX_NAME));
+						Log.d(TAG, "doInBackground: " + cursor.getString(LegaSportsDbContract.CompetitionsEntry.INDEX_SPORT));
+					}
+
 				}
+
 				cursor.close();
 				return null;
 			}

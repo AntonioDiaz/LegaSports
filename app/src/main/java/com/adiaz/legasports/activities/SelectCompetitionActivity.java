@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.adapters.CompetitionsAdapter;
@@ -45,6 +46,7 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		// TODO: 25/04/2017 should get the competitions from the contentprovider.
 		Uri uriWithSport = LegaSportsDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
 		mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
+		Log.d(TAG, "onCreate: " + mCursor.getCount());
 		CompetitionsAdapter competitionsAdapter = new CompetitionsAdapter(this, this);
 		competitionsAdapter.setCompetitions(mCursor);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));

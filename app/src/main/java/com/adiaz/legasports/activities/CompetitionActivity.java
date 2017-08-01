@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,7 +90,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		/*loading structures for the tabs: */
 		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
 		Cursor cursorMatches = getContentResolver().query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
-
+		Log.d(TAG, "onCreate: cursorMatches" + cursorMatches.getCount());
 		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
 		Cursor cursorClassification = getContentResolver().query(
 				uriClassification, ClassificationEntry.PROJECTION, null, null, ClassificationEntry.COLUMN_POSITION);

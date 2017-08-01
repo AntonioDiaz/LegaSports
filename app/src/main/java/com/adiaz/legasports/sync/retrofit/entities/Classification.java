@@ -4,7 +4,7 @@ package com.adiaz.legasports.sync.retrofit.entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ClassificationEntity {
+public class Classification {
 
     @SerializedName("id")
     @Expose

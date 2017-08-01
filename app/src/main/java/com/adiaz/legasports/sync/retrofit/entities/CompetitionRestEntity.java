@@ -1,10 +1,9 @@
 
 package com.adiaz.legasports.sync.retrofit.entities;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class CompetitionRestEntity {
 
@@ -20,12 +19,18 @@ public class CompetitionRestEntity {
     @SerializedName("categoryEntity")
     @Expose
     private CategoryEntity categoryEntity;
+    @SerializedName("townEntity")
+    @Expose
+    private TownEntity townEntity;
     @SerializedName("matches")
     @Expose
-    private List<MatchRestEntity> matches = null;
+    private List<Match> matches = null;
     @SerializedName("classification")
     @Expose
-    private List<ClassificationEntity> classification = null;
+    private List<Classification> classification = null;
+    @SerializedName("teamsDeref")
+    @Expose
+    private List<TeamsDeref> teamsDeref = null;
 
     public Long getId() {
         return id;
@@ -59,19 +64,36 @@ public class CompetitionRestEntity {
         this.categoryEntity = categoryEntity;
     }
 
-    public List<MatchRestEntity> getMatches() {
+    public TownEntity getTownEntity() {
+        return townEntity;
+    }
+
+    public void setTownEntity(TownEntity townEntity) {
+        this.townEntity = townEntity;
+    }
+
+    public List<Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<MatchRestEntity> matches) {
+    public void setMatches(List<Match> matches) {
         this.matches = matches;
     }
 
-    public List<ClassificationEntity> getClassification() {
+    public List<Classification> getClassification() {
         return classification;
     }
 
-    public void setClassification(List<ClassificationEntity> classification) {
+    public void setClassification(List<Classification> classification) {
         this.classification = classification;
     }
+
+    public List<TeamsDeref> getTeamsDeref() {
+        return teamsDeref;
+    }
+
+    public void setTeamsDeref(List<TeamsDeref> teamsDeref) {
+        this.teamsDeref = teamsDeref;
+    }
+
 }
