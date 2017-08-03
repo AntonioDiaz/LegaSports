@@ -1,5 +1,6 @@
 package com.adiaz.legasports.activities;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.entities.ClassificationEntity;
@@ -37,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
 
@@ -51,6 +54,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.tabs) TabLayout tabLayout;
 	@BindView(R.id.viewpager) ViewPager viewPager;
+	@BindView(R.id.tv_title) TextView tvTitle;
 
 	private boolean isHideToolbarView = false;
 
@@ -65,6 +69,9 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_competition);
 		ButterKnife.bind(this);
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		String townSelect = preferences.getString(LegaSportsConstants.TOWN_SELECTED_NAME, null);
+		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 		String sportTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_SPORT_TAG);
 		String categoryTag = getIntent().getStringExtra(LegaSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(LegaSportsConstants.INTENT_COMPETITION_NAME);
@@ -76,7 +83,6 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(" ");
-
 
 		toolbarHeaderView.bindTo(competitionName, sportTitle, 0);
 		floatHeaderView.bindTo(competitionName, sportTitle, 16);

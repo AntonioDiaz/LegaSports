@@ -1,6 +1,7 @@
 package com.adiaz.legasports.sync.retrofit;
 
 import com.adiaz.legasports.sync.retrofit.entities.CompetitionRestEntity;
+import com.adiaz.legasports.sync.retrofit.entities.Town;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ public interface LegaSportsRestApi {
 
 	@GET("/server/competitions/")
 	Call<List<CompetitionRestEntity>> competitionsQuery();
+
+	@GET("/server/towns/")
+	Call<List<Town>> townsQuery();
+
 }

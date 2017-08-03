@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LegaSports 2017</string>
+    <string name="app_name">MuniSports</string>
     <string name="football">Fútbol</string>
     <string name="FUTBOL_11">Fútbol 11</string>
     <string name="FUTBOL_7">Fútbol 7</string>
@@ -65,4 +65,6 @@
     <string name="internet_required">Se necesita conexión a internet</string>
 
     <string name="NOT_FOUND">not found</string>
+    <string name="municipios_disponibles">Municipios disponibles</string>
+    <string name="cargando">cargando</string>
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -25,9 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.CompetitionsEntry;
 import static com.adiaz.legasports.database.LegaSportsDbContract.MatchesEntry;
-import static com.adiaz.legasports.database.LegaSportsDbContract.ClassificationEntry;
 
 /* Created by toni on 28/03/2017. */
 
@@ -123,7 +122,7 @@ public class Utils {
 	}
 
 	private static void updateListFavoritesTeam(Context context, String myTeamName, String key, boolean addFavorite) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences preferences = getDefaultSharedPreferences(context);
 		Set<String> stringsSetCopy = new HashSet<String>(preferences.getStringSet(key, new HashSet<String>()));
 		if (addFavorite) {
 			stringsSetCopy.add(myTeamName);
@@ -175,9 +174,9 @@ public class Utils {
 
 	public static String getStringResourceByName(Context context, String aString) {
 		String packageName = context.getPackageName();
-		int resId = context.getResources().getIdentifier(aString, "string", packageName);
 		String strResource = context.getString(R.string.NOT_FOUND);
 		try {
+			int resId = context.getResources().getIdentifier(aString, "string", packageName);
 			strResource = context.getString(resId);
 		} catch (Exception e) {
 			Log.e(TAG, "getStringResourceByName: " + e.getMessage(), e);

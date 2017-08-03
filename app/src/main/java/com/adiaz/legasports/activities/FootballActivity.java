@@ -1,11 +1,13 @@
 package com.adiaz.legasports.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.utilities.LegaSportsConstants;
@@ -13,10 +15,13 @@ import com.adiaz.legasports.utilities.LegaSportsConstants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class FootballActivity extends AppCompatActivity {
 
 	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.tv_title) TextView tvTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,9 @@ public class FootballActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(getString(R.string.football));
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		String townSelect = preferences.getString(LegaSportsConstants.TOWN_SELECTED_NAME, null);
+		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 
 	@Override
