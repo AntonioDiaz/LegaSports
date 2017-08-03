@@ -46,6 +46,15 @@
         <activity android:name=".activities.FootballActivity">
         </activity>
 
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/action_preferences"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
         <service android:name=".sync.LegaSportsSyncIntentService" android:exported="false"></service>
         <service android:name=".sync.LegaSportsFirebaseJobService" android:exported="false">
             <intent-filter>

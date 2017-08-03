@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -84,6 +86,35 @@ public class MainActivity extends AppCompatActivity implements TownsAvailableCal
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 		}
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		if (itemId==R.id.action_preferences) {
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+		}
+		if (itemId==R.id.action_changetown) {
+			// TODO: 03/08/2017 ask user confirmation. 
+			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
+			editor.remove(LegaSportsConstants.TOWN_SELECTED_NAME);
+			editor.remove(LegaSportsConstants.TOWN_SELECTED_ID);
+			editor.remove(this.getString(R.string.key_favorites_teams));
+			editor.remove(this.getString(R.string.key_favorites_competitions));
+			editor.commit();
+			finish();
+			startActivity(getIntent());
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 
 	private void startLoadingTowns() {
 		if (llProgress!=null) {

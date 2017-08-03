@@ -1,6 +1,7 @@
 package com.adiaz.legasports.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.adiaz.legasports.R;
 import com.adiaz.legasports.adapters.FavoriteTeamAdapter;
@@ -35,6 +37,8 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
 	@BindView(R.id.app_bar_layout)
@@ -45,6 +49,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	HeaderView toolbarHeaderView;
 	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
+	@BindView(R.id.tv_title) TextView tvTitle;
 	private String teamName;
 	private String idCompetitionServer;
 	private String competitionName;
@@ -79,6 +84,9 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setNestedScrollingEnabled(false);
 		adapter.setTeamEntity(teamEntity);
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		String townSelect = preferences.getString(LegaSportsConstants.TOWN_SELECTED_NAME, null);
+		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 
 	@Override
