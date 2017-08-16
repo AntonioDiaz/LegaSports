@@ -66,7 +66,8 @@
 
     <string name="NOT_FOUND">not found</string>
     <string name="municipios_disponibles">Municipios disponibles</string>
-    <string name="cargando">cargando</string>
+    <string name="loading_towns">cargando municipios</string>
+    <string name="loading_competitions">cargando competiciones</string>
     <string name="action_preferences">Preferencias</string>
     <string name="action_changetown">Cambiar municipio</string>
     <string name="action_lastupdate">Última actualización:</string>

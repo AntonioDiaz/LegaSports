@@ -85,7 +85,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		recyclerView.setNestedScrollingEnabled(false);
 		adapter.setTeamEntity(teamEntity);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.TOWN_SELECTED_NAME, null);
+		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 

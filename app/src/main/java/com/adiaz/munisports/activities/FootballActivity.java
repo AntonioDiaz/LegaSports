@@ -32,7 +32,7 @@ public class FootballActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(getString(R.string.football));
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.TOWN_SELECTED_NAME, null);
+		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 

@@ -36,6 +36,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 
 	private Context mContext;
 
+
 	public SyncTaskRetrofitCallback(Context mContext) {
 		this.mContext = mContext;
 	}
@@ -84,13 +85,13 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 					classificationList.add(cvClassification);
 				}
 			}
-			ContentResolver legaSportContentResolver = mContext.getContentResolver();
+			ContentResolver muniSportsContentResolver = mContext.getContentResolver();
 			ContentValues[] competitions = newsCompetitions.toArray(new ContentValues[newsCompetitions.size()]);
 			ContentValues[] matches = newsMatches.toArray(new ContentValues[newsMatches.size()]);
 			ContentValues[] classification = classificationList.toArray(new ContentValues[classificationList.size()]);
-			legaSportContentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
-			legaSportContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matches);
-			legaSportContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classification);
+			muniSportsContentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
+			muniSportsContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matches);
+			muniSportsContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classification);
 			Log.d(TAG, "onResponse: finished classification.length " + classification.length);
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 			SharedPreferences.Editor editor = preferences.edit();

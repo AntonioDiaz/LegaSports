@@ -2,11 +2,11 @@ package com.adiaz.munisports.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,10 +20,10 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.TownsAdapter;
-import com.adiaz.munisports.database.MuniSportsDbContract;
-import com.adiaz.munisports.sync.MuniSportsSyncUtils;
+import com.adiaz.munisports.sync.CompetitionsAvailableCallback;
 import com.adiaz.munisports.sync.TownsAvailableCallback;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
+import com.adiaz.munisports.sync.retrofit.entities.CompetitionRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.Town;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
@@ -42,7 +42,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class MainActivity extends AppCompatActivity
-		implements TownsAvailableCallback.TownsLoadedCallback, TownsAdapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+		implements
+			TownsAvailableCallback.TownsLoadedCallback,
+			TownsAdapter.ListItemClickListener,
+			SharedPreferences.OnSharedPreferenceChangeListener,
+			CompetitionsAvailableCallback.CompetitionsLoadedCallback {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 	@Nullable @BindView((R.id.layout_activity_splash)) View activitySplash;
 	@Nullable @BindView(R.id.ll_progress) LinearLayout llProgress;
 	@Nullable @BindView(R.id.rv_towns) RecyclerView rvTowns;
+	@Nullable @BindView(R.id.ll_progress_competitions) LinearLayout llProgressCompetition;
+	@Nullable @BindView(R.id.gl_sports)	GridLayout glSports;
 	private List<Town> mTownList;
 	private Menu mMenu;
 
@@ -61,9 +67,9 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		/*Get town from preferences .*/
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.TOWN_SELECTED_NAME, null);
 		preferences.registerOnSharedPreferenceChangeListener(this);
-		Log.d(TAG, "onCreate: " + townSelect);
+		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+
 		if (TextUtils.isEmpty(townSelect)) {
 			setContentView(R.layout.activity_splash);
 			ButterKnife.bind(this);
@@ -77,10 +83,7 @@ public class MainActivity extends AppCompatActivity
 				Call<List<Town>> call = muniSportsRestApi.townsQuery();
 				call.enqueue(new TownsAvailableCallback(this));
 			} else {
-				String strError = getString(R.string.internet_required);
-				final Snackbar snackbar = Snackbar.make(activitySplash, strError, Snackbar.LENGTH_INDEFINITE);
-				snackbar.show();
-				llProgress.setVisibility(View.INVISIBLE);
+				showNoInternetAlert();
 			}
 		} else {
 			setContentView(R.layout.activity_main);
@@ -89,7 +92,40 @@ public class MainActivity extends AppCompatActivity
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			getSupportActionBar().setIcon(R.drawable.ic_launcher);
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
+			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)){
+				if (NetworkUtilities.isNetworkAvailable(this)) {
+					startLoadingCompetitions();
+					Retrofit retrofit = new Retrofit.Builder()
+							.baseUrl(MuniSportsConstants.BASE_URL)
+							.addConverterFactory(GsonConverterFactory.create())
+							.build();
+					MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
+					Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery();
+					call.enqueue(new CompetitionsAvailableCallback(this, this));
+				} else {
+					showNoInternetAlert();
+				}
+			} else {
+				endLoadingCompetitions();
+			}
 		}
+	}
+
+	private void endLoadingCompetitions() {
+		llProgressCompetition.setVisibility(View.INVISIBLE);
+		glSports.setVisibility(View.VISIBLE);
+	}
+
+	private void startLoadingCompetitions() {
+		llProgressCompetition.setVisibility(View.VISIBLE);
+		glSports.setVisibility(View.INVISIBLE);
+	}
+
+	private void showNoInternetAlert() {
+		String strError = getString(R.string.internet_required);
+		final Snackbar snackbar = Snackbar.make(activitySplash, strError, Snackbar.LENGTH_INDEFINITE);
+		snackbar.show();
+		llProgress.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -109,10 +145,11 @@ public class MainActivity extends AppCompatActivity
 		if (itemId==R.id.action_changetown) {
 			// TODO: 03/08/2017 ask user confirmation. 
 			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
-			editor.remove(MuniSportsConstants.TOWN_SELECTED_NAME);
-			editor.remove(MuniSportsConstants.TOWN_SELECTED_ID);
+			editor.remove(MuniSportsConstants.KEY_TOWN_NAME);
+			editor.remove(MuniSportsConstants.KEY_TOWN_ID);
 			editor.remove(this.getString(R.string.key_favorites_teams));
 			editor.remove(this.getString(R.string.key_favorites_competitions));
+			editor.remove(MuniSportsConstants.KEY_LASTUPDATE);
 			editor.commit();
 			finish();
 			startActivity(getIntent());
@@ -142,11 +179,11 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		Log.d(TAG, "onResume: " + preferences.contains(MuniSportsConstants.TOWN_SELECTED_ID));
-		if (preferences.contains(MuniSportsConstants.TOWN_SELECTED_ID)) {
+
+		/*SharedPreferences preferences = getDefaultSharedPreferences(this);
+		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
 			if (NetworkUtilities.isNetworkAvailable(this)) {
-				MuniSportsSyncUtils.initialize(this);
+				MuniSportsSyncUtils.initializeSimple(this);
 			} else {
 				Cursor cursor = getContentResolver().query(
 						MuniSportsDbContract.CompetitionsEntry.CONTENT_URI, null, null, null, null);
@@ -157,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 					// TODO: 26/04/2017 should disabled all link (sports and favorites).
 				}
 			}
-		}
+		}*/
 	}
 
 	public void openSport(View view) {
@@ -190,8 +227,8 @@ public class MainActivity extends AppCompatActivity
 		Log.d(TAG, "onListItemClick: " + clickedItemIndex);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(MuniSportsConstants.TOWN_SELECTED_NAME, mTownList.get(clickedItemIndex).getName());
-		editor.putLong(MuniSportsConstants.TOWN_SELECTED_ID, mTownList.get(clickedItemIndex).getId());
+		editor.putString(MuniSportsConstants.KEY_TOWN_NAME, mTownList.get(clickedItemIndex).getName());
+		editor.putLong(MuniSportsConstants.KEY_TOWN_ID, mTownList.get(clickedItemIndex).getId());
 		editor.commit();
 		finish();
 		startActivity(getIntent());
@@ -207,5 +244,10 @@ public class MainActivity extends AppCompatActivity
 			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
 			item.setTitle(lastUpdateTitle + " " + dateFormat.format(new Date(dateLong)));
 		}
+	}
+
+	@Override
+	public void updateActivityLoadedCompetitions() {
+		endLoadingCompetitions();
 	}
 }

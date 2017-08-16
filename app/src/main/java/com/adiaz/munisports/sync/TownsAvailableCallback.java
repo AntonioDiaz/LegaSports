@@ -27,7 +27,6 @@ public class TownsAvailableCallback implements Callback<List<Town>> {
 	@Override
 	public void onResponse(Call<List<Town>> call, Response<List<Town>> response) {
 		townsLoadedCallback.updateActivity(response.body());
-		Log.d(TAG, "onResponse: " + response.body());
 	}
 
 	@Override

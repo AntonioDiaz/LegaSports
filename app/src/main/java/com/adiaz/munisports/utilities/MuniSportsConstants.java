@@ -24,8 +24,8 @@ public class MuniSportsConstants {
 	public static final String INTENT_COMPETITION_NAME = "intent_competition_name";
 	public static final String BUNDLE_ID_COMPETITION_SERVER = "bundle_id_competition_server";
 	public static final String INTENT_TEAM_NAME = "intent_team_name";
-	public static final String TOWN_SELECTED_NAME = "TOWN_SELECTED_NAME";
-	public static final String TOWN_SELECTED_ID = "TOWN_SELECTED_ID";
+	public static final String KEY_TOWN_NAME = "KEY_TOWN_NAME";
+	public static final String KEY_TOWN_ID = "KEY_TOWN_ID";
 	public static final String KEY_LASTUPDATE = "KEY_LASTUPDATE";
 
 
