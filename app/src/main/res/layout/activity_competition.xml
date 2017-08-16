@@ -79,5 +79,5 @@
         layout="@layout/header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.adiaz.legasports.utilities.harcoPro.ViewBehavior"/>
+        app:layout_behavior="com.adiaz.munisports.utilities.harcoPro.ViewBehavior"/>
 </android.support.design.widget.CoordinatorLayout>
