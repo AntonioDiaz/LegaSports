@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by toni on 20/04/2017.
@@ -14,10 +15,13 @@ import retrofit2.http.GET;
 
 public interface MuniSportsRestApi {
 
-	@GET("/server/competitions/")
-	Call<List<CompetitionRestEntity>> competitionsQuery();
+/*	@GET("/server/competitions/")
+	Call<List<CompetitionRestEntity>> competitionsQuery();*/
 
 	@GET("/server/towns/")
 	Call<List<Town>> townsQuery();
+
+	@GET("/server/search_competitions/")
+	Call<List<CompetitionRestEntity>> competitionsQuery(@Query("idTown")Long idTown);
 
 }

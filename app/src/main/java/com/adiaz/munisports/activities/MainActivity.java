@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(this);
 		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
-
+		Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
 		if (TextUtils.isEmpty(townSelect)) {
 			setContentView(R.layout.activity_splash);
 			ButterKnife.bind(this);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 							.addConverterFactory(GsonConverterFactory.create())
 							.build();
 					MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-					Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery();
+					Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery(idTownSelect);
 					call.enqueue(new CompetitionsAvailableCallback(this, this));
 				} else {
 					showNoInternetAlert();
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.mMenu = menu;
+		updateLastUpdateMenuItem(this.mMenu);
 		return true;
 	}
 
@@ -236,13 +237,22 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		Log.d(TAG, "onSharedPreferenceChanged: key" + key);
 		if (key.equals(MuniSportsConstants.KEY_LASTUPDATE) && sharedPreferences.contains(key)) {
-			long dateLong = sharedPreferences.getLong(key, 0l);
-			MenuItem item = this.mMenu.findItem(R.id.action_lastupdate);
+			updateLastUpdateMenuItem(this.mMenu);
+		}
+	}
+
+	private void updateLastUpdateMenuItem(Menu menu) {
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		if (preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
+			Long dateLong = preferences.getLong(MuniSportsConstants.KEY_LASTUPDATE, 1L);
 			String lastUpdateTitle = getString(R.string.action_lastupdate);
 			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-			item.setTitle(lastUpdateTitle + " " + dateFormat.format(new Date(dateLong)));
+			String title = lastUpdateTitle + " " + dateFormat.format(new Date(dateLong));
+			if (menu!=null) {
+				MenuItem item = menu.findItem(R.id.action_lastupdate);
+				item.setTitle(title);
+			}
 		}
 	}
 

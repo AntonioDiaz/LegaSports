@@ -13,9 +13,9 @@ public class MuniSportsConstants {
 	public static final String TAB = "    ";
 	public static final String DEFAULT_SPORT = "default sport";
 
-	public static final String BASE_URL = "http://legasports2017.appspot.com/";
+	public static final String BASE_URL = "http://munisports-web.appspot.com/";
 
-//	public static final String EXTRA_COMPETITION_ID_SERVER = "extra_competition_id_server";
+	//	public static final String EXTRA_COMPETITION_ID_SERVER = "extra_competition_id_server";
 
 
 	public static final String INTENT_SPORT_TAG = "intent_sport_tag";

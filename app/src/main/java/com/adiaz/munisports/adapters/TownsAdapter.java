@@ -1,6 +1,7 @@
 package com.adiaz.munisports.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,11 +51,12 @@ public class TownsAdapter extends RecyclerView.Adapter<TownsAdapter.ViewHolder> 
 
 	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		@BindView(R.id.tv_town_name) TextView tvTownName;
+		@BindView(R.id.cv_town) CardView cvTown;
 
 		public ViewHolder(View itemView) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
-			tvTownName.setOnClickListener(this);
+			cvTown.setOnClickListener(this);
 		}
 
 		@Override
