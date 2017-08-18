@@ -44,7 +44,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 				cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE, new Date().toString());
 				newsCompetitions.add(cv);
 				Log.d(TAG, "onResponse: competition" + cv);
-				for (Match match : competitionsEntity.getMatches()) {
+				for (MatchRestEntity match : competitionsEntity.getMatches()) {
 					ContentValues cvMatch = new ContentValues();
 					cvMatch.put(MatchesEntry.COLUMN_LAST_UPDATE, new Date().toString());
 					cvMatch.put(MatchesEntry.COLUMN_TEAM_LOCAL, match.getTeamLocalEntity().getName());

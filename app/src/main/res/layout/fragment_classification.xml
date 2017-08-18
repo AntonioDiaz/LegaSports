@@ -23,11 +23,13 @@
         <TextView
             android:id="@+id/tv_empty_list_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="top|center"
             android:layout_marginTop="64dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:text="@string/emptyTeamList"
+            android:text="@string/emptyClassificationList"
             android:textColor="@color/colorPrimary"
             android:visibility="visible"/>
     </LinearLayout>

@@ -1,9 +1,12 @@
 package com.adiaz.munisports.activities;
 
+import android.content.ContentResolver;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -22,12 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.entities.ClassificationEntity;
 import com.adiaz.munisports.entities.JornadaEntity;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
+import com.adiaz.munisports.sync.MatchesCallbak;
+import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
+import com.adiaz.munisports.sync.retrofit.entities.match.MatchRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.Utils;
@@ -39,10 +46,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
-public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+
+public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, MatchesCallbak.OnFinishLoad {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
@@ -72,6 +83,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	private boolean isHideToolbarView = false;
 
 	private String sportTitle;
+	// TODO: 18/08/2017 idCompetitionServer should be Long
 	public static String idCompetitionServer;
 	public static List<TeamEntity> teams;
 	public static List<JornadaEntity> jornadas;
@@ -106,13 +118,11 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 
 		appBarLayout.addOnOffsetChangedListener(this);
 
-
-		setupViewPager(viewPager);
-		tabLayout.setupWithViewPager(viewPager);
-
 		teams = new ArrayList<>();
 		jornadas = new ArrayList<>();
 		classificationList = new ArrayList<>();
+
+
 
 	}
 
@@ -121,7 +131,14 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		super.onResume();
 		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
-			hideLoading();
+			Retrofit retrofit = new Retrofit.Builder()
+					.baseUrl(MuniSportsConstants.BASE_URL)
+					.addConverterFactory(GsonConverterFactory.create())
+					.build();
+			MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
+			Call<List<MatchRestEntity>> listCall = muniSportsRestApi.matchesQuery(new Long (idCompetitionServer));
+			MatchesCallbak matchesCallbak = new MatchesCallbak(this, new Long(idCompetitionServer), this);
+			listCall.enqueue(matchesCallbak);
 		} else {
 			hideLoading();
 			Utils.showNoInternetAlert(this, activityView);
@@ -221,6 +238,19 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 			toolbarHeaderView.setVisibility(View.GONE);
 			isHideToolbarView = !isHideToolbarView;
 		}
+	}
+
+	@Override
+	public void finishLoad() {
+		ContentResolver contentResolver = this.getContentResolver();
+		Uri uri = MuniSportsDbContract.MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+
+		Cursor cursorMatches = contentResolver.query(uri, MuniSportsDbContract.MatchesEntry.PROJECTION, null, null, null);
+		this.teams = Utils.initTeams(cursorMatches);
+		this.jornadas = Utils.initCalendar(cursorMatches);
+		setupViewPager(viewPager);
+		tabLayout.setupWithViewPager(viewPager);
+		hideLoading();
 	}
 }
 

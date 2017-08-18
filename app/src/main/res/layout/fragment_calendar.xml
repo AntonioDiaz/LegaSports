@@ -26,10 +26,12 @@
         <TextView
             android:id="@+id/tv_empty_list_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:gravity="top|center"
-            android:text="@string/emptyTeamList"
+            android:text="@string/emptyCalendarList"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorPrimary"
             android:visibility="visible">

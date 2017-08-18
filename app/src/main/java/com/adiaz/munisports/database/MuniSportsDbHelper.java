@@ -15,7 +15,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "munisports.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 6;
 
 	public MuniSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,10 +34,12 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 							CompetitionsEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
 							"UNIQUE (" + CompetitionsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";
+
+		// TODO: 18/08/2017 remove last_update column, because is not used.
 		String SQL_CREATE_TABLE_MATCHES =
 				"CREATE TABLE " + MatchesEntry.TABLE_NAME +
 						"(" +
-						MatchesEntry.COLUMN_LAST_UPDATE + " INTEGER NOT NULL, " +
+						MatchesEntry.COLUMN_LAST_UPDATE + " INTEGER, " +
 						MatchesEntry.COLUMN_TEAM_LOCAL + " TEXT NOT NULL, " +
 						MatchesEntry.COLUMN_TEAM_VISITOR + " TEXT NOT NULL, " +
 						MatchesEntry.COLUMN_SCORE_LOCAL + " INTEGER NOT NULL, " +

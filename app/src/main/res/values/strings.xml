@@ -73,4 +73,6 @@
     <string name="action_changetown">Cambiar municipio</string>
     <string name="action_lastupdate">Última actualización:</string>
     <string name="emptyTeamList">No hay equipos registrados para esta competición</string>
+    <string name="emptyClassificationList">No hay clasificación para esta competición</string>
+    <string name="emptyCalendarList">No hay calendario para esta competición</string>
 </resources>

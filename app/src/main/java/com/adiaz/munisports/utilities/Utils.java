@@ -39,6 +39,12 @@ public class Utils {
 	private static List<JornadaEntity> calendar;
 
 	// TODO: 27/04/2017 OPTIMIZE THIS METHOD!!!
+
+	/**
+	 * Generate the structure to show the list of matches of each team.
+	 * @param cursorMatches
+	 * @return
+	 */
 	public static List<TeamEntity> initTeams(Cursor cursorMatches) {
 		cursorMatches.moveToPosition(-1);
 		List<TeamEntity> teams = new ArrayList<>();
