@@ -20,6 +20,12 @@ public class MuniSportsDbContract {
 	public static final	class CompetitionsEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_COMPETITIONS).build();
 
+		public static Uri buildCompetitionUriWithServerId(Long competitionServerId) {
+			return CONTENT_URI.buildUpon()
+					.appendPath(competitionServerId.toString())
+					.build();
+		}
+
 		public static Uri buildCompetitionsUriWithSports(String sport) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(sport)

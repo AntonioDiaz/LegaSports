@@ -1,12 +1,11 @@
 package com.adiaz.munisports.activities;
 
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -15,11 +14,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
@@ -30,31 +29,45 @@ import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.Utils;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
-	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
-	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-	@BindView(R.id.toolbar_header_view) HeaderView toolbarHeaderView;
-	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
-	@BindView(R.id.tabs) TabLayout tabLayout;
-	@BindView(R.id.viewpager) ViewPager viewPager;
-	@BindView(R.id.tv_title) TextView tvTitle;
+	@Nullable
+	@BindView((R.id.layout_activity_competition)) View activityView;
+
+
+	@BindView(R.id.app_bar_layout)
+	AppBarLayout appBarLayout;
+	@BindView(R.id.toolbar)
+	Toolbar toolbar;
+	@BindView(R.id.collapsing_toolbar)
+	CollapsingToolbarLayout collapsingToolbar;
+	@BindView(R.id.toolbar_header_view)
+	HeaderView toolbarHeaderView;
+	@BindView(R.id.float_header_view)
+	HeaderView floatHeaderView;
+	@BindView(R.id.tabs)
+	TabLayout tabLayout;
+	@BindView(R.id.viewpager)
+	ViewPager viewPager;
+	@BindView(R.id.tv_title)
+	TextView tvTitle;
+	@BindView(R.id.ll_progress_competition)
+	LinearLayout llCompetition;
 
 	private boolean isHideToolbarView = false;
 
@@ -65,19 +78,23 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	public static List<ClassificationEntity> classificationList;
 
 	@Override
-	protected void 	onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_competition);
 		ButterKnife.bind(this);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
+
+		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
+
 		String sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
 		String categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
+
 		String sport = Utils.getStringResourceByName(this, sportTag);
 		String category = Utils.getStringResourceByName(this, categoryTag);
-		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
+
 		sportTitle = sport + " (" + category + ")";
 
 		setSupportActionBar(toolbar);
@@ -93,25 +110,39 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 
-		/*loading structures for the tabs: */
-		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
-		Cursor cursorMatches = getContentResolver().query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
-		Log.d(TAG, "onCreate: cursorMatches" + cursorMatches.getCount());
-		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
-		Cursor cursorClassification = getContentResolver().query(
-				uriClassification, ClassificationEntry.PROJECTION, null, null, ClassificationEntry.COLUMN_POSITION);
+		teams = new ArrayList<>();
+		jornadas = new ArrayList<>();
+		classificationList = new ArrayList<>();
 
-		teams = Utils.initTeams(cursorMatches);
-		jornadas = Utils.initCalendar(cursorMatches);
-		classificationList = Utils.initClassification(cursorClassification);
-		cursorMatches.close();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		showLoading();
+		if (NetworkUtilities.isNetworkAvailable(this)) {
+			hideLoading();
+		} else {
+			hideLoading();
+			Utils.showNoInternetAlert(this, activityView);
+		}
+	}
+
+	private void hideLoading() {
+		llCompetition.setVisibility(View.INVISIBLE);
+		viewPager.setVisibility(View.VISIBLE);
+	}
+
+	private void showLoading() {
+		llCompetition.setVisibility(View.VISIBLE);
+		viewPager.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_competition, menu);
-		for(int i = 0; i < menu.size(); i++) {
-			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
+		for (int i = 0; i < menu.size(); i++) {
+			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
 				String key = getString(R.string.key_favorites_competitions);
 				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -167,8 +198,8 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	}
 
 	public void selectFavorite(View view) {
-		ImageView imageView = (ImageView)view.findViewById(R.id.iv_favorites);
-		String myTeamId = Utils.generateTeamKey((String)imageView.getTag(), idCompetitionServer);
+		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
+		String myTeamId = Utils.generateTeamKey((String) imageView.getTag(), idCompetitionServer);
 		String keyFavorites = getString(R.string.key_favorites_teams);
 		if (Utils.checkIfFavoritSelected(this, myTeamId, keyFavorites)) {
 			imageView.setImageResource(R.drawable.ic_favorite);
@@ -192,3 +223,4 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		}
 	}
 }
+

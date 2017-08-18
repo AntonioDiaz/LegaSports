@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.ClassificationEntity;
@@ -260,6 +262,12 @@ public class Utils {
 			list.add(classificationEntry);
 		}
 		return list;
+	}
+
+	public static void showNoInternetAlert(Context context, View view) {
+		String strError = context.getString(R.string.internet_required);
+		final Snackbar snackbar = Snackbar.make(view, strError, Snackbar.LENGTH_INDEFINITE);
+		snackbar.show();
 	}
 }
 

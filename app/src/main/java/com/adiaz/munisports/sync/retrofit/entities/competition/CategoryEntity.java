@@ -1,10 +1,10 @@
 
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.competition;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SportEntity_ {
+public class CategoryEntity {
 
     @SerializedName("id")
     @Expose
@@ -12,6 +12,9 @@ public class SportEntity_ {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("order")
+    @Expose
+    private Long order;
 
     public Long getId() {
         return id;
@@ -27,6 +30,14 @@ public class SportEntity_ {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getOrder() {
+        return order;
+    }
+
+    public void setOrder(Long order) {
+        this.order = order;
     }
 
 }

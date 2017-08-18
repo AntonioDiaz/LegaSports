@@ -1,10 +1,10 @@
 
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.competition;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CategoryEntity {
+public class TownEntity {
 
     @SerializedName("id")
     @Expose
@@ -12,9 +12,9 @@ public class CategoryEntity {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("order")
+    @SerializedName("active")
     @Expose
-    private Long order;
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -32,12 +32,12 @@ public class CategoryEntity {
         this.name = name;
     }
 
-    public Long getOrder() {
-        return order;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setOrder(Long order) {
-        this.order = order;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
 }

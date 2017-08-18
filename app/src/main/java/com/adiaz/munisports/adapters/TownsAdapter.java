@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.sync.retrofit.entities.Town;
+import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 
 public class TownsAdapter extends RecyclerView.Adapter<TownsAdapter.ViewHolder> {
 
-	private List<Town> mTownList;
+	private List<TownRestEntity> mTownRestEntityList;
 	private ListItemClickListener mListItemClickListener;
 
-	public TownsAdapter(List<Town> townList, ListItemClickListener listItemClickListener) {
-		this.mTownList = townList;
+	public TownsAdapter(List<TownRestEntity> townRestEntityList, ListItemClickListener listItemClickListener) {
+		this.mTownRestEntityList = townRestEntityList;
 		this.mListItemClickListener = listItemClickListener;
 	}
 
@@ -40,13 +40,13 @@ public class TownsAdapter extends RecyclerView.Adapter<TownsAdapter.ViewHolder> 
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.tvTownName.setText(mTownList.get(position).getName());
-		holder.tvTownName.setTag(mTownList.get(position).getId());
+		holder.tvTownName.setText(mTownRestEntityList.get(position).getName());
+		holder.tvTownName.setTag(mTownRestEntityList.get(position).getId());
 	}
 
 	@Override
 	public int getItemCount() {
-		return mTownList.size();
+		return mTownRestEntityList.size();
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

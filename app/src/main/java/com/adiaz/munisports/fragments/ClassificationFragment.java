@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 public class ClassificationFragment extends Fragment {
 
 	@BindView(R.id.rv_classification) RecyclerView recyclerView;
+	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
 
 	public ClassificationFragment() {}
 
@@ -45,6 +47,12 @@ public class ClassificationFragment extends Fragment {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+		if (CompetitionActivity.classificationList.isEmpty()) {
+			recyclerView.setVisibility(View.GONE);
+			tvEmptyListItem.setVisibility(View.VISIBLE);
+		} else {
+			recyclerView.setVisibility(View.VISIBLE);
+			tvEmptyListItem.setVisibility(View.GONE);
+		}
 	}
 }

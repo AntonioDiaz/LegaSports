@@ -1,4 +1,4 @@
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.town;
 
 /**
  * Created by toni on 02/08/2017.
@@ -8,7 +8,7 @@ package com.adiaz.munisports.sync.retrofit.entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Town {
+public class TownRestEntity {
 
 	@SerializedName("id")
 	@Expose

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
 public class CalendarFragment extends Fragment {
 
 	@BindView(R.id.elv_jornadas) NonScrollExpandableListView nonScrollExpandableListView;
+	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
 
 	public CalendarFragment() { }
 
@@ -43,6 +45,7 @@ public class CalendarFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), CompetitionActivity.jornadas);
 		nonScrollExpandableListView.setAdapter(calendarAdapter);
+		nonScrollExpandableListView.setEmptyView(tvEmptyListItem);
 		calendarAdapter.notifyDataSetChanged();
 	}
 }

@@ -1,10 +1,10 @@
 
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.competition;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CategoryEntity___ {
+public class CategoryEntity_ {
 
     @SerializedName("id")
     @Expose

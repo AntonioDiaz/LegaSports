@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
@@ -23,6 +24,7 @@ public class TeamsFragment extends Fragment {
 	private static final String TAG = TeamsFragment.class.getSimpleName();
 
 	@BindView(R.id.elv_teams) NonScrollExpandableListView expandableListView;
+	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class TeamsFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.teams, CompetitionActivity.idCompetitionServer);
 		expandableListView.setAdapter(teamsAdapter);
+		expandableListView.setEmptyView(tvEmptyListItem);
 		teamsAdapter.notifyDataSetChanged();
 	}
 }

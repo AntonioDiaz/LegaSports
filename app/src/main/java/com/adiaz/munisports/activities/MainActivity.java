@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,10 +21,11 @@ import com.adiaz.munisports.adapters.TownsAdapter;
 import com.adiaz.munisports.sync.CompetitionsAvailableCallback;
 import com.adiaz.munisports.sync.TownsAvailableCallback;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
-import com.adiaz.munisports.sync.retrofit.entities.CompetitionRestEntity;
-import com.adiaz.munisports.sync.retrofit.entities.Town;
+import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
+import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
+import com.adiaz.munisports.utilities.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 	@Nullable @BindView(R.id.rv_towns) RecyclerView rvTowns;
 	@Nullable @BindView(R.id.ll_progress_competitions) LinearLayout llProgressCompetition;
 	@Nullable @BindView(R.id.gl_sports)	GridLayout glSports;
-	private List<Town> mTownList;
+	private List<TownRestEntity> mTownRestEntityList;
 	private Menu mMenu;
 
 
@@ -68,9 +67,7 @@ public class MainActivity extends AppCompatActivity
 		/*Get town from preferences .*/
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(this);
-		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
-		Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
-		if (TextUtils.isEmpty(townSelect)) {
+		if (!preferences.contains(MuniSportsConstants.KEY_TOWN_NAME)) {
 			setContentView(R.layout.activity_splash);
 			ButterKnife.bind(this);
 			if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -80,10 +77,11 @@ public class MainActivity extends AppCompatActivity
 						.addConverterFactory(GsonConverterFactory.create())
 						.build();
 				MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-				Call<List<Town>> call = muniSportsRestApi.townsQuery();
+				Call<List<TownRestEntity>> call = muniSportsRestApi.townsQuery();
 				call.enqueue(new TownsAvailableCallback(this));
 			} else {
-				showNoInternetAlert();
+				Utils.showNoInternetAlert(this, activitySplash);
+				llProgress.setVisibility(View.INVISIBLE);
 			}
 		} else {
 			setContentView(R.layout.activity_main);
@@ -91,6 +89,8 @@ public class MainActivity extends AppCompatActivity
 			setSupportActionBar(toolbar);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			getSupportActionBar().setIcon(R.drawable.ic_launcher);
+			String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+			Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)){
 				if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity
 					Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery(idTownSelect);
 					call.enqueue(new CompetitionsAvailableCallback(this, this));
 				} else {
-					showNoInternetAlert();
+					Utils.showNoInternetAlert(this, activityView);
+					llProgressCompetition.setVisibility(View.INVISIBLE);
 				}
 			} else {
 				endLoadingCompetitions();
@@ -119,13 +120,6 @@ public class MainActivity extends AppCompatActivity
 	private void startLoadingCompetitions() {
 		llProgressCompetition.setVisibility(View.VISIBLE);
 		glSports.setVisibility(View.INVISIBLE);
-	}
-
-	private void showNoInternetAlert() {
-		String strError = getString(R.string.internet_required);
-		final Snackbar snackbar = Snackbar.make(activitySplash, strError, Snackbar.LENGTH_INDEFINITE);
-		snackbar.show();
-		llProgress.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -213,13 +207,13 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void updateActivity(List<Town> townList) {
+	public void updateActivity(List<TownRestEntity> townRestEntityList) {
 		// TODO: 03/08/2017 show alert when there is no towns.
-		TownsAdapter townsAdapter = new TownsAdapter(townList, this);
+		TownsAdapter townsAdapter = new TownsAdapter(townRestEntityList, this);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		rvTowns.setLayoutManager(linearLayoutManager);
 		rvTowns.setAdapter(townsAdapter);
-		mTownList = townList;
+		mTownRestEntityList = townRestEntityList;
 		endLoadingTowns();
 	}
 
@@ -228,8 +222,8 @@ public class MainActivity extends AppCompatActivity
 		Log.d(TAG, "onListItemClick: " + clickedItemIndex);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(MuniSportsConstants.KEY_TOWN_NAME, mTownList.get(clickedItemIndex).getName());
-		editor.putLong(MuniSportsConstants.KEY_TOWN_ID, mTownList.get(clickedItemIndex).getId());
+		editor.putString(MuniSportsConstants.KEY_TOWN_NAME, mTownRestEntityList.get(clickedItemIndex).getName());
+		editor.putLong(MuniSportsConstants.KEY_TOWN_ID, mTownRestEntityList.get(clickedItemIndex).getId());
 		editor.commit();
 		finish();
 		startActivity(getIntent());

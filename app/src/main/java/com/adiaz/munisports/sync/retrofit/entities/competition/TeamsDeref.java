@@ -1,5 +1,5 @@
 
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.competition;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,16 +14,16 @@ public class TeamsDeref {
     private String name;
     @SerializedName("categoryEntity")
     @Expose
-    private CategoryEntity___ categoryEntity;
+    private CategoryEntity_ categoryEntity;
     @SerializedName("townEntity")
     @Expose
-    private TownEntity____ townEntity;
+    private TownEntity_ townEntity;
     @SerializedName("clubEntity")
     @Expose
-    private ClubEntity__ clubEntity;
+    private ClubEntity clubEntity;
     @SerializedName("sportEntity")
     @Expose
-    private SportEntity___ sportEntity;
+    private SportEntity_ sportEntity;
 
     public Long getId() {
         return id;
@@ -41,35 +41,35 @@ public class TeamsDeref {
         this.name = name;
     }
 
-    public CategoryEntity___ getCategoryEntity() {
+    public CategoryEntity_ getCategoryEntity() {
         return categoryEntity;
     }
 
-    public void setCategoryEntity(CategoryEntity___ categoryEntity) {
+    public void setCategoryEntity(CategoryEntity_ categoryEntity) {
         this.categoryEntity = categoryEntity;
     }
 
-    public TownEntity____ getTownEntity() {
+    public TownEntity_ getTownEntity() {
         return townEntity;
     }
 
-    public void setTownEntity(TownEntity____ townEntity) {
+    public void setTownEntity(TownEntity_ townEntity) {
         this.townEntity = townEntity;
     }
 
-    public ClubEntity__ getClubEntity() {
+    public ClubEntity getClubEntity() {
         return clubEntity;
     }
 
-    public void setClubEntity(ClubEntity__ clubEntity) {
+    public void setClubEntity(ClubEntity clubEntity) {
         this.clubEntity = clubEntity;
     }
 
-    public SportEntity___ getSportEntity() {
+    public SportEntity_ getSportEntity() {
         return sportEntity;
     }
 
-    public void setSportEntity(SportEntity___ sportEntity) {
+    public void setSportEntity(SportEntity_ sportEntity) {
         this.sportEntity = sportEntity;
     }
 

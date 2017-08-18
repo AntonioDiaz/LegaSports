@@ -1,9 +1,10 @@
 
-package com.adiaz.munisports.sync.retrofit.entities;
+package com.adiaz.munisports.sync.retrofit.entities.competition;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class CompetitionRestEntity {
 
@@ -24,10 +25,13 @@ public class CompetitionRestEntity {
     private TownEntity townEntity;
     @SerializedName("matches")
     @Expose
-    private List<Match> matches = null;
+    private Object matches;
     @SerializedName("classification")
     @Expose
-    private List<Classification> classification = null;
+    private Object classification;
+    @SerializedName("lastUpdate")
+    @Expose
+    private Long lastUpdate;
     @SerializedName("teamsDeref")
     @Expose
     private List<TeamsDeref> teamsDeref = null;
@@ -72,20 +76,28 @@ public class CompetitionRestEntity {
         this.townEntity = townEntity;
     }
 
-    public List<Match> getMatches() {
+    public Object getMatches() {
         return matches;
     }
 
-    public void setMatches(List<Match> matches) {
+    public void setMatches(Object matches) {
         this.matches = matches;
     }
 
-    public List<Classification> getClassification() {
+    public Object getClassification() {
         return classification;
     }
 
-    public void setClassification(List<Classification> classification) {
+    public void setClassification(Object classification) {
         this.classification = classification;
+    }
+
+    public Long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Long lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     public List<TeamsDeref> getTeamsDeref() {

@@ -1,28 +1,15 @@
 package com.adiaz.munisports.sync;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.adiaz.munisports.sync.retrofit.entities.Classification;
-import com.adiaz.munisports.sync.retrofit.entities.CompetitionRestEntity;
-import com.adiaz.munisports.sync.retrofit.entities.Match;
-import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 
@@ -43,7 +30,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 
 	@Override
 	public void onResponse(Call<List<CompetitionRestEntity>> call, Response<List<CompetitionRestEntity>> response) {
-		List<ContentValues> newsCompetitions = new ArrayList<>();
+/*		List<ContentValues> newsCompetitions = new ArrayList<>();
 		List<ContentValues> newsMatches = new ArrayList<>();
 		List<ContentValues> classificationList = new ArrayList<>();
 		try {
@@ -101,7 +88,7 @@ public class SyncTaskRetrofitCallback implements Callback<List<CompetitionRestEn
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e(TAG, "onResponse: " + e.getMessage(), e);
-		}
+		}*/
 	}
 
 	@Override

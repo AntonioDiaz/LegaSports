@@ -12,9 +12,9 @@ import android.support.annotation.Nullable;
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.database.MuniSportsDbHelper;
 
+import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 
 /**
  * Created by toni on 22/04/2017.
@@ -25,7 +25,8 @@ public class MuniSportsContentProvider extends ContentProvider {
 	private MuniSportsDbHelper muniSportsDbHelper;
 
 	public static final int COMPETITIONS = 100;
-	public static final int COMPETITIONS_WITH_SPORT = 101;
+	public static final int COMPETITIONS_WITH_ID = 101;
+	public static final int COMPETITIONS_WITH_SPORT = 102;
 	public static final int MATCHES = 200;
 	public static final int MATCHES_WITH_COMPETITION = 201;
 	public static final int CLASSIFICATION = 300;
@@ -37,6 +38,7 @@ public class MuniSportsContentProvider extends ContentProvider {
 	private static UriMatcher buildUriMatcher() {
 		UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS, COMPETITIONS);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/#", COMPETITIONS_WITH_ID);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/*", COMPETITIONS_WITH_SPORT);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES, MATCHES);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES + "/*", MATCHES_WITH_COMPETITION);
@@ -124,6 +126,12 @@ public class MuniSportsContentProvider extends ContentProvider {
 		SQLiteDatabase db = muniSportsDbHelper.getReadableDatabase();
 		switch (sUriMatcher.match(uri)) {
 			case COMPETITIONS:
+				cursorReturned = db.query(CompetitionsEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
+			case COMPETITIONS_WITH_ID:
+				String competitionServerID = uri.getPathSegments().get(1);
+				selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
+				selectionArgs = new String[]{competitionServerID};
 				cursorReturned = db.query(CompetitionsEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
 				break;
 			case COMPETITIONS_WITH_SPORT:

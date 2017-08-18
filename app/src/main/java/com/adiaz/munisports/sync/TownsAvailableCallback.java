@@ -2,7 +2,7 @@ package com.adiaz.munisports.sync;
 
 import android.util.Log;
 
-import com.adiaz.munisports.sync.retrofit.entities.Town;
+import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import retrofit2.Response;
  * Created by toni on 02/08/2017.
  */
 
-public class TownsAvailableCallback implements Callback<List<Town>> {
+public class TownsAvailableCallback implements Callback<List<TownRestEntity>> {
 
 	private TownsLoadedCallback townsLoadedCallback;
 
@@ -25,16 +25,16 @@ public class TownsAvailableCallback implements Callback<List<Town>> {
 	private static final String TAG = TownsAvailableCallback.class.getSimpleName();
 
 	@Override
-	public void onResponse(Call<List<Town>> call, Response<List<Town>> response) {
+	public void onResponse(Call<List<TownRestEntity>> call, Response<List<TownRestEntity>> response) {
 		townsLoadedCallback.updateActivity(response.body());
 	}
 
 	@Override
-	public void onFailure(Call<List<Town>> call, Throwable t) {
+	public void onFailure(Call<List<TownRestEntity>> call, Throwable t) {
 		Log.d(TAG, "onFailure: " + t.getMessage());
 	}
 
 	public interface TownsLoadedCallback {
-		void updateActivity(List<Town> townList);
+		void updateActivity(List<TownRestEntity> townRestEntityList);
 	}
 }

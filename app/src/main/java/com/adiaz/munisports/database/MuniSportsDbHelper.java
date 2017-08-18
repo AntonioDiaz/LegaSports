@@ -15,7 +15,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "munisports.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	public MuniSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +26,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 		String SQL_CREATE_TABLE_COMPETITION =
 				"CREATE TABLE " + CompetitionsEntry.TABLE_NAME +
 						"(" +
-							CompetitionsEntry.COLUMN_LAST_UPDATE + " INTEGER NOT NULL, " +
+							CompetitionsEntry.COLUMN_LAST_UPDATE + " INTEGER, " +
 							CompetitionsEntry.COLUMN_NAME + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_SPORT + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_CATEGORY + " TEXT NOT NULL, " +
