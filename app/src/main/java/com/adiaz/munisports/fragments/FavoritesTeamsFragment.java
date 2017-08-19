@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.FavoriteTeamActivity;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAdapter.ListItemClickListener {
 
 	@BindView(R.id.rv_fav_teams) RecyclerView recyclerView;
+	@BindView(R.id.tv_empty_list_item) TextView tvEmptyList;
 
 	public FavoritesTeamsFragment() {
 	}
@@ -45,11 +47,19 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 	@Override
 	public void onResume() {
 		super.onResume();
-		FavoritesTeamsAdapter favoritesTeamsAdapter = new FavoritesTeamsAdapter(getActivity(), this);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setAdapter(favoritesTeamsAdapter);
-		favoritesTeamsAdapter.setTeamsFavorites(FavoritesActivity.teamsFavorites);
+
+		if (FavoritesActivity.teamsFavorites.size()==0) {
+			recyclerView.setVisibility(View.INVISIBLE);
+			tvEmptyList.setVisibility(View.VISIBLE);
+		} else {
+			recyclerView.setVisibility(View.VISIBLE);
+			tvEmptyList.setVisibility(View.INVISIBLE);
+			FavoritesTeamsAdapter favoritesTeamsAdapter = new FavoritesTeamsAdapter(getActivity(), this);
+			recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+			recyclerView.setHasFixedSize(true);
+			recyclerView.setAdapter(favoritesTeamsAdapter);
+			favoritesTeamsAdapter.setTeamsFavorites(FavoritesActivity.teamsFavorites);
+		}
 	}
 
 	@Override

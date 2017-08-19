@@ -75,4 +75,7 @@
     <string name="emptyTeamList">No hay equipos registrados para esta competición</string>
     <string name="emptyClassificationList">No hay clasificación para esta competición</string>
     <string name="emptyCalendarList">No hay calendario para esta competición</string>
+    <string name="emptyCompetitionList">No hay competiciones registradas para este deporte</string>
+    <string name="emptyFavCompetitionsList">No hay competiciones marcadas como favoritas</string>
+    <string name="emptyFavTeamList">No hay equipos marcados como favoritos</string>
 </resources>

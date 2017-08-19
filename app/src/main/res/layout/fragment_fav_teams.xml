@@ -6,6 +6,9 @@
     android:fillViewport="true"
     android:scrollbars="none">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,4 +18,12 @@
         android:layout_margin="0dp"
         android:padding="0dp"
         tools:listitem="@layout/listitem_favorites_teams"/>
+        <TextView
+            android:id="@+id/tv_empty_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/emptyFavTeamList"
+            style="@style/empty_list"
+            android:visibility="gone"/>
+    </FrameLayout>
 </android.support.v4.widget.NestedScrollView>
