@@ -19,14 +19,6 @@
         app:tabGravity="fill"
         app:tabMode="fixed"/>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/toolbar_top_margin"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
     <LinearLayout
         android:id="@+id/ll_progress_competition"
         android:layout_width="match_parent"
@@ -111,4 +103,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="com.adiaz.munisports.utilities.harcoPro.ViewBehavior"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </android.support.design.widget.CoordinatorLayout>

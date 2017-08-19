@@ -21,8 +21,7 @@
             app:layout_constraintTop_toBottomOf="parent"
             android:paddingBottom="32dp"
             android:layout_marginBottom="32dp"
-            tools:listitem="@layout/listitem_header_teams"
-            android:visibility="gone"/>
+            tools:listitem="@layout/listitem_header_teams"/>
 
         <TextView
             android:id="@+id/tv_empty_list_item"
@@ -35,7 +34,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:text="@string/emptyTeamList"
             android:textColor="@color/colorPrimary"
-            android:visibility="visible">
+            android:visibility="gone">
         </TextView>
     </LinearLayout>
 
