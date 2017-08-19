@@ -28,14 +28,15 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.entities.ClassificationEntity;
 import com.adiaz.munisports.entities.JornadaEntity;
+import com.adiaz.munisports.entities.MatchEntity;
 import com.adiaz.munisports.entities.TeamEntity;
+import com.adiaz.munisports.entities.TeamMatchEntity;
 import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.sync.MatchesCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
-import com.adiaz.munisports.sync.retrofit.entities.match.MatchRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.Utils;
@@ -43,7 +44,11 @@ import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +57,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, MatchesCallbak.OnFinishLoad {
@@ -242,12 +249,103 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 
 		Cursor cursorMatches = contentResolver.query(uriMatches, MuniSportsDbContract.MatchesEntry.PROJECTION, null, null, null);
 		Cursor cursorClassification = contentResolver.query(uriClassification, MuniSportsDbContract.ClassificationEntry.PROJECTION, null, null, null);
-		this.teams = Utils.initTeams(cursorMatches);
-		this.jornadas = Utils.initCalendar(cursorMatches);
-		this.classificationList = Utils.initClassification(cursorClassification);
+		this.teams = initTeams(cursorMatches);
+		this.jornadas = initCalendar(cursorMatches);
+		this.classificationList = initClassification(cursorClassification);
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 		hideLoading();
 	}
+
+	// TODO: 27/04/2017 OPTIMIZE THIS METHOD!!!
+	/**
+	 * Generate the structure to show the list of matches of each team.
+	 * @param cursorMatches
+	 * @return
+	 */
+	private static List<TeamEntity> initTeams(Cursor cursorMatches) {
+		cursorMatches.moveToPosition(-1);
+		List<TeamEntity> teams = new ArrayList<>();
+		Set<String> teamsSet = new HashSet<>();
+		while (cursorMatches.moveToNext()) {
+			teamsSet.add(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL));
+			teamsSet.add(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
+		}
+		List<String> teamsList = new ArrayList<>();
+		teamsList.addAll(teamsSet);
+		Collections.sort(teamsList);
+		for (String s : teamsList) {
+			List<TeamMatchEntity> matches = new ArrayList<>();
+			cursorMatches.moveToPosition(-1);
+			while (cursorMatches.moveToNext()) {
+				String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
+				String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
+				if (s.equals(teamLocal) || s.equals(teamVisitor)) {
+					TeamMatchEntity teamMatchEntity = new TeamMatchEntity();
+					if (s.equals(teamLocal)) {
+						teamMatchEntity.setLocal(true);
+						teamMatchEntity.setOpponent(teamVisitor);
+					} else {
+						teamMatchEntity.setLocal(false);
+						teamMatchEntity.setOpponent(teamLocal);
+					}
+					String matchPlace = cursorMatches.getString(MatchesEntry.INDEX_PLACE);
+					Long dateLong = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
+					Integer scoreLocal = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
+					Integer scoreVisitor = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
+					teamMatchEntity.setPlace(matchPlace);
+					teamMatchEntity.setDate(new Date(dateLong));
+					teamMatchEntity.setTeamScore(scoreLocal);
+					teamMatchEntity.setOpponentScore(scoreVisitor);
+					matches.add(teamMatchEntity);
+				}
+			}
+			TeamEntity teamEntity = new TeamEntity(s);
+			teamEntity.setMatches(matches);
+			teams.add(teamEntity);
+		}
+		return teams;
+	}
+
+	private static List<JornadaEntity> initCalendar(Cursor cursorMatches) {
+		List<JornadaEntity> calendar = new ArrayList<>();
+		int weekNumber = 1;
+		List<MatchEntity> matches = new ArrayList<>();
+		cursorMatches.moveToPosition(-1);
+		while (cursorMatches.moveToNext()) {
+			int week = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
+			if (weekNumber!=week) {
+				calendar.add (new JornadaEntity(matches));
+				matches = new ArrayList<>();
+				weekNumber = week;
+			}
+			MatchEntity matchEntity = new MatchEntity();
+			matchEntity.setTeamLocal(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL));
+			matchEntity.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
+			matchEntity.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
+			matchEntity.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
+			matchEntity.setPlace(cursorMatches.getString(MatchesEntry.INDEX_PLACE));
+			matchEntity.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
+			matches.add(matchEntity);
+		}
+		return calendar;
+	}
+
+	public static List<ClassificationEntity> initClassification(Cursor cursorClassification) {
+		List<ClassificationEntity> list = new ArrayList<>();
+		while (cursorClassification.moveToNext()) {
+			ClassificationEntity classificationEntry = new ClassificationEntity();
+			classificationEntry.setPosition(cursorClassification.getInt(ClassificationEntry.INDEX_POSITION));
+			classificationEntry.setTeam(cursorClassification.getString(ClassificationEntry.INDEX_TEAM));
+			classificationEntry.setPoints(cursorClassification.getInt(ClassificationEntry.INDEX_POINTS));
+			classificationEntry.setMatchesPlayed(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_PLAYED));
+			classificationEntry.setMatchesWon(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_WON));
+			classificationEntry.setMatchesDrawn(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_DRAWN));
+			classificationEntry.setMatchesLost(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_LOST));
+			list.add(classificationEntry);
+		}
+		return list;
+	}
+
 }
 
