@@ -1,5 +1,6 @@
 package com.adiaz.munisports.sync.retrofit;
 
+import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.sync.retrofit.entities.match.MatchRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
@@ -28,5 +29,8 @@ public interface MuniSportsRestApi {
 
 	@GET("/server/matches/{idCompetition}")
 	Call<List<MatchRestEntity>> matchesQuery(@Path("idCompetition")Long idCompetition);
+
+	@GET("/server/competitiondetails/{idCompetition}")
+	Call<CompetitionDetails> competitionDetailsQuery(@Path("idCompetition")Long idCompetition);
 
 }

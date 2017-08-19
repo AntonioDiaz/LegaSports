@@ -34,6 +34,7 @@ import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.sync.MatchesCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
+import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.sync.retrofit.entities.match.MatchRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
@@ -85,9 +86,9 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	private String sportTitle;
 	// TODO: 18/08/2017 idCompetitionServer should be Long
 	public static String idCompetitionServer;
-	public static List<TeamEntity> teams;
-	public static List<JornadaEntity> jornadas;
-	public static List<ClassificationEntity> classificationList;
+	public static List<TeamEntity> teams = new ArrayList<>();
+	public static List<JornadaEntity> jornadas = new ArrayList<>();
+	public static List<ClassificationEntity> classificationList = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,13 +118,6 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		floatHeaderView.bindTo(competitionName, sportTitle, 16);
 
 		appBarLayout.addOnOffsetChangedListener(this);
-
-		teams = new ArrayList<>();
-		jornadas = new ArrayList<>();
-		classificationList = new ArrayList<>();
-
-
-
 	}
 
 	@Override
@@ -136,7 +130,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 					.addConverterFactory(GsonConverterFactory.create())
 					.build();
 			MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-			Call<List<MatchRestEntity>> listCall = muniSportsRestApi.matchesQuery(new Long (idCompetitionServer));
+			Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(new Long (idCompetitionServer));
 			MatchesCallbak matchesCallbak = new MatchesCallbak(this, new Long(idCompetitionServer), this);
 			listCall.enqueue(matchesCallbak);
 		} else {
@@ -243,11 +237,14 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	@Override
 	public void finishLoad() {
 		ContentResolver contentResolver = this.getContentResolver();
-		Uri uri = MuniSportsDbContract.MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+		Uri uriMatches = MuniSportsDbContract.MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+		Uri uriClassification = MuniSportsDbContract.ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
 
-		Cursor cursorMatches = contentResolver.query(uri, MuniSportsDbContract.MatchesEntry.PROJECTION, null, null, null);
+		Cursor cursorMatches = contentResolver.query(uriMatches, MuniSportsDbContract.MatchesEntry.PROJECTION, null, null, null);
+		Cursor cursorClassification = contentResolver.query(uriClassification, MuniSportsDbContract.ClassificationEntry.PROJECTION, null, null, null);
 		this.teams = Utils.initTeams(cursorMatches);
 		this.jornadas = Utils.initCalendar(cursorMatches);
+		this.classificationList = Utils.initClassification(cursorClassification);
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 		hideLoading();
