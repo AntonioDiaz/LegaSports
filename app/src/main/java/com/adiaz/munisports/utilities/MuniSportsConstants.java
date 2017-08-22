@@ -2,6 +2,8 @@ package com.adiaz.munisports.utilities;
 
 /* Created by toni on 28/03/2017. */
 
+import java.util.concurrent.TimeUnit;
+
 public class MuniSportsConstants {
 	public static final java.lang.String DATE_FORMAT = "dd/MM/yyyy HH:mm";
 
@@ -29,4 +31,6 @@ public class MuniSportsConstants {
 	public static final String KEY_LASTUPDATE = "KEY_LASTUPDATE";
 
 	public static final String UNDEFINDED_FIELD = " - ";
+
+	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(15);
 }

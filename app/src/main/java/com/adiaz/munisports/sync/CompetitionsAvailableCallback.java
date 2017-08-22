@@ -42,7 +42,6 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 
 	@Override
 	public void onResponse(Call<List<CompetitionRestEntity>> call, Response<List<CompetitionRestEntity>> response) {
-		Log.d(TAG, "onResponse: " + response.body());
 		loadCompetitions(response.body());
 		if (this.competitionsLoadedCallback!=null) {
 			competitionsLoadedCallback.updateActivityLoadedCompetitions();
@@ -58,19 +57,18 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportEntity().getTag());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionsEntity.getCategoryEntity().getName().toLowerCase());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
-			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE, competitionsEntity.getLastUpdate());
+			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, 0l);
+			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_LOCAL, 0l);
 			competitionsContentValues.add(cv);
 		}
 		ContentValues[] competitions = competitionsContentValues.toArray(new ContentValues[competitionsContentValues.size()]);
 		ContentResolver contentResolver = mContext.getContentResolver();
-		int delete = contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
-		Log.d(TAG, "loadCompetitions: delete " + delete);
+		contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
 		contentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putLong(MuniSportsConstants.KEY_LASTUPDATE, new Date().getTime());
 		editor.commit();
-
 	}
 
 	@Override

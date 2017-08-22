@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.database.MuniSportsDbHelper;
@@ -22,11 +23,13 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 public class MuniSportsContentProvider extends ContentProvider {
 
+	private static final String TAG = MuniSportsContentProvider.class.getSimpleName();
 	private MuniSportsDbHelper muniSportsDbHelper;
 
 	public static final int COMPETITIONS = 100;
 	public static final int COMPETITIONS_WITH_ID = 101;
 	public static final int COMPETITIONS_WITH_SPORT = 102;
+	public static final int COMPETITIONS_WITH_ID_LASTUPDATE = 103;
 	public static final int MATCHES = 200;
 	public static final int MATCHES_WITH_COMPETITION = 201;
 	public static final int CLASSIFICATION = 300;
@@ -40,6 +43,7 @@ public class MuniSportsContentProvider extends ContentProvider {
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS, COMPETITIONS);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/#", COMPETITIONS_WITH_ID);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/*", COMPETITIONS_WITH_SPORT);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/#/#", COMPETITIONS_WITH_ID_LASTUPDATE);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES, MATCHES);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES + "/*", MATCHES_WITH_COMPETITION);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION, CLASSIFICATION);
@@ -178,6 +182,12 @@ public class MuniSportsContentProvider extends ContentProvider {
 		SQLiteDatabase db = muniSportsDbHelper.getReadableDatabase();
 		switch (sUriMatcher.match(uri)) {
 			case COMPETITIONS:
+				deletedItems = db.delete(CompetitionsEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case MATCHES:
+				deletedItems = db.delete(MatchesEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case CLASSIFICATION:
 				deletedItems = db.delete(ClassificationEntry.TABLE_NAME, selection, selectionArgs);
 				break;
 			case CLASSIFICATION_WITH_COMPETITION:
@@ -200,7 +210,23 @@ public class MuniSportsContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-		throw new RuntimeException("We are not implementing update in MuniSports");
+	public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+		int updateRecors = -1;
+		SQLiteDatabase db = muniSportsDbHelper.getWritableDatabase();
+		switch (sUriMatcher.match(uri)) {
+			case COMPETITIONS_WITH_ID_LASTUPDATE:
+				String updateSql =
+						"UPDATE " + CompetitionsEntry.TABLE_NAME +
+						" SET " + CompetitionsEntry.COLUMN_LAST_UPDATE_LOCAL + "=" + uri.getPathSegments().get(2) +
+						" WHERE " + CompetitionsEntry.COLUMN_ID_SERVER + "=" + uri.getPathSegments().get(1);
+				db.execSQL(updateSql);
+				updateRecors = 1;
+				break;
+			default:
+				throw new UnsupportedOperationException("error " + uri);
+
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return updateRecors;
 	}
 }

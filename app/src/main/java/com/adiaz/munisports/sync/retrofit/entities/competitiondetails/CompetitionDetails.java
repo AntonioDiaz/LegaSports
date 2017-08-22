@@ -1,12 +1,16 @@
 
 package com.adiaz.munisports.sync.retrofit.entities.competitiondetails;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class CompetitionDetails {
 
+    @SerializedName("lastPublished")
+    @Expose
+    private Long lastPublished;
     @SerializedName("matches")
     @Expose
     private List<Match> matches = null;
@@ -30,4 +34,11 @@ public class CompetitionDetails {
         this.classification = classification;
     }
 
+    public Long getLastPublished() {
+        return lastPublished;
+    }
+
+    public void setLastPublished(Long lastPublished) {
+        this.lastPublished = lastPublished;
+    }
 }

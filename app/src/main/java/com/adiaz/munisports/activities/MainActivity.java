@@ -1,5 +1,6 @@
 package com.adiaz.munisports.activities;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +39,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
+
 
 public class MainActivity extends AppCompatActivity
 		implements
@@ -138,7 +142,8 @@ public class MainActivity extends AppCompatActivity
 			startActivity(intent);
 		}
 		if (itemId==R.id.action_changetown) {
-			// TODO: 03/08/2017 ask user confirmation. 
+			// TODO: 03/08/2017 ask user confirmation.
+			/* cleaning preferences. */
 			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
 			editor.remove(MuniSportsConstants.KEY_TOWN_NAME);
 			editor.remove(MuniSportsConstants.KEY_TOWN_ID);
@@ -146,6 +151,11 @@ public class MainActivity extends AppCompatActivity
 			editor.remove(this.getString(R.string.key_favorites_competitions));
 			editor.remove(MuniSportsConstants.KEY_LASTUPDATE);
 			editor.commit();
+			/* cleaning database. */
+			ContentResolver contentResolver = this.getContentResolver();
+			contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
+			contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
+			contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
 			finish();
 			startActivity(getIntent());
 		}
@@ -160,6 +170,7 @@ public class MainActivity extends AppCompatActivity
 		if (rvTowns!=null) {
 			rvTowns.setVisibility(View.INVISIBLE);
 		}
+
 	}
 
 	private void endLoadingTowns() {
@@ -219,7 +230,6 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
 	public void onListItemClick(int clickedItemIndex) {
-		Log.d(TAG, "onListItemClick: " + clickedItemIndex);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(MuniSportsConstants.KEY_TOWN_NAME, mTownRestEntityList.get(clickedItemIndex).getName());

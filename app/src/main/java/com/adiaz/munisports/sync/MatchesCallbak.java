@@ -3,6 +3,7 @@ package com.adiaz.munisports.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -12,14 +13,16 @@ import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Match;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 /**
  * Created by toni on 18/08/2017.
@@ -40,15 +43,24 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 
 	@Override
 	public void onResponse(Call<CompetitionDetails> call, Response<CompetitionDetails> response) {
-		Log.d(TAG, "onResponse: id " + idCompetitionServer);
-
-		List<Match> matches = response.body().getMatches();
-		loadMatches(matches, this.idCompetitionServer, this.mContext);
-
-		List<Classification> classification = response.body().getClassification();
-		loadClassification(classification, this.idCompetitionServer, this.mContext);
-
-		Log.d(TAG, "onResponse: finished");
+		ContentResolver contentResolver = mContext.getContentResolver();
+		/* check if there has been any change since last update.  */
+		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(this.idCompetitionServer);
+		Cursor query = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
+		query.moveToFirst();
+		long lastPublishedServerInDb = query.getLong(CompetitionsEntry.INDEX_LAST_UDPATE_SERVER);
+		long lastPublishedServerInServer = response.body().getLastPublished();
+		query.close();
+		if (lastPublishedServerInDb<lastPublishedServerInServer) {
+			List<Match> matches = response.body().getMatches();
+			loadMatches(matches, this.idCompetitionServer, this.mContext);
+			List<Classification> classification = response.body().getClassification();
+			loadClassification(classification, this.idCompetitionServer, this.mContext);
+		}
+		/* Updating local server update date. */
+		long timeInMillis = Calendar.getInstance().getTimeInMillis();
+		Uri uriCompetitionWithTime = CompetitionsEntry.buildCompetitionUriWithServerIdAndTime(idCompetitionServer, timeInMillis);
+		contentResolver.update(uriCompetitionWithTime, null, null, null);
 		onFinishLoad.finishLoad();
 	}
 
@@ -70,7 +82,6 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
 		Uri uri = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer.toString());
 		int delete = muniSportsContentResolver.delete(uri, null, null);
-		Log.d(TAG, "loadClassification: delete " + delete);
 		muniSportsContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classificationArray);
 	}
 
@@ -96,7 +107,6 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
 		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer.toString());
 		int delete = muniSportsContentResolver.delete(uri, null, null);
-		Log.d(TAG, "loadMatches: delete " + delete);
 		muniSportsContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matchesArray);
 	}
 

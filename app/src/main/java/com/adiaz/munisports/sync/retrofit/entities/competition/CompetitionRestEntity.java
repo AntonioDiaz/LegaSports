@@ -29,9 +29,9 @@ public class CompetitionRestEntity {
     @SerializedName("classification")
     @Expose
     private Object classification;
-    @SerializedName("lastUpdate")
+    @SerializedName("lastPublished")
     @Expose
-    private Long lastUpdate;
+    private Long lastPublished;
     @SerializedName("teamsDeref")
     @Expose
     private List<TeamsDeref> teamsDeref = null;
@@ -92,12 +92,12 @@ public class CompetitionRestEntity {
         this.classification = classification;
     }
 
-    public Long getLastUpdate() {
-        return lastUpdate;
+    public Long getLastPublished() {
+        return lastPublished;
     }
 
-    public void setLastUpdate(Long lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setLastPublished(Long lastPublished) {
+        this.lastPublished = lastPublished;
     }
 
     public List<TeamsDeref> getTeamsDeref() {

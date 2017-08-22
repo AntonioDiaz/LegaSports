@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.firebase.jobdispatcher.Constraint;
@@ -58,7 +57,6 @@ public class MuniSportsSyncUtils {
 	}
 
 	synchronized public static void	initialize(@NonNull final Context context) {
-		Log.d(TAG, "initialize: " + sInitialized);
 		if (sInitialized) {
 			return;
 		}

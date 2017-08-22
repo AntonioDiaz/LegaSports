@@ -1,5 +1,6 @@
 package com.adiaz.munisports.activities;
 
+
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.entities.ClassificationEntity;
 import com.adiaz.munisports.entities.MatchEntity;
 import com.adiaz.munisports.entities.TeamEntity;
@@ -43,6 +44,7 @@ import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +59,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
@@ -131,18 +134,35 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		super.onResume();
 		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
-			Retrofit retrofit = new Retrofit.Builder()
-					.baseUrl(MuniSportsConstants.BASE_URL)
-					.addConverterFactory(GsonConverterFactory.create())
-					.build();
-			MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-			Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(new Long (idCompetitionServer));
-			MatchesCallbak matchesCallbak = new MatchesCallbak(this, new Long(idCompetitionServer), this);
-			listCall.enqueue(matchesCallbak);
+			boolean needToUpdate = this.itIsNecesaryUpdate();
+			if (needToUpdate) {
+				Retrofit retrofit = new Retrofit.Builder()
+						.baseUrl(MuniSportsConstants.BASE_URL)
+						.addConverterFactory(GsonConverterFactory.create())
+						.build();
+				MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
+				Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(new Long(idCompetitionServer));
+				MatchesCallbak matchesCallbak = new MatchesCallbak(this, new Long(idCompetitionServer), this);
+				listCall.enqueue(matchesCallbak);
+			} else {
+				finishLoad();
+			}
 		} else {
 			hideLoading();
 			Utils.showNoInternetAlert(this, activityView);
+			finishLoad();
 		}
+	}
+
+	private boolean itIsNecesaryUpdate() {
+		ContentResolver contentResolver = this.getContentResolver();
+		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(Long.parseLong(idCompetitionServer));
+		Cursor cursor = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
+		cursor.moveToFirst();
+		long lastUpdateTime = cursor.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_LOCAL);
+		long currentTime = Calendar.getInstance().getTimeInMillis();
+		cursor.close();
+		return (currentTime - lastUpdateTime) > MuniSportsConstants.MILISECONDS_NECESSARY_TO_UPDATE;
 	}
 
 	private void hideLoading() {
@@ -243,11 +263,10 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	@Override
 	public void finishLoad() {
 		ContentResolver contentResolver = this.getContentResolver();
-		Uri uriMatches = MuniSportsDbContract.MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
-		Uri uriClassification = MuniSportsDbContract.ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
-
-		Cursor cursorMatches = contentResolver.query(uriMatches, MuniSportsDbContract.MatchesEntry.PROJECTION, null, null, null);
-		Cursor cursorClassification = contentResolver.query(uriClassification, MuniSportsDbContract.ClassificationEntry.PROJECTION, null, null, null);
+		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
+		Cursor cursorMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
+		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
 		this.teams = initTeams(cursorMatches);
 		this.weeks = initCalendar(cursorMatches);
 		this.classificationList = initClassification(cursorClassification);
@@ -350,9 +369,6 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		return weeksList;
 	}
 
-
-
-
 	public static List<ClassificationEntity> initClassification(Cursor cursorClassification) {
 		List<ClassificationEntity> list = new ArrayList<>();
 		while (cursorClassification.moveToNext()) {
@@ -368,6 +384,5 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		}
 		return list;
 	}
-
 }
 
