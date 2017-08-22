@@ -18,8 +18,50 @@
         android:layout_marginTop="8dp">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_match_empty"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_marginBottom="8dp"
+            >
+            <TextView
+                android:id="@+id/tv_fav_team_jornada_empty"
+                style="@style/text_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/example_jornada"/>
+
+            <TextView
+                android:id="@+id/tv_fav_team_undefined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/undefined_match"
+                android:textAppearance="@style/text_header_small"
+                app:layout_constraintLeft_toRightOf="@+id/tv_fav_team_jornada_empty"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_fav_team_jornada_empty"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_team_jornada_empty"
+                android:layout_marginBottom="8dp"/>
+
+        </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_match_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            >
 
             <TextView
                 android:id="@+id/tv_fav_team_jornada"

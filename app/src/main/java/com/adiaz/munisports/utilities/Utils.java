@@ -3,7 +3,6 @@ package com.adiaz.munisports.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,20 +10,16 @@ import android.view.View;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.CompetitionEntity;
-import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamFavoriteEntity;
-import com.adiaz.munisports.entities.TeamMatchEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 /* Created by toni on 28/03/2017. */
 
@@ -69,36 +64,6 @@ public class Utils {
 		return favoritesList;
 	}
 
-	public static TeamEntity initTeamCompetition(Context context, String teamName, String idCompetitionServer) {
-		TeamEntity teamEntity = new TeamEntity(teamName);
-		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
-		Cursor cursor = context.getContentResolver().query(uri, MatchesEntry.PROJECTION, null, null, null);
-		while (cursor.moveToNext()) {
-			String teamLocal = cursor.getString(MatchesEntry.INDEX_TEAM_LOCAL);
-			String teamVisitor = cursor.getString(MatchesEntry.INDEX_TEAM_VISITOR);
-			if (teamName.equals(teamLocal) || teamName.equals(teamVisitor)) {
-				TeamMatchEntity teamMatchEntity = new TeamMatchEntity();
-				Long longDate = cursor.getLong(MatchesEntry.INDEX_DATE);
-				Integer scoreLocal = cursor.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
-				Integer scoreVisitor = cursor.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
-				if (teamName.equals(teamLocal)) {
-					teamMatchEntity.setLocal(true);
-					teamMatchEntity.setOpponent(teamVisitor);
-				} else {
-					teamMatchEntity.setLocal(false);
-					teamMatchEntity.setOpponent(teamLocal);
-				}
-				teamMatchEntity.setPlace(cursor.getString(MatchesEntry.INDEX_PLACE));
-				teamMatchEntity.setDate(new Date(longDate));
-				teamMatchEntity.setTeamScore(scoreLocal);
-				teamMatchEntity.setOpponentScore(scoreVisitor);
-				teamEntity.getMatches().add(teamMatchEntity);
-			}
-		}
-		cursor.close();
-		return teamEntity;
-	}
-
 	public static String getStringResourceByName(Context context, String aString) {
 		String packageName = context.getPackageName();
 		String strResource = context.getString(R.string.NOT_FOUND);
@@ -112,7 +77,7 @@ public class Utils {
 	}
 
 	public static String generateTeamKey(String tag, String idCompetitionServer) {
-		return  tag + "|" + idCompetitionServer;
+		return tag + "|" + idCompetitionServer;
 	}
 
 	public static String composeFavoriteTeamId(String teamName, String idCompetitionServer) {
@@ -146,7 +111,7 @@ public class Utils {
 		List<TeamFavoriteEntity> teamsFavorites = new ArrayList<>();
 		List<String> favorites = Utils.getFavorites(context, context.getString(R.string.key_favorites_teams));
 		for (String favorite : favorites) {
-			if (favorite.split("\\|").length>=2) {
+			if (favorite.split("\\|").length >= 2) {
 				String teamName = favorite.split("\\|")[0];
 				String idCompetitionsServer = favorite.split("\\|")[1];
 				TeamFavoriteEntity teamFavoriteEntity = null;
@@ -158,7 +123,7 @@ public class Utils {
 					String[] selectionArgs = new String[]{idCompetitionsServer};
 					Cursor cursor = context.getContentResolver().query(
 							CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, selection, selectionArgs, null);
-					if (cursor.getCount()==1) {
+					if (cursor.getCount() == 1) {
 						cursor.moveToNext();
 						teamFavoriteEntity.setSportTag(cursor.getString(CompetitionsEntry.INDEX_SPORT));
 						teamFavoriteEntity.setCategoryTag(cursor.getString(CompetitionsEntry.INDEX_CATEGORY));

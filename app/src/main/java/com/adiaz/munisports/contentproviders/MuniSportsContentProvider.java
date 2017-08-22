@@ -61,7 +61,6 @@ public class MuniSportsContentProvider extends ContentProvider {
 			case COMPETITIONS:
 				try {
 					db.beginTransaction();
-					db.delete(CompetitionsEntry.TABLE_NAME, null, null);
 					for (ContentValues contentValues : values) {
 						long id = db.insert(CompetitionsEntry.TABLE_NAME, null, contentValues);
 						if (id!=-1) {
@@ -76,7 +75,6 @@ public class MuniSportsContentProvider extends ContentProvider {
 			case MATCHES:
 				try {
 					db.beginTransaction();
-					db.delete(MatchesEntry.TABLE_NAME, null, null);
 					for (ContentValues contentValues : values) {
 						long id = db.insert(MatchesEntry.TABLE_NAME, null, contentValues);
 						if (id!=-1) {
@@ -175,8 +173,30 @@ public class MuniSportsContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-		return 0;
+	public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+		int deletedItems;
+		SQLiteDatabase db = muniSportsDbHelper.getReadableDatabase();
+		switch (sUriMatcher.match(uri)) {
+			case COMPETITIONS:
+				deletedItems = db.delete(ClassificationEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case CLASSIFICATION_WITH_COMPETITION:
+				selection = MatchesEntry.COLUMN_ID_COMPETITION_SERVER + "=?";
+				selectionArgs = new String[]{uri.getPathSegments().get(1)};
+				deletedItems = db.delete(ClassificationEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case MATCHES_WITH_COMPETITION:
+				selection = MatchesEntry.COLUMN_ID_COMPETITION_SERVER + "=?";
+				selectionArgs = new String[]{uri.getPathSegments().get(1)};
+				deletedItems = db.delete(MatchesEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			default:
+				throw new UnsupportedOperationException("error " + uri);
+		}
+		if (deletedItems>0) {
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		return deletedItems;
 	}
 
 	@Override

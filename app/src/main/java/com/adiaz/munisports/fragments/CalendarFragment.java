@@ -43,7 +43,7 @@ public class CalendarFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), CompetitionActivity.jornadas);
+		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), CompetitionActivity.weeks);
 		nonScrollExpandableListView.setAdapter(calendarAdapter);
 		nonScrollExpandableListView.setEmptyView(tvEmptyListItem);
 		calendarAdapter.notifyDataSetChanged();

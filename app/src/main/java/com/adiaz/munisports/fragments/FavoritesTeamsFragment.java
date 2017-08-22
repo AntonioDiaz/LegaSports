@@ -47,7 +47,6 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		if (FavoritesActivity.teamsFavorites.size()==0) {
 			recyclerView.setVisibility(View.INVISIBLE);
 			tvEmptyList.setVisibility(View.VISIBLE);
@@ -72,6 +71,5 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, teamFavoriteEntity.getSportTag());
 		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, teamFavoriteEntity.getCategoryTag());
 		startActivity(intent);
-
 	}
 }

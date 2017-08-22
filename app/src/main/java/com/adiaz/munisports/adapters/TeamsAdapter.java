@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.utilities.Utils;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamMatchEntity;
+import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.Utils;
 
 import java.util.List;
 
@@ -21,31 +23,34 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /* Created by toni on 23/03/2017. */
-
 public class TeamsAdapter extends BaseExpandableListAdapter {
 
+	// private static final String TAG = TeamsAdapter.class.getSimpleName();
+
 	private Context mContext;
-	private List<TeamEntity> teams;
+	private List<TeamEntity> teamsList;
 	private String idCompetitionServer;
 
+	@Nullable @BindView(R.id.ll_matchinfo) LinearLayout llMatchInfo;
+	@Nullable @BindView(R.id.tv_undefined) TextView tvUndefined;
 	@Nullable @BindView(R.id.tv_local) TextView tvLocal;
 	@Nullable @BindView(R.id.tv_visitor) TextView tvVisitor;
 	@Nullable @BindView(R.id.tv_local_score) TextView tvLocalScore;
 	@Nullable @BindView(R.id.tv_visitor_score) TextView tvVisitorScore;
 	@Nullable @BindView(R.id.tv_heading) TextView tvHeading;
 	@Nullable @BindView(R.id.iv_favorites) ImageView imageView;
+	@Nullable @BindView(R.id.tv_week) TextView tvWeek;
 
-	public TeamsAdapter(Context mContext, List<TeamEntity> teams, String idCompetitionServer) {
+	public TeamsAdapter(Context mContext, List<TeamEntity> teamsList, String idCompetitionServer) {
 		this.mContext = mContext;
-		this.teams = teams;
+		this.teamsList = teamsList;
 		this.idCompetitionServer = idCompetitionServer;
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		TeamEntity teamEntity = teams.get(groupPosition);
-		TeamMatchEntity teamMatchEntity = teamEntity.getMatches().get(childPosition);
-		return teamMatchEntity;
+		TeamEntity teamEntity = teamsList.get(groupPosition);
+		return teamEntity.getMatches()[childPosition];
 	}
 
 	@Override
@@ -55,57 +60,72 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
-		TeamEntity teamEntity = (TeamEntity) getGroup(groupPosition);
-		TeamMatchEntity teamMatchEntity = (TeamMatchEntity) getChild(groupPosition, childPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = layoutInflater.inflate(R.layout.listitem_child_teams, null);
 		}
 		ButterKnife.bind(this, view);
-		String localStr;
-		String visitorStr;
-		String localScoreStr;
-		String visitorScoreStr;
-		if (teamMatchEntity.isLocal()) {
-			localStr = teamEntity.getTeamName();
-			localScoreStr = teamMatchEntity.getTeamScore()==null?"_":teamMatchEntity.getTeamScore().toString();
-			visitorStr = teamMatchEntity.getOpponent();
-			visitorScoreStr = teamMatchEntity.getOpponentScore()==null?"_":teamMatchEntity.getOpponentScore().toString();
-			tvLocal.setTypeface(null, Typeface.BOLD);
-			tvLocalScore.setTypeface(null, Typeface.BOLD);
-			tvVisitor.setTypeface(null, Typeface.NORMAL);
-			tvVisitorScore.setTypeface(null, Typeface.NORMAL);
+		tvWeek.setText(Integer.toString(childPosition + 1));
+		TeamMatchEntity teamMatchEntity = (TeamMatchEntity) getChild(groupPosition, childPosition);
+		if (teamMatchEntity != null) {
+			/*Check if the time have rest this week. */
+			if (teamMatchEntity.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+				llMatchInfo.setVisibility(View.GONE);
+				tvUndefined.setVisibility(View.VISIBLE);
+				tvUndefined.setText(mContext.getString(R.string.rest_team));
+			} else {
+				String teamEntity = getGroup(groupPosition);
+				llMatchInfo.setVisibility(View.VISIBLE);
+				tvUndefined.setVisibility(View.GONE);
+				String localStr;
+				String visitorStr;
+				String localScoreStr;
+				String visitorScoreStr;
+				if (teamMatchEntity.isLocal()) {
+					localStr = teamEntity;
+					localScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
+					visitorStr = teamMatchEntity.getOpponent();
+					visitorScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
+					tvLocal.setTypeface(null, Typeface.BOLD);
+					tvLocalScore.setTypeface(null, Typeface.BOLD);
+					tvVisitor.setTypeface(null, Typeface.NORMAL);
+					tvVisitorScore.setTypeface(null, Typeface.NORMAL);
+				} else {
+					visitorStr = teamEntity;
+					localStr = teamMatchEntity.getOpponent();
+					localScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
+					visitorScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
+					tvLocal.setTypeface(null, Typeface.NORMAL);
+					tvLocalScore.setTypeface(null, Typeface.NORMAL);
+					tvVisitor.setTypeface(null, Typeface.BOLD);
+					tvVisitorScore.setTypeface(null, Typeface.BOLD);
+				}
+				tvLocal.setText(localStr);
+				tvLocalScore.setText(localScoreStr);
+				tvVisitor.setText(visitorStr);
+				tvVisitorScore.setText(visitorScoreStr);
+			}
 		} else {
-			localStr = teamMatchEntity.getOpponent();
-			localScoreStr = teamMatchEntity.getOpponentScore()==null?"_":teamMatchEntity.getOpponentScore().toString();
-			visitorStr = teamEntity.getTeamName();
-			visitorScoreStr = teamMatchEntity.getTeamScore()==null?"_":teamMatchEntity.getTeamScore().toString();
-			tvLocal.setTypeface(null, Typeface.NORMAL);
-			tvLocalScore.setTypeface(null, Typeface.NORMAL);
-			tvVisitor.setTypeface(null, Typeface.BOLD);
-			tvVisitorScore.setTypeface(null, Typeface.BOLD);
+			llMatchInfo.setVisibility(View.GONE);
+			tvUndefined.setVisibility(View.VISIBLE);
+			tvUndefined.setText(mContext.getString(R.string.undefined_match));
 		}
-		tvLocal.setText(localStr);
-		tvLocalScore.setText(localScoreStr);
-		tvVisitor.setText(visitorStr);
-		tvVisitorScore.setText(visitorScoreStr);
 		return view;
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		TeamEntity teamEntity = teams.get(groupPosition);
-		return teamEntity.getMatches().size();
+		return teamsList.get(groupPosition).getMatches().length;
 	}
 
 	@Override
-	public Object getGroup(int groupPosition) {
-		return teams.get(groupPosition);
+	public String getGroup(int groupPosition) {
+		return teamsList.get(groupPosition).getTeamName();
 	}
 
 	@Override
 	public int getGroupCount() {
-		return teams.size();
+		return teamsList.size();
 	}
 
 	@Override
@@ -115,21 +135,21 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getGroupView(int groupPosition, boolean isLastChild, View view, ViewGroup parent) {
-		TeamEntity teamEntity = (TeamEntity) getGroup(groupPosition);
+		String teamEntity = getGroup(groupPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = layoutInflater.inflate(R.layout.listitem_header_teams, null);
 		}
 		ButterKnife.bind(this, view);
-		tvHeading.setText(teamEntity.getTeamName());
+		tvHeading.setText(teamEntity);
 		String key = mContext.getString(R.string.key_favorites_teams);
-		String teamName = Utils.generateTeamKey(teamEntity.getTeamName(), idCompetitionServer);
+		String teamName = Utils.generateTeamKey(teamEntity, idCompetitionServer);
 		if (Utils.checkIfFavoritSelected(mContext, teamName, key)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite);
 		}
-		imageView.setTag(teamEntity.getTeamName());
+		imageView.setTag(teamEntity);
 		return view;
 	}
 

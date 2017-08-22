@@ -1,18 +1,20 @@
 package com.adiaz.munisports.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /* Created by toni on 28/03/2017. */
 
 public class TeamEntity {
 
 	private String teamName;
-	private List<TeamMatchEntity> matches;
+	private TeamMatchEntity[] matches;
 
-	public TeamEntity(String teamName) {
+	public TeamEntity(String teamName, Integer weeksNumber) {
 		this.teamName = teamName;
-		this.matches = new ArrayList<>();
+		this.matches = new TeamMatchEntity[weeksNumber];
+	}
+
+	public TeamEntity(String teamName, TeamMatchEntity[] matches) {
+		this.teamName = teamName;
+		this.matches = matches;
 	}
 
 	public String getTeamName() {
@@ -23,11 +25,15 @@ public class TeamEntity {
 		this.teamName = teamName;
 	}
 
-	public List<TeamMatchEntity> getMatches() {
+	public TeamMatchEntity[] getMatches() {
 		return matches;
 	}
 
-	public void setMatches(List<TeamMatchEntity> matches) {
+	public void setMatches(TeamMatchEntity[] matches) {
 		this.matches = matches;
+	}
+
+	public void add(Integer week, TeamMatchEntity teamMatchEntity) {
+		this.matches[week] = teamMatchEntity;
 	}
 }

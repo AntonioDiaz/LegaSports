@@ -3,11 +3,13 @@ package com.adiaz.munisports.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Classification;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Match;
+import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,9 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 		}
 		ContentValues[] classificationArray = cvClassificationList.toArray(new ContentValues[cvClassificationList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
+		Uri uri = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer.toString());
+		int delete = muniSportsContentResolver.delete(uri, null, null);
+		Log.d(TAG, "loadClassification: delete " + delete);
 		muniSportsContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classificationArray);
 	}
 
@@ -73,12 +78,15 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 		List<ContentValues> cvMatcheList = new ArrayList<>();
 		for (Match match : matchList) {
 			ContentValues cvMatch = new ContentValues();
-			cvMatch.put(MatchesEntry.COLUMN_TEAM_LOCAL, match.getTeamLocalEntity().getName());
-			cvMatch.put(MatchesEntry.COLUMN_TEAM_VISITOR, match.getTeamVisitorEntity().getName());
+			String teamLocal = match.getTeamLocalEntity()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getTeamLocalEntity().getName();
+			String teamVisitor = match.getTeamVisitorEntity()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getTeamVisitorEntity().getName();
+			String sportCenterCourt = match.getSportCenterCourt()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getSportCenterCourt().getNameWithCenter();
+			cvMatch.put(MatchesEntry.COLUMN_TEAM_LOCAL, teamLocal);
+			cvMatch.put(MatchesEntry.COLUMN_TEAM_VISITOR, teamVisitor);
 			cvMatch.put(MatchesEntry.COLUMN_SCORE_LOCAL, match.getScoreLocal());
 			cvMatch.put(MatchesEntry.COLUMN_SCORE_VISITOR, match.getScoreVisitor());
 			cvMatch.put(MatchesEntry.COLUMN_WEEK, match.getWeek());
-			cvMatch.put(MatchesEntry.COLUMN_PLACE, match.getSportCenterCourt().getNameWithCenter());
+			cvMatch.put(MatchesEntry.COLUMN_PLACE, sportCenterCourt);
 			cvMatch.put(MatchesEntry.COLUMN_DATE, match.getDate());
 			cvMatch.put(MatchesEntry.COLUMN_ID_SERVER, match.getId());
 			cvMatch.put(MatchesEntry.COLUMN_ID_COMPETITION_SERVER, idCompetitionServer);
@@ -86,6 +94,9 @@ public class MatchesCallbak implements Callback<CompetitionDetails> {
 		}
 		ContentValues[] matchesArray = cvMatcheList.toArray(new ContentValues[cvMatcheList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
+		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer.toString());
+		int delete = muniSportsContentResolver.delete(uri, null, null);
+		Log.d(TAG, "loadMatches: delete " + delete);
 		muniSportsContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matchesArray);
 	}
 

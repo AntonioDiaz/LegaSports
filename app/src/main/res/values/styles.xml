@@ -64,7 +64,9 @@
 
     <style name="teams_list">
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Small</item>
-        <item name="android:textColor">@color/colorGrey</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/detail_text</item>
+        <!--<item name="android:background">@color/colorPrimary</item>-->
     </style>
 
     <style name="text_header">

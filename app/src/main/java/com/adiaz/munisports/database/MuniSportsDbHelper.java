@@ -15,7 +15,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "munisports.db";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 7;
 
 	public MuniSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,7 +46,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 						MatchesEntry.COLUMN_SCORE_VISITOR + " INTEGER NOT NULL, " +
 						MatchesEntry.COLUMN_WEEK + " INTEGER NOT NULL, " +
 						MatchesEntry.COLUMN_PLACE + " TEXT NOT NULL, " +
-						MatchesEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+						MatchesEntry.COLUMN_DATE + " INTEGER, " +
 						MatchesEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
 						MatchesEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL," +
 						"UNIQUE (" + MatchesEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +

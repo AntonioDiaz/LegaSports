@@ -78,4 +78,8 @@
     <string name="emptyCompetitionList">No hay competiciones registradas para este deporte</string>
     <string name="emptyFavCompetitionsList">No hay competiciones marcadas como favoritas</string>
     <string name="emptyFavTeamList">No hay equipos marcados como favoritos</string>
+    <string name="undefined_date">(fecha sin definir)</string>
+    <string name="undefined_match">(jornada sin definir)</string>
+    <string name="rest_team">(descansa)</string>
+
 </resources>

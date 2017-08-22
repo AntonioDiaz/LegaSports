@@ -52,13 +52,10 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 	private void loadCompetitions(List<CompetitionRestEntity> competitionsList) {
 		List<ContentValues> competitionsContentValues = new ArrayList<>();
 		for (CompetitionRestEntity competitionsEntity : competitionsList) {
-			Log.d(TAG, "loadCompetitions: " + competitionsEntity);
-			Log.d(TAG, "loadCompetitions idServer: " + competitionsEntity.getId());
-			Log.d(TAG, "loadCompetitions lastUpdate: " + competitionsEntity.getLastUpdate());
 			ContentValues cv = new ContentValues();
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, competitionsEntity.getId());
 			cv.put(CompetitionsEntry.COLUMN_NAME, competitionsEntity.getName());
-			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportEntity().getName().toUpperCase());
+			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportEntity().getTag());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionsEntity.getCategoryEntity().getName().toLowerCase());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE, competitionsEntity.getLastUpdate());
@@ -66,6 +63,8 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		}
 		ContentValues[] competitions = competitionsContentValues.toArray(new ContentValues[competitionsContentValues.size()]);
 		ContentResolver contentResolver = mContext.getContentResolver();
+		int delete = contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
+		Log.d(TAG, "loadCompetitions: delete " + delete);
 		contentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		SharedPreferences.Editor editor = preferences.edit();

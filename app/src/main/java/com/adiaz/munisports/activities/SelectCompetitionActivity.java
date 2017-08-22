@@ -50,6 +50,7 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(sportTitle);
 		// TODO: 25/04/2017 should get the competitions from the contentprovider.
+		Log.d(TAG, "onCreate: " + sportTag);
 		Uri uriWithSport = MuniSportsDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
 		mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
 		Log.d(TAG, "onCreate: "  + mCursor.getCount());

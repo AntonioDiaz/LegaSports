@@ -1,7 +1,9 @@
 package com.adiaz.munisports.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -33,20 +35,20 @@ import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
-	@BindView(R.id.app_bar_layout)
-	AppBarLayout appBarLayout;
+	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
 	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-	@BindView(R.id.toolbar_header_view)
-	HeaderView toolbarHeaderView;
+	@BindView(R.id.toolbar_header_view)	HeaderView toolbarHeaderView;
 	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
 	@BindView(R.id.tv_title) TextView tvTitle;
@@ -77,7 +79,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		toolbarHeaderView.bindTo(teamName, subTitle, 0);
 		floatHeaderView.bindTo(teamName, subTitle, 16);
 		appBarLayout.addOnOffsetChangedListener(this);
-		TeamEntity teamEntity = Utils.initTeamCompetition(this, teamName, idCompetitionServer);
+		TeamEntity teamEntity = FavoriteTeamActivity.initTeamCompetition(this, teamName, idCompetitionServer);
 		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(adapter);
@@ -198,5 +200,45 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 			toolbarHeaderView.setVisibility(View.GONE);
 			isHideToolbarView = !isHideToolbarView;
 		}
+	}
+
+	private static TeamEntity initTeamCompetition(Context context, String teamName, String idCompetitionServer) {
+		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
+		Cursor cursorMatches = context.getContentResolver().query(uri, MatchesEntry.PROJECTION, null, null, null);
+		cursorMatches.moveToPosition(-1);
+		Integer weeksNumber = -1;
+		while (cursorMatches.moveToNext()) {
+			Integer currentWeek = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
+			if (currentWeek>weeksNumber) {
+				weeksNumber = currentWeek;
+			}
+		}
+		cursorMatches.moveToPosition(-1);
+		TeamEntity teamEntity = new TeamEntity(teamName, weeksNumber);
+		while (cursorMatches.moveToNext()) {
+			String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
+			String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
+			if (teamName.equals(teamLocal) || teamName.equals(teamVisitor)) {
+				TeamMatchEntity teamMatchEntity = new TeamMatchEntity();
+				Integer week = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
+				Long longDate = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
+				Integer scoreLocal = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
+				Integer scoreVisitor = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
+				if (teamName.equals(teamLocal)) {
+					teamMatchEntity.setLocal(true);
+					teamMatchEntity.setOpponent(teamVisitor);
+				} else {
+					teamMatchEntity.setLocal(false);
+					teamMatchEntity.setOpponent(teamLocal);
+				}
+				teamMatchEntity.setPlace(cursorMatches.getString(MatchesEntry.INDEX_PLACE));
+				teamMatchEntity.setDate(new Date(longDate));
+				teamMatchEntity.setTeamScore(scoreLocal);
+				teamMatchEntity.setOpponentScore(scoreVisitor);
+				teamEntity.add(week -1, teamMatchEntity);
+			}
+		}
+		cursorMatches.close();
+		return teamEntity;
 	}
 }

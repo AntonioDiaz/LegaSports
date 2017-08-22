@@ -4,11 +4,11 @@ import java.util.List;
 
 /** Created by toni on 23/03/2017. */
 
-public class JornadaEntity {
+public class WeekEntity {
 
 	List<MatchEntity> matches;
 
-	public JornadaEntity(List<MatchEntity> matches) {
+	public WeekEntity(List<MatchEntity> matches) {
 		this.matches = matches;
 	}
 

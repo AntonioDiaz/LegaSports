@@ -9,7 +9,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.JornadaEntity;
 import com.adiaz.munisports.entities.MatchEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
@@ -24,8 +23,9 @@ import butterknife.ButterKnife;
 
 public class CalendarAdapter extends BaseExpandableListAdapter {
 
+	private static final String TAG = CalendarAdapter.class.getSimpleName();
 	private Context mContext;
-	private List<JornadaEntity> jornadas;
+	private List<List<MatchEntity>> weeksList;
 
 	@Nullable @BindView(R.id.childItem_teamlocal) TextView localTeam;
 	@Nullable @BindView(R.id.childItem_teamvisitor) TextView visitorTeam;
@@ -33,15 +33,15 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 	@Nullable @BindView(R.id.childItem_place) TextView place;
 	@Nullable @BindView(R.id.heading) TextView textViewHeading;
 
-	public CalendarAdapter(Context mContext, List<JornadaEntity> jornadas) {
+	public CalendarAdapter(Context mContext, List<List<MatchEntity>> weeksList) {
 		this.mContext = mContext;
-		this.jornadas = jornadas;
+		this.weeksList = weeksList;
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		JornadaEntity jornadaEntity = jornadas.get(groupPosition);
-		MatchEntity matchEntity = jornadaEntity.getMatches().get(childPosition);
+		List<MatchEntity> matches = weeksList.get(groupPosition);
+		MatchEntity matchEntity = matches.get(childPosition);
 		return matchEntity;
 	}
 
@@ -58,28 +58,40 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			view = layoutInflater.inflate(R.layout.listitem_child_calendar, null);
 		}
 		ButterKnife.bind(this, view);
-		localTeam.setText(matchEntity.getTeamLocal());
-		visitorTeam.setText(matchEntity.getTeamVisitor());
-		DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-		date.setText(df.format(matchEntity.getDate()));
+		String teamLocal = matchEntity.getTeamLocal();
+		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			teamLocal = mContext.getString(R.string.rest_team);
+		}
+		localTeam.setText(teamLocal);
+		String teamVisitor = matchEntity.getTeamVisitor();
+		if (teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			teamVisitor = mContext.getString(R.string.rest_team);
+		}
+
+		visitorTeam.setText(teamVisitor);
+		if (matchEntity.getDate().getTime()==0) {
+			date.setText(mContext.getString(R.string.undefined_date));
+		} else {
+			DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
+			date.setText(df.format(matchEntity.getDate()));
+		}
 		place.setText(matchEntity.getPlace());
 		return view;
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		JornadaEntity jornadaEntity = jornadas.get(groupPosition);
-		return jornadaEntity.getMatches().size();
+		return this.weeksList.get(groupPosition).size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return jornadas.get(groupPosition);
+		return weeksList.get(groupPosition);
 	}
 
 	@Override
 	public int getGroupCount() {
-		return jornadas.size();
+		return weeksList.size();
 	}
 
 	@Override
