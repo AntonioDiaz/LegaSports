@@ -29,7 +29,6 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 
 	@Nullable @BindView(R.id.childItem_teamlocal) TextView tvLocalTeam;
 	@Nullable @BindView(R.id.childItem_teamvisitor) TextView tvVisitorTeam;
-	//@Nullable @BindView(R.id.childItem_match_undefined) TextView tvMatchUndefined;
 	@Nullable @BindView(R.id.childItem_date) TextView date;
 	@Nullable @BindView(R.id.childItem_place) TextView place;
 	@Nullable @BindView(R.id.heading) TextView textViewHeading;
@@ -62,14 +61,9 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 		String teamLocal = matchEntity.getTeamLocal();
 		String teamVisitor = matchEntity.getTeamVisitor();
 		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD) && teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
-			//tvMatchUndefined.setVisibility(View.INVISIBLE);
-			tvLocalTeam.setVisibility(View.GONE);
-			tvVisitorTeam.setVisibility(View.GONE);
+			tvLocalTeam.setText(mContext.getString(R.string.undefined_match));
+			tvVisitorTeam.setText("");
 		} else {
-			//tvMatchUndefined.setVisibility(View.GONE);
-			tvLocalTeam.setVisibility(View.VISIBLE);
-			tvVisitorTeam.setVisibility(View.VISIBLE);
-
 			if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				teamLocal = mContext.getString(R.string.rest_team);
 			}
