@@ -1,5 +1,6 @@
 package com.adiaz.munisports.activities;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
+import com.adiaz.munisports.entities.CourtEntity;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamMatchEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
@@ -36,12 +38,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
+
+
 
 public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
@@ -143,7 +148,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	}
 	public void showLocation(View view) {
 		TeamMatchEntity teamMatchEntity = (TeamMatchEntity)view.getTag();
-		Uri addressUri = Uri.parse("geo:0,0?q=leganes, pabellon europa");
+		Uri addressUri = Uri.parse("geo:0,0?q=" + teamMatchEntity.getPlaceAddress());
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(addressUri);
 		if (intent.resolveActivity(getPackageManager()) != null) {
@@ -170,7 +175,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 				.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
 				.putExtra(CalendarContract.Events.TITLE, titleStr)
 				.putExtra(CalendarContract.Events.DESCRIPTION, descStr)
-				.putExtra(CalendarContract.Events.EVENT_LOCATION, teamMatchEntity.getPlace());
+				.putExtra(CalendarContract.Events.EVENT_LOCATION, teamMatchEntity.getPlaceName());
 		startActivity(intent);
 	}
 
@@ -180,7 +185,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		String title = getString(R.string.calendar_title, teamName, teamMatchEntity.getOpponent());
 		DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
 		String strDate = df.format(teamMatchEntity.getDate());
-		String subject = getString(R.string.share_description, teamName, teamMatchEntity.getOpponent(), strDate, teamMatchEntity.getPlace());
+		String subject = getString(R.string.share_description, teamName, teamMatchEntity.getOpponent(), strDate, teamMatchEntity.getPlaceName());
 		ShareCompat.IntentBuilder
 				.from(this)
 				.setChooserTitle(title)
@@ -207,6 +212,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		Cursor cursorMatches = context.getContentResolver().query(uri, MatchesEntry.PROJECTION, null, null, null);
 		cursorMatches.moveToPosition(-1);
 		Integer weeksNumber = -1;
+		Map<Long, CourtEntity> mapCourts = Utils.initCourts(context);
 		while (cursorMatches.moveToNext()) {
 			Integer currentWeek = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
 			if (currentWeek>weeksNumber) {
@@ -231,7 +237,10 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 					teamMatchEntity.setLocal(false);
 					teamMatchEntity.setOpponent(teamLocal);
 				}
-				teamMatchEntity.setPlace(cursorMatches.getString(MatchesEntry.INDEX_PLACE));
+				Long sportCourtId = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
+				CourtEntity courtEntity = mapCourts.get(sportCourtId);
+				teamMatchEntity.setPlaceName(courtEntity.getCourtFullName());
+				teamMatchEntity.setPlaceAddress(courtEntity.getCenterAddress());
 				teamMatchEntity.setDate(new Date(longDate));
 				teamMatchEntity.setTeamScore(scoreLocal);
 				teamMatchEntity.setOpponentScore(scoreVisitor);

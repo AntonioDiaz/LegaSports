@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.ClassificationEntity;
+import com.adiaz.munisports.entities.CourtEntity;
 import com.adiaz.munisports.entities.MatchEntity;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamMatchEntity;
@@ -97,6 +98,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	public static List<TeamEntity> teams = new ArrayList<>();
 	public static List<List<MatchEntity>> weeks = new ArrayList<>();
 	public static List<ClassificationEntity> classificationList = new ArrayList<>();
+	public static Map<Long, CourtEntity> courtsMap = new HashMap<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -266,18 +268,24 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
 		Cursor cursorMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
 		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
-		this.teams = initTeams(cursorMatches);
-		this.weeks = initCalendar(cursorMatches);
-		this.classificationList = initClassification(cursorClassification);
-		cursorMatches.close();
-		cursorClassification.close();
+		try {
+			this.courtsMap = Utils.initCourts(this);
+			this.teams = initTeams(cursorMatches, this.courtsMap);
+			this.weeks = initCalendar(cursorMatches, this.courtsMap);
+			this.classificationList = initClassification(cursorClassification);
+		} finally {
+			cursorMatches.close();
+			cursorClassification.close();
+		}
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 		hideLoading();
 	}
 
 
-	private static List<TeamEntity> initTeams(Cursor cursorMatches) {
+
+
+	private static List<TeamEntity> initTeams(Cursor cursorMatches, Map<Long, CourtEntity> courtsMap) {
 		Integer maxWeek = -1;
 		cursorMatches.moveToPosition(-1);
 		while (cursorMatches.moveToNext()) {
@@ -296,14 +304,14 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 				if (!teamsMatchesMap.containsKey(teamLocal)) {
 					teamsMatchesMap.put(teamLocal, new TeamMatchEntity[maxWeek]);
 				}
-				TeamMatchEntity teamMatchEntity = initTeamEntity(cursorMatches, true);
+				TeamMatchEntity teamMatchEntity = initMatchEntity(cursorMatches, true, courtsMap);
 				teamsMatchesMap.get(teamLocal)[currentWeek] = teamMatchEntity;
 			}
 			if (!teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				if (!teamsMatchesMap.containsKey(teamVisitor)) {
 					teamsMatchesMap.put(teamVisitor, new TeamMatchEntity[maxWeek]);
 				}
-				TeamMatchEntity teamMatchEntity = initTeamEntity(cursorMatches, false);
+				TeamMatchEntity teamMatchEntity = initMatchEntity(cursorMatches, false, courtsMap);
 				teamsMatchesMap.get(teamVisitor)[currentWeek] = teamMatchEntity;
 			}
 		}
@@ -318,15 +326,15 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		return teamsList;
 	}
 
-	private static TeamMatchEntity initTeamEntity(Cursor cursorMatches, boolean isLocal) {
+	private static TeamMatchEntity initMatchEntity(Cursor cursorMatches, boolean isLocal, Map<Long, CourtEntity> courtsMap) {
 		TeamMatchEntity teamMatchEntity = new TeamMatchEntity();
 		String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
 		String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
-		String matchPlace = cursorMatches.getString(MatchesEntry.INDEX_PLACE);
+		Long idSportCenter = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
 		Long dateLong = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
 		Integer scoreLocal = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
 		Integer scoreVisitor = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
-		teamMatchEntity.setPlace(matchPlace);
+		teamMatchEntity.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
 		teamMatchEntity.setDate(new Date(dateLong));
 		teamMatchEntity.setTeamScore(scoreLocal);
 		teamMatchEntity.setOpponentScore(scoreVisitor);
@@ -343,9 +351,10 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	 * from cursor of matches sorted by weeknumber, returns a list of list of matches to print out in the fragment.
 	 *
 	 * @param cursorMatches
+	 * @param courtsMap
 	 * @return
 	 */
-	private static List<List<MatchEntity>> initCalendar(Cursor cursorMatches) {
+	private static List<List<MatchEntity>> initCalendar(Cursor cursorMatches, Map<Long, CourtEntity> courtsMap) {
 		List<List<MatchEntity>> weeksList = new ArrayList<>();
 		cursorMatches.moveToPosition(-1);
 		while (cursorMatches.moveToNext()) {
@@ -355,7 +364,9 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 			matchEntity.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
 			matchEntity.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
 			matchEntity.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
-			matchEntity.setPlace(cursorMatches.getString(MatchesEntry.INDEX_PLACE));
+			long idSportCenter = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
+			matchEntity.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
+			matchEntity.setPlaceAddress(courtsMap.get(idSportCenter).getCenterAddress());
 			matchEntity.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
 			if (weeksList.size()<week) {
 				List<MatchEntity> emptyList = new ArrayList<>();

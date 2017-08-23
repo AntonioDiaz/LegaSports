@@ -42,28 +42,44 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 
 
 public class MainActivity extends AppCompatActivity
 		implements
-			TownsAvailableCallback.TownsLoadedCallback,
-			TownsAdapter.ListItemClickListener,
-			SharedPreferences.OnSharedPreferenceChangeListener,
-			CompetitionsAvailableCallback.CompetitionsLoadedCallback {
+		TownsAvailableCallback.TownsLoadedCallback,
+		TownsAdapter.ListItemClickListener,
+		SharedPreferences.OnSharedPreferenceChangeListener,
+		CompetitionsAvailableCallback.CompetitionsLoadedCallback {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	@Nullable @BindView(R.id.toolbar) Toolbar toolbar;
-	@Nullable @BindView(R.id.tv_title) TextView tvTitle;
-	@Nullable @BindView((R.id.layout_activity_main)) View activityView;
-	@Nullable @BindView((R.id.layout_activity_splash)) View activitySplash;
-	@Nullable @BindView(R.id.ll_progress) LinearLayout llProgress;
-	@Nullable @BindView(R.id.rv_towns) RecyclerView rvTowns;
-	@Nullable @BindView(R.id.ll_progress_competitions) LinearLayout llProgressCompetition;
-	@Nullable @BindView(R.id.gl_sports)	GridLayout glSports;
+	@Nullable
+	@BindView(R.id.toolbar)
+	Toolbar toolbar;
+	@Nullable
+	@BindView(R.id.tv_title)
+	TextView tvTitle;
+	@Nullable
+	@BindView((R.id.layout_activity_main))
+	View activityView;
+	@Nullable
+	@BindView((R.id.layout_activity_splash))
+	View activitySplash;
+	@Nullable
+	@BindView(R.id.ll_progress)
+	LinearLayout llProgress;
+	@Nullable
+	@BindView(R.id.rv_towns)
+	RecyclerView rvTowns;
+	@Nullable
+	@BindView(R.id.ll_progress_competitions)
+	LinearLayout llProgressCompetition;
+	@Nullable
+	@BindView(R.id.gl_sports)
+	GridLayout glSports;
 	private List<TownRestEntity> mTownRestEntityList;
 	private Menu mMenu;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +112,7 @@ public class MainActivity extends AppCompatActivity
 			String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 			Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
-			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)){
+			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
 				if (NetworkUtilities.isNetworkAvailable(this)) {
 					startLoadingCompetitions();
 					Retrofit retrofit = new Retrofit.Builder()
@@ -115,6 +131,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		}
 	}
+
 
 	private void endLoadingCompetitions() {
 		llProgressCompetition.setVisibility(View.INVISIBLE);
@@ -137,11 +154,11 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if (itemId==R.id.action_preferences) {
+		if (itemId == R.id.action_preferences) {
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 		}
-		if (itemId==R.id.action_changetown) {
+		if (itemId == R.id.action_changetown) {
 			// TODO: 03/08/2017 ask user confirmation.
 			/* cleaning preferences. */
 			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
@@ -156,6 +173,7 @@ public class MainActivity extends AppCompatActivity
 			contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
 			contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
 			contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
+			contentResolver.delete(SportCourtsEntry.CONTENT_URI, null, null);
 			finish();
 			startActivity(getIntent());
 		}
@@ -164,20 +182,20 @@ public class MainActivity extends AppCompatActivity
 
 
 	private void startLoadingTowns() {
-		if (llProgress!=null) {
+		if (llProgress != null) {
 			llProgress.setVisibility(View.VISIBLE);
 		}
-		if (rvTowns!=null) {
+		if (rvTowns != null) {
 			rvTowns.setVisibility(View.INVISIBLE);
 		}
 
 	}
 
 	private void endLoadingTowns() {
-		if (llProgress!=null) {
+		if (llProgress != null) {
 			llProgress.setVisibility(View.INVISIBLE);
 		}
-		if (rvTowns!=null) {
+		if (rvTowns != null) {
 			rvTowns.setVisibility(View.VISIBLE);
 		}
 	}
@@ -185,7 +203,6 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		/*SharedPreferences preferences = getDefaultSharedPreferences(this);
 		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
 			if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -205,7 +222,7 @@ public class MainActivity extends AppCompatActivity
 
 	public void openSport(View view) {
 		Intent intent = new Intent(this, SelectCompetitionActivity.class);
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, (String)view.getTag());
+		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, (String) view.getTag());
 		startActivity(intent);
 	}
 
@@ -253,7 +270,7 @@ public class MainActivity extends AppCompatActivity
 			String lastUpdateTitle = getString(R.string.action_lastupdate);
 			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
 			String title = lastUpdateTitle + " " + dateFormat.format(new Date(dateLong));
-			if (menu!=null) {
+			if (menu != null) {
 				MenuItem item = menu.findItem(R.id.action_lastupdate);
 				item.setTitle(title);
 			}

@@ -8,7 +8,8 @@ public class TeamMatchEntity {
 
 	private boolean isLocal;
 	private Date date;
-	private String place;
+	private String placeName;
+	private String placeAddress;
 	private String opponent;
 	private Integer opponentScore;
 	private Integer teamScore;
@@ -58,11 +59,19 @@ public class TeamMatchEntity {
 		this.teamScore = teamScore;
 	}
 
-	public String getPlace() {
-		return place;
+	public String getPlaceName() {
+		return placeName;
 	}
 
-	public void setPlace(String place) {
-		this.place = place;
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+	public String getPlaceAddress() {
+		return placeAddress;
+	}
+
+	public void setPlaceAddress(String placeAddress) {
+		this.placeAddress = placeAddress;
 	}
 }

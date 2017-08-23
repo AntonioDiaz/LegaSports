@@ -1,7 +1,6 @@
 package com.adiaz.munisports.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,19 +85,21 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 					localScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
 					visitorStr = teamMatchEntity.getOpponent();
 					visitorScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
-					tvLocal.setTypeface(null, Typeface.BOLD);
+/*					tvLocal.setTypeface(null, Typeface.BOLD);
 					tvLocalScore.setTypeface(null, Typeface.BOLD);
 					tvVisitor.setTypeface(null, Typeface.NORMAL);
-					tvVisitorScore.setTypeface(null, Typeface.NORMAL);
+					tvVisitorScore.setTypeface(null, Typeface.NORMAL);*/
 				} else {
 					visitorStr = teamEntity;
 					localStr = teamMatchEntity.getOpponent();
 					localScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
 					visitorScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
+/*
 					tvLocal.setTypeface(null, Typeface.NORMAL);
 					tvLocalScore.setTypeface(null, Typeface.NORMAL);
 					tvVisitor.setTypeface(null, Typeface.BOLD);
 					tvVisitorScore.setTypeface(null, Typeface.BOLD);
+*/
 				}
 				tvLocal.setText(localStr);
 				tvLocalScore.setText(localScoreStr);
@@ -108,7 +109,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		} else {
 			llMatchInfo.setVisibility(View.GONE);
 			tvUndefined.setVisibility(View.VISIBLE);
-			tvUndefined.setText(mContext.getString(R.string.undefined_match));
+			tvUndefined.setText(mContext.getString(R.string.undefined_week));
 		}
 		return view;
 	}

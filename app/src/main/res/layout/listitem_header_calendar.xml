@@ -7,11 +7,14 @@
 
     <TextView
         android:id="@+id/heading"
+        style="@style/text_header_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="16dp"
-        style="@style/text_header_small"
+        android:fontFamily="sans-serif"
+        android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="Jornada 12"/>
 </LinearLayout>

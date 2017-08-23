@@ -15,6 +15,9 @@
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="16dp"
         style="@style/text_header_small"
+        android:fontFamily="sans-serif"
+        android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="Club Atletico de Madrid"/>
 
     <RelativeLayout

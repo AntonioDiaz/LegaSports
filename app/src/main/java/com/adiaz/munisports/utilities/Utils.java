@@ -3,6 +3,7 @@ package com.adiaz.munisports.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,17 +11,20 @@ import android.view.View;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.CourtEntity;
 import com.adiaz.munisports.entities.TeamFavoriteEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
-
+import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 /* Created by toni on 28/03/2017. */
 
 public class Utils {
@@ -141,6 +145,31 @@ public class Utils {
 		String strError = context.getString(R.string.internet_required);
 		final Snackbar snackbar = Snackbar.make(view, strError, Snackbar.LENGTH_INDEFINITE);
 		snackbar.show();
+	}
+
+	public static Map<Long, CourtEntity> initCourts(Context context) {
+		Uri uriCourts = SportCourtsEntry.CONTENT_URI;
+		Cursor cursorCourts = context.getContentResolver().query(uriCourts, SportCourtsEntry.PROJECTION, null, null, null);
+		Map<Long, CourtEntity> mapCourts = new HashMap<>();
+		try {
+			while (cursorCourts.moveToNext()) {
+				CourtEntity courtEntity = new CourtEntity();
+				Long id = cursorCourts.getLong(SportCourtsEntry.INDEX_ID_SERVER);
+				String centerName = cursorCourts.getString(SportCourtsEntry.INDEX_CENTER_NAME);
+				String courtName = cursorCourts.getString(SportCourtsEntry.INDEX_COURT_NAME);
+				courtEntity.setCenterName(centerName);
+				courtEntity.setCourtName(courtName);
+				courtEntity.setCourtFullName(centerName);
+				if (!TextUtils.isEmpty(courtName)) {
+					courtEntity.setCourtFullName(centerName + " - " + courtName);
+				}
+				courtEntity.setCenterAddress(cursorCourts.getString(SportCourtsEntry.INDEX_CENTER_ADDRESS));
+				mapCourts.put(id, courtEntity);
+			}
+		} finally {
+			cursorCourts.close();
+		}
+		return mapCourts;
 	}
 }
 

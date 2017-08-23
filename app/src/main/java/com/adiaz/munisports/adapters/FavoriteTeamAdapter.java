@@ -53,7 +53,7 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.clMatchDetails.setVisibility(View.GONE);
 			holder.clMatchEmpty.setVisibility(View.VISIBLE);
 			if (teamMatchEntity==null) {
-				holder.tvFavTeamUndefined.setText(context.getString(R.string.undefined_match));
+				holder.tvFavTeamUndefined.setText(context.getString(R.string.undefined_week));
 			} else {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.rest_team));
 			}
@@ -67,7 +67,7 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 				dateStr = dateFormat.format(teamMatchEntity.getDate());
 			}
 			holder.tvDate.setText(dateStr);
-			holder.tvPlace.setText(teamMatchEntity.getPlace());
+			holder.tvPlace.setText(teamMatchEntity.getPlaceName());
 			if (teamMatchEntity.isLocal()) {
 				holder.tvTeamLocal.setText(teamEntity.getTeamName());
 				holder.tvTeamLocalScore.setText(teamMatchEntity.getTeamScore().toString());

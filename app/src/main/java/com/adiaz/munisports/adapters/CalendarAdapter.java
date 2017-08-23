@@ -27,8 +27,9 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 	private Context mContext;
 	private List<List<MatchEntity>> weeksList;
 
-	@Nullable @BindView(R.id.childItem_teamlocal) TextView localTeam;
-	@Nullable @BindView(R.id.childItem_teamvisitor) TextView visitorTeam;
+	@Nullable @BindView(R.id.childItem_teamlocal) TextView tvLocalTeam;
+	@Nullable @BindView(R.id.childItem_teamvisitor) TextView tvVisitorTeam;
+	//@Nullable @BindView(R.id.childItem_match_undefined) TextView tvMatchUndefined;
 	@Nullable @BindView(R.id.childItem_date) TextView date;
 	@Nullable @BindView(R.id.childItem_place) TextView place;
 	@Nullable @BindView(R.id.heading) TextView textViewHeading;
@@ -59,23 +60,32 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 		}
 		ButterKnife.bind(this, view);
 		String teamLocal = matchEntity.getTeamLocal();
-		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
-			teamLocal = mContext.getString(R.string.rest_team);
-		}
-		localTeam.setText(teamLocal);
 		String teamVisitor = matchEntity.getTeamVisitor();
-		if (teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
-			teamVisitor = mContext.getString(R.string.rest_team);
-		}
+		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD) && teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			//tvMatchUndefined.setVisibility(View.INVISIBLE);
+			tvLocalTeam.setVisibility(View.GONE);
+			tvVisitorTeam.setVisibility(View.GONE);
+		} else {
+			//tvMatchUndefined.setVisibility(View.GONE);
+			tvLocalTeam.setVisibility(View.VISIBLE);
+			tvVisitorTeam.setVisibility(View.VISIBLE);
 
-		visitorTeam.setText(teamVisitor);
+			if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+				teamLocal = mContext.getString(R.string.rest_team);
+			}
+			tvLocalTeam.setText(teamLocal);
+			if (teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+				teamVisitor = mContext.getString(R.string.rest_team);
+			}
+			tvVisitorTeam.setText(teamVisitor);
+		}
 		if (matchEntity.getDate().getTime()==0) {
 			date.setText(mContext.getString(R.string.undefined_date));
 		} else {
 			DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
 			date.setText(df.format(matchEntity.getDate()));
 		}
-		place.setText(matchEntity.getPlace());
+		place.setText(matchEntity.getPlaceName());
 		return view;
 	}
 

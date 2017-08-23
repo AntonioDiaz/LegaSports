@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tv_week"
-        style="@style/teams_list"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -26,8 +26,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="10"
-        style="@style/teams_list"
-        tools:text="@string/undefined_match"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        tools:text="@string/undefined_week"
         android:layout_gravity="center"
         android:textAlignment="center"
         android:visibility="gone"/>
@@ -44,21 +44,25 @@
 
         <TextView
             android:id="@+id/tv_local"
-            style="@style/teams_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="9"
             android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed    "
             android:lines="1"
             android:maxLines="1"
             android:paddingRight="8dp"
             android:textAlignment="textEnd"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
             tools:text="BALOMPEDICA CF"/>
 
         <TextView
             android:id="@+id/tv_local_score"
-            style="@style/teams_list"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -71,12 +75,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="1"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:text="-"
             android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/tv_visitor_score"
-            style="@style/teams_list"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -85,7 +90,6 @@
 
         <TextView
             android:id="@+id/tv_visitor"
-            style="@style/teams_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -94,6 +98,11 @@
             android:lines="1"
             android:maxLines="1"
             android:paddingLeft="8dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:textAlignment="textStart"
             tools:text="ATLEICO DE MADRID"/>
     </LinearLayout>

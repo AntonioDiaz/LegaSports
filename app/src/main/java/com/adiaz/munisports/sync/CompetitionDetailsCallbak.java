@@ -7,14 +7,18 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Classification;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Match;
+import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.SportCenterCourt;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,6 +60,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 			loadMatches(matches, this.idCompetitionServer, this.mContext);
 			List<Classification> classification = response.body().getClassification();
 			loadClassification(classification, this.idCompetitionServer, this.mContext);
+			loadSportCourts(matches, this.mContext);
 		}
 		/* Updating local server update date. */
 		long timeInMillis = Calendar.getInstance().getTimeInMillis();
@@ -81,8 +86,28 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		ContentValues[] classificationArray = cvClassificationList.toArray(new ContentValues[cvClassificationList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
 		Uri uri = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer.toString());
-		int delete = muniSportsContentResolver.delete(uri, null, null);
+		muniSportsContentResolver.delete(uri, null, null);
 		muniSportsContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classificationArray);
+	}
+
+	private void loadSportCourts(List<Match> matchList, Context mContext) {
+		List<ContentValues> cvSportCourtsList = new ArrayList<>();
+		Set<Long> sportCourtsIdInserted = new HashSet<>();
+		for (Match match : matchList) {
+			SportCenterCourt court = match.getSportCenterCourt();
+			if (court !=null && !sportCourtsIdInserted.contains(court.getId())) {
+				sportCourtsIdInserted.add(court.getId());
+				ContentValues cv = new ContentValues();
+				cv.put(MuniSportsDbContract.SportCourtsEntry.COLUMN_ID_SERVER, court.getId());
+				cv.put(MuniSportsDbContract.SportCourtsEntry.COLUMN_COURT_NAME, court.getName());
+				cv.put(MuniSportsDbContract.SportCourtsEntry.COLUMN_CENTER_NAME, court.getSportCenter().getName());
+				cv.put(MuniSportsDbContract.SportCourtsEntry.COLUMN_CENTER_ADDRESS, court.getSportCenter().getAddress());
+				cvSportCourtsList.add(cv);
+			}
+		}
+		ContentValues[] cvArray = cvSportCourtsList.toArray(new ContentValues[cvSportCourtsList.size()]);
+		ContentResolver contentResolver = mContext.getContentResolver();
+		contentResolver.bulkInsert(MuniSportsDbContract.SportCourtsEntry.CONTENT_URI, cvArray);
 	}
 
 	private void loadMatches(List<Match> matchList, Long idCompetitionServer, Context mContext) {
@@ -91,13 +116,13 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 			ContentValues cvMatch = new ContentValues();
 			String teamLocal = match.getTeamLocalEntity()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getTeamLocalEntity().getName();
 			String teamVisitor = match.getTeamVisitorEntity()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getTeamVisitorEntity().getName();
-			String sportCenterCourt = match.getSportCenterCourt()==null ? MuniSportsConstants.UNDEFINDED_FIELD : match.getSportCenterCourt().getNameWithCenter();
+			Long sportCenterCourt = match.getSportCenterCourt()==null ? null : match.getSportCenterCourt().getId();
 			cvMatch.put(MatchesEntry.COLUMN_TEAM_LOCAL, teamLocal);
 			cvMatch.put(MatchesEntry.COLUMN_TEAM_VISITOR, teamVisitor);
 			cvMatch.put(MatchesEntry.COLUMN_SCORE_LOCAL, match.getScoreLocal());
 			cvMatch.put(MatchesEntry.COLUMN_SCORE_VISITOR, match.getScoreVisitor());
 			cvMatch.put(MatchesEntry.COLUMN_WEEK, match.getWeek());
-			cvMatch.put(MatchesEntry.COLUMN_PLACE, sportCenterCourt);
+			cvMatch.put(MatchesEntry.COLUMN_ID_SPORTCENTER, sportCenterCourt);
 			cvMatch.put(MatchesEntry.COLUMN_DATE, match.getDate());
 			cvMatch.put(MatchesEntry.COLUMN_ID_SERVER, match.getId());
 			cvMatch.put(MatchesEntry.COLUMN_ID_COMPETITION_SERVER, idCompetitionServer);
@@ -106,7 +131,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		ContentValues[] matchesArray = cvMatcheList.toArray(new ContentValues[cvMatcheList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
 		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer.toString());
-		int delete = muniSportsContentResolver.delete(uri, null, null);
+		muniSportsContentResolver.delete(uri, null, null);
 		muniSportsContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matchesArray);
 	}
 

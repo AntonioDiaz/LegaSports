@@ -16,6 +16,7 @@ import com.adiaz.munisports.database.MuniSportsDbHelper;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 
 /**
  * Created by toni on 22/04/2017.
@@ -34,6 +35,7 @@ public class MuniSportsContentProvider extends ContentProvider {
 	public static final int MATCHES_WITH_COMPETITION = 201;
 	public static final int CLASSIFICATION = 300;
 	public static final int CLASSIFICATION_WITH_COMPETITION = 301;
+	public static final int SPORTCOURTS = 400;
 
 
 	private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -45,9 +47,10 @@ public class MuniSportsContentProvider extends ContentProvider {
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/*", COMPETITIONS_WITH_SPORT);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_COMPETITIONS + "/#/#", COMPETITIONS_WITH_ID_LASTUPDATE);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES, MATCHES);
-		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES + "/*", MATCHES_WITH_COMPETITION);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_MATCHES + "/#", MATCHES_WITH_COMPETITION);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION, CLASSIFICATION);
-		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION + "/*", CLASSIFICATION_WITH_COMPETITION);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION + "/#", CLASSIFICATION_WITH_COMPETITION);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_SPORT_COURTS, SPORTCOURTS);
 		return uriMatcher;
 	}
 
@@ -93,9 +96,22 @@ public class MuniSportsContentProvider extends ContentProvider {
 			case CLASSIFICATION:
 				try {
 					db.beginTransaction();
-					db.delete(ClassificationEntry.TABLE_NAME, null, null);
 					for (ContentValues contentValues : values) {
 						long id = db.insert(ClassificationEntry.TABLE_NAME, null, contentValues);
+						if (id!=-1) {
+							rowsInserted++;
+						}
+					}
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
+				break;
+			case SPORTCOURTS:
+				try {
+					db.beginTransaction();
+					for (ContentValues contentValues : values) {
+						long id = db.insert(SportCourtsEntry.TABLE_NAME, null, contentValues);
 						if (id!=-1) {
 							rowsInserted++;
 						}
@@ -109,6 +125,8 @@ public class MuniSportsContentProvider extends ContentProvider {
 				return super.bulkInsert(uri, values);
 		}
 		if (rowsInserted>0) {
+			Log.d(TAG, "bulkInsert: deletedItems: " + rowsInserted);
+			Log.d(TAG, "bulkInsert: uri: " + uri);
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		return rowsInserted;
@@ -160,6 +178,9 @@ public class MuniSportsContentProvider extends ContentProvider {
 				selectionArgs = new String[]{competitionServerIdClassification};
 				cursorReturned = db.query(ClassificationEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
 				break;
+			case SPORTCOURTS:
+				cursorReturned = db.query(SportCourtsEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);
 
@@ -200,10 +221,15 @@ public class MuniSportsContentProvider extends ContentProvider {
 				selectionArgs = new String[]{uri.getPathSegments().get(1)};
 				deletedItems = db.delete(MatchesEntry.TABLE_NAME, selection, selectionArgs);
 				break;
+			case SPORTCOURTS:
+				deletedItems = db.delete(SportCourtsEntry.TABLE_NAME, selection, selectionArgs);
+				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);
 		}
 		if (deletedItems>0) {
+			Log.d(TAG, "delete: deletedItems: " + deletedItems);
+			Log.d(TAG, "delete: uri: " + uri);
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		return deletedItems;

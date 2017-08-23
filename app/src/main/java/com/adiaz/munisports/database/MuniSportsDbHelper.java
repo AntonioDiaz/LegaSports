@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 
 /**
  * Created by toni on 20/04/2017.
@@ -15,7 +16,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "munisports.db";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 10;
 
 	public MuniSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,7 +47,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 						MatchesEntry.COLUMN_SCORE_LOCAL + " INTEGER NOT NULL, " +
 						MatchesEntry.COLUMN_SCORE_VISITOR + " INTEGER NOT NULL, " +
 						MatchesEntry.COLUMN_WEEK + " INTEGER NOT NULL, " +
-						MatchesEntry.COLUMN_PLACE + " TEXT NOT NULL, " +
+						MatchesEntry.COLUMN_ID_SPORTCENTER + " INTEGER, " +
 						MatchesEntry.COLUMN_DATE + " INTEGER, " +
 						MatchesEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
 						MatchesEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL," +
@@ -65,13 +66,25 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 						ClassificationEntry.COLUMN_MATCHES_LOST + " INTEGER, " +
 						ClassificationEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL "+
 						")";
+
+		String SQL_CREATE_TABLE_SPORTCOURTS =
+				"CREATE TABLE " + SportCourtsEntry.TABLE_NAME +
+						"(" +
+						SportCourtsEntry.COLUMN_ID_SERVER + " INTEGER NOT NULL, " +
+						SportCourtsEntry.COLUMN_CENTER_NAME + " TEXT NOT NULL, " +
+						SportCourtsEntry.COLUMN_COURT_NAME + " TEXT, " +
+						SportCourtsEntry.COLUMN_CENTER_ADDRESS + " TEXT NOT NULL, " +
+						"UNIQUE (" + SportCourtsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
+						")";
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_COMPETITION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_MATCHES);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_CLASSIFICATION);
+		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_SPORTCOURTS);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SportCourtsEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MatchesEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ClassificationEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CompetitionsEntry.TABLE_NAME);

@@ -22,17 +22,27 @@
     <TextView
         android:id="@+id/childItem_teamlocal"
         android:layout_width="0dp"
-        grid:layout_columnWeight="2"
-        grid:layout_columnSpan="2"
+        android:fontFamily="sans-serif-condensed"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        grid:layout_columnSpan="2"
+        grid:layout_columnWeight="2"
         tools:text="BALOMPEDICA CF"/>
 
     <TextView
         android:id="@+id/childItem_teamvisitor"
         android:layout_width="0dp"
-        grid:layout_columnWeight="2"
-        grid:layout_columnSpan="2"
+        android:fontFamily="sans-serif-condensed"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        grid:layout_columnSpan="2"
+        grid:layout_columnWeight="2"
         tools:text="ADCR ATLETICO LEGANES 78"/>
 
     <TextView

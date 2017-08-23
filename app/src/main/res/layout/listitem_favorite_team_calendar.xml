@@ -44,7 +44,7 @@
                 android:id="@+id/tv_fav_team_undefined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/undefined_match"
+                tools:text="@string/undefined_week"
                 android:textAppearance="@style/text_header_small"
                 app:layout_constraintLeft_toRightOf="@+id/tv_fav_team_jornada_empty"
                 android:layout_marginLeft="8dp"

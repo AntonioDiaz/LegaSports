@@ -14,6 +14,7 @@ public class MuniSportsDbContract {
 	public static final String PATH_COMPETITIONS = "competitions";
 	public static final String PATH_MATCHES = "matches";
 	public static final String PATH_CLASSIFICATION = "classification";
+	public static final String PATH_SPORT_COURTS = "sportcourts";
 
 
 
@@ -80,7 +81,7 @@ public class MuniSportsDbContract {
 		public static final String COLUMN_SCORE_LOCAL = "score_local";
 		public static final String COLUMN_SCORE_VISITOR = "score_visitor";
 		public static final String COLUMN_WEEK = "week";
-		public static final String COLUMN_PLACE = "place";
+		public static final String COLUMN_ID_SPORTCENTER = "id_sportcenter";
 		public static final String COLUMN_DATE = "date";
 		public static final String COLUMN_ID_SERVER = "id_server";
 		public static final String COLUMN_ID_COMPETITION_SERVER = "id_competition_server";
@@ -92,7 +93,7 @@ public class MuniSportsDbContract {
 				COLUMN_SCORE_LOCAL,
 				COLUMN_SCORE_VISITOR,
 				COLUMN_WEEK,
-				COLUMN_PLACE,
+				COLUMN_ID_SPORTCENTER,
 				COLUMN_DATE,
 				COLUMN_ID_SERVER,
 				COLUMN_ID_COMPETITION_SERVER
@@ -103,7 +104,7 @@ public class MuniSportsDbContract {
 		public static final int INDEX_SCORE_LOCAL = 3;
 		public static final int INDEX_SCORE_VISITOR = 4;
 		public static final int INDEX_WEEK = 5;
-		public static final int INDEX_PLACE = 6;
+		public static final int INDEX_ID_SPORTCENTER = 6;
 		public static final int INDEX_DATE = 7;
 		public static final int INDEX_ID_SERVER = 8;
 		public static final int INDEX_ID_COMPETITION_SERVER = 9;
@@ -149,6 +150,30 @@ public class MuniSportsDbContract {
 		public static final int INDEX_MACHES_LOST = 6;
 		public static final int INDEX_ID_COMPETITION_SERVER = 7;
 	}
+
+	public static final	class SportCourtsEntry implements BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_SPORT_COURTS).build();
+		public static Uri buildSportCourtsUri(Long sportCourtId) {
+			return CONTENT_URI.buildUpon()
+					.appendPath(sportCourtId.toString())
+					.build();
+		}
+		public static final String TABLE_NAME = "SportCenterCourt";
+		public static final String COLUMN_ID_SERVER = "id_server";
+		public static final String COLUMN_CENTER_NAME = "center_name";
+		public static final String COLUMN_COURT_NAME = "court_name";
+		public static final String COLUMN_CENTER_ADDRESS = "center_address";
+
+
+		public static final String[] PROJECTION = {COLUMN_ID_SERVER, COLUMN_CENTER_NAME, COLUMN_COURT_NAME, COLUMN_CENTER_ADDRESS};
+
+		public static final int INDEX_ID_SERVER = 0;
+		public static final int INDEX_CENTER_NAME = 1;
+		public static final int INDEX_COURT_NAME = 2;
+		public static final int INDEX_CENTER_ADDRESS = 3;
+
+	}
+
 }
 
 

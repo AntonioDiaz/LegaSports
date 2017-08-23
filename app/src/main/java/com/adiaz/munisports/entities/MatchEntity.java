@@ -12,7 +12,8 @@ public class MatchEntity {
 	private String teamVisitor;
 	private int scoreLocal;
 	private int scoreVisitor;
-	private String place;
+	private String placeName;
+	private String placeAddress;
 
 	public Date getDate() {
 		return date;
@@ -54,11 +55,19 @@ public class MatchEntity {
 		this.scoreVisitor = scoreVisitor;
 	}
 
-	public String getPlace() {
-		return place;
+	public String getPlaceName() {
+		return placeName;
 	}
 
-	public void setPlace(String place) {
-		this.place = place;
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+	public String getPlaceAddress() {
+		return placeAddress;
+	}
+
+	public void setPlaceAddress(String placeAddress) {
+		this.placeAddress = placeAddress;
 	}
 }
