@@ -28,14 +28,14 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
  * Created by toni on 18/08/2017.
  */
 
-public class MatchesCallbak implements Callback<CompetitionDetails> {
+public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 
-	private static final String TAG = MatchesCallbak.class.getSimpleName();
+	private static final String TAG = CompetitionDetailsCallbak.class.getSimpleName();
 	private Context mContext;
 	private Long idCompetitionServer;
 	private OnFinishLoad onFinishLoad;
 
-	public MatchesCallbak(Context mContext, Long idCompetitionServer, OnFinishLoad onFinishLoad) {
+	public CompetitionDetailsCallbak(Context mContext, Long idCompetitionServer, OnFinishLoad onFinishLoad) {
 		this.mContext = mContext;
 		this.idCompetitionServer = idCompetitionServer;
 		this.onFinishLoad = onFinishLoad;

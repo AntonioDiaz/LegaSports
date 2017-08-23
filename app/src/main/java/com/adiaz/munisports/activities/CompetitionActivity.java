@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,7 @@ import com.adiaz.munisports.entities.TeamMatchEntity;
 import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
-import com.adiaz.munisports.sync.MatchesCallbak;
+import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
@@ -63,7 +62,7 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEnt
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
-public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, MatchesCallbak.OnFinishLoad {
+public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 
@@ -142,8 +141,8 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 						.build();
 				MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
 				Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(new Long(idCompetitionServer));
-				MatchesCallbak matchesCallbak = new MatchesCallbak(this, new Long(idCompetitionServer), this);
-				listCall.enqueue(matchesCallbak);
+				CompetitionDetailsCallbak competitionDetailsCallbak = new CompetitionDetailsCallbak(this, new Long(idCompetitionServer), this);
+				listCall.enqueue(competitionDetailsCallbak);
 			} else {
 				finishLoad();
 			}

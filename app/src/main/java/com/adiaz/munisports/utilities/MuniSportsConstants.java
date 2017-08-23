@@ -32,5 +32,5 @@ public class MuniSportsConstants {
 
 	public static final String UNDEFINDED_FIELD = " - ";
 
-	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(15);
+	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(3);
 }
