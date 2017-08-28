@@ -4,6 +4,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+
               android:layout_margin="0dp"
               android:orientation="horizontal">
 
@@ -13,13 +14,12 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_fav_title"
                 style="@style/main_list_text"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_subtitle01"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="@string/example_competition"
@@ -31,6 +31,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_title"
+                android:layout_marginTop="0dp"
                 tools:text="@string/example_sport"/>
 
 
@@ -38,13 +39,13 @@
                 android:id="@+id/tv_fav_subtitle02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 style="@style/main_list_text_small"
                 android:background="@drawable/rounded_corner_accent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_subtitle01"
+                android:layout_marginTop="8dp"
                 tools:text="@string/example_category"/>
         </android.support.constraint.ConstraintLayout>
 

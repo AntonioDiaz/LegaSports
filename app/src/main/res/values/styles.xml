@@ -122,8 +122,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_marginLeft">32dp</item>
-        <item name="android:layout_marginRight">32dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
         <item name="android:clickable">true</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="cardBackgroundColor">@color/colorPrimaryDark</item>
@@ -137,11 +137,11 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="main_list_text_small" parent="main_list_text">
         <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginTop">8dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:paddingLeft">8dp</item>
     </style>
