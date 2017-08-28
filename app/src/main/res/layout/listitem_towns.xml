@@ -18,7 +18,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:visibility="visible"
         android:clickable="true"
-        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         >
 
         <TextView

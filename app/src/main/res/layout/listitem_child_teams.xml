@@ -49,7 +49,7 @@
             android:layout_gravity="end"
             android:layout_weight="9"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed    "
+            android:fontFamily="sans-serif-condensed"
             android:lines="1"
             android:maxLines="1"
             android:paddingRight="8dp"

@@ -1,4 +1,5 @@
-<resources>
+<resources
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -89,6 +90,7 @@
     </style>
 
     <style name="text_small_classification" parent="text_small">
+        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">14sp</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:paddingBottom">4dp</item>
@@ -98,7 +100,7 @@
     <style name="main_sports">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:textSize">@dimen/main_text_size</item>
         <item name="android:gravity">center</item>
     </style>
@@ -109,10 +111,43 @@
         <item name="android:typeface">sans</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:layout_marginTop">64dp</item>
         <item name="android:layout_marginLeft">32dp</item>
         <item name="android:layout_marginRight">32dp</item>
     </style>
 
+    <style name="main_list_cardview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">32dp</item>
+        <item name="android:layout_marginRight">32dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="cardBackgroundColor">@color/colorPrimaryDark</item>
+        <item name="contentPadding">8dp</item>
+    </style>
+
+    <style name="main_list_text">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body2</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="main_list_text_small" parent="main_list_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+    </style>
+
+    <style name="tabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 </resources>

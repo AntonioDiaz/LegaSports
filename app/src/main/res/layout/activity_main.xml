@@ -85,6 +85,7 @@
                     android:layout_weight="4"
                     android:contentDescription="@string/football"
                     android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_ball_football"/>
 
                 <TextView
@@ -115,6 +116,7 @@
                     android:layout_weight="4"
                     android:contentDescription="@string/BALONCESTO"
                     android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_ball_basketball"/>
 
                 <TextView
@@ -145,6 +147,7 @@
                     android:layout_weight="4"
                     android:contentDescription="@string/VOLEIBOL"
                     android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_ball_volleyball"/>
 
                 <TextView
@@ -175,6 +178,7 @@
                     android:layout_weight="4"
                     android:contentDescription="@string/BALONMANO"
                     android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_ball_handball"/>
 
                 <TextView
@@ -204,6 +208,7 @@
                     android:layout_weight="4"
                     android:contentDescription="@string/UNIHOCKEY"
                     android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_hockey"/>
 
                 <TextView
@@ -230,9 +235,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
-                    android:contentDescription="@string/UNIHOCKEY"
+                    android:contentDescription="@string/favorites"
                     android:layout_margin="8dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_favorite_fill"/>
 
                 <TextView

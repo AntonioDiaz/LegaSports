@@ -57,64 +57,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
-
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                style="@style/main_list_cardview"
                 android:onClick="openFootball"
                 android:tag="@string/football_11_tag">
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/FUTBOL_11"
-                    style="@style/text_header"/>
+                    style="@style/main_list_text"
+                    android:text="@string/FUTBOL_11"/>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                style="@style/main_list_cardview"
                 android:onClick="openFootball"
                 android:tag="@string/football_7_tag">
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:text="@string/FUTBOL_7"
-                    style="@style/text_header"/>
+                    style="@style/main_list_text"/>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                style="@style/main_list_cardview"
                 android:onClick="openFootball"
                 android:tag="@string/football_sala_tag">
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:text="@string/FUTBOL_SALA"
-                    style="@style/text_header"/>
+                    style="@style/main_list_text"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 

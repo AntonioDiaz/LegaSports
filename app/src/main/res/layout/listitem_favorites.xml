@@ -9,14 +9,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_fav_competition"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        style="@style/main_list_cardview">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,31 +17,17 @@
 
             <TextView
                 android:id="@+id/tv_fav_title"
-                style="@style/text_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/main_list_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_subtitle01"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/example_competition"
                 app:layout_constraintVertical_bias="0.0"/>
 
             <TextView
                 android:id="@+id/tv_fav_subtitle01"
-                style="@style/text_header_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                style="@style/main_list_text_small"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_title"
@@ -57,14 +36,11 @@
 
             <TextView
                 android:id="@+id/tv_fav_subtitle02"
-                style="@style/text_header_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/colorAccent"
+                android:layout_margin="8dp"
+                style="@style/main_list_text_small"
+                android:background="@drawable/rounded_corner_accent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
