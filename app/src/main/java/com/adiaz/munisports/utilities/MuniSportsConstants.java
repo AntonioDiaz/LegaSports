@@ -29,6 +29,8 @@ public class MuniSportsConstants {
 	public static final String KEY_TOWN_NAME = "KEY_TOWN_NAME";
 	public static final String KEY_TOWN_ID = "KEY_TOWN_ID";
 	public static final String KEY_LASTUPDATE = "KEY_LASTUPDATE";
+	public static final String KEY_FAVORITES_TEAMS = "KEY_FAVORITES_TEAMS";
+	public static final String KEY_FAVORITES_COMPETITIONS = "KEY_FAVORITES_TEAMS";
 
 	public static final String UNDEFINDED_FIELD = " - ";
 

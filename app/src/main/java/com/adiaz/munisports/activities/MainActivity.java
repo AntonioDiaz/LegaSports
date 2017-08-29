@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity
 			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
 			editor.remove(MuniSportsConstants.KEY_TOWN_NAME);
 			editor.remove(MuniSportsConstants.KEY_TOWN_ID);
-			editor.remove(this.getString(R.string.key_favorites_teams));
-			editor.remove(this.getString(R.string.key_favorites_competitions));
+			editor.remove(MuniSportsConstants.KEY_FAVORITES_TEAMS);
+			editor.remove(MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 			editor.remove(MuniSportsConstants.KEY_LASTUPDATE);
 			editor.commit();
 			/* cleaning database. */

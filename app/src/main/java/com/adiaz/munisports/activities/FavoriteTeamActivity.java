@@ -102,7 +102,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		String favoriteTeamId = Utils.composeFavoriteTeamId(teamName, idCompetitionServer);
 		for(int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
-				String key = getString(R.string.key_favorites_teams);
+				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
 				if (Utils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
@@ -122,7 +122,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
 				String favoriteTeamId = Utils.composeFavoriteTeamId(teamName, idCompetitionServer);
-				String key = getString(R.string.key_favorites_teams);
+				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
 				if (Utils.checkIfFavoritSelected(this, favoriteTeamId, key)) {

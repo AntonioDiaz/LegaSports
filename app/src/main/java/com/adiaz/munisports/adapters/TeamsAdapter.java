@@ -143,7 +143,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		}
 		ButterKnife.bind(this, view);
 		tvHeading.setText(teamEntity);
-		String key = mContext.getString(R.string.key_favorites_teams);
+		String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
 		String teamName = Utils.generateTeamKey(teamEntity, idCompetitionServer);
 		if (Utils.checkIfFavoritSelected(mContext, teamName, key)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);

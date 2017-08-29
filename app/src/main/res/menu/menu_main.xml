@@ -5,7 +5,6 @@
       tools:context=".activities.MainActivity">
     <item
         android:id="@+id/action_update"
-        android:icon="@drawable/ic_refresh_black_24dp"
         android:title="@string/action_update"
         android:orderInCategory="1"
         app:showAsAction="never"/>

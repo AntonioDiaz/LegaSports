@@ -90,7 +90,7 @@ public class Utils {
 
 	public static List<CompetitionEntity> getCompetitionsFavorites(Context context) {
 		List<CompetitionEntity> competitionsFavorites = new ArrayList<>();
-		List<String> favorites = Utils.getFavorites(context, context.getString(R.string.key_favorites_competitions));
+		List<String> favorites = Utils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 		Cursor cursorCompetitions = context.getContentResolver().query(
 				CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		while (cursorCompetitions.moveToNext()) {
@@ -113,7 +113,7 @@ public class Utils {
 
 	public static List<TeamFavoriteEntity> getTeamsFavorites(Context context) {
 		List<TeamFavoriteEntity> teamsFavorites = new ArrayList<>();
-		List<String> favorites = Utils.getFavorites(context, context.getString(R.string.key_favorites_teams));
+		List<String> favorites = Utils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		for (String favorite : favorites) {
 			if (favorite.split("\\|").length >= 2) {
 				String teamName = favorite.split("\\|")[0];

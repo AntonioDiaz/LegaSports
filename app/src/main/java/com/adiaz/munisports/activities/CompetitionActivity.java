@@ -181,7 +181,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		getMenuInflater().inflate(R.menu.menu_competition, menu);
 		for (int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
-				String key = getString(R.string.key_favorites_competitions);
+				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
 				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
@@ -213,7 +213,7 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
-				String key = getString(R.string.key_favorites_competitions);
+				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
 				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
@@ -238,13 +238,12 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	public void selectFavorite(View view) {
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
 		String myTeamId = Utils.generateTeamKey((String) imageView.getTag(), idCompetitionServer);
-		String keyFavorites = getString(R.string.key_favorites_teams);
-		if (Utils.checkIfFavoritSelected(this, myTeamId, keyFavorites)) {
+		if (Utils.checkIfFavoritSelected(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS)) {
 			imageView.setImageResource(R.drawable.ic_favorite);
-			Utils.unMarkFavoriteTeam(this, myTeamId, keyFavorites);
+			Utils.unMarkFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			Utils.markFavoriteTeam(this, myTeamId, keyFavorites);
+			Utils.markFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		}
 	}
 
