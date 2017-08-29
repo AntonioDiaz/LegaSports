@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".activities.MainActivity">
     <item
-        android:id="@+id/action_lastupdate"
-        android:title="@string/action_lastupdate"
+        android:id="@+id/action_update"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="@string/action_update"
         android:orderInCategory="1"
         app:showAsAction="never"/>
     <item

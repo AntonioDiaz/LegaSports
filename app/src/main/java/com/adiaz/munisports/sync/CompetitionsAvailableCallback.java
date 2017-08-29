@@ -48,6 +48,11 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		}
 	}
 
+	/**
+	 * Update Competitions table with the content of json receiver from the server.
+	 *
+	 * @param competitionsList
+	 */
 	private void loadCompetitions(List<CompetitionRestEntity> competitionsList) {
 		List<ContentValues> competitionsContentValues = new ArrayList<>();
 		for (CompetitionRestEntity competitionsEntity : competitionsList) {
@@ -57,7 +62,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionsEntity.getSportEntity().getTag());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionsEntity.getCategoryEntity().getName().toLowerCase());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
-			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, 0l);
+			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, competitionsEntity.getLastPublished());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_LOCAL, 0l);
 			competitionsContentValues.add(cv);
 		}

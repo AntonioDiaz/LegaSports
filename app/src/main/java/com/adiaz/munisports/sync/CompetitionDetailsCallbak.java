@@ -55,7 +55,9 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		long lastPublishedServerInDb = query.getLong(CompetitionsEntry.INDEX_LAST_UDPATE_SERVER);
 		long lastPublishedServerInServer = response.body().getLastPublished();
 		query.close();
-		if (lastPublishedServerInDb<lastPublishedServerInServer) {
+		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(this.idCompetitionServer.toString());
+		Cursor queryMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
+		if (lastPublishedServerInDb<lastPublishedServerInServer || queryMatches.getCount()==0) {
 			List<Match> matches = response.body().getMatches();
 			loadMatches(matches, this.idCompetitionServer, this.mContext);
 			List<Classification> classification = response.body().getClassification();

@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.TownsAdapter;
 import com.adiaz.munisports.sync.CompetitionsAvailableCallback;
+import com.adiaz.munisports.sync.MuniSportsSyncUtils;
 import com.adiaz.munisports.sync.TownsAvailableCallback;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
@@ -114,14 +116,7 @@ public class MainActivity extends AppCompatActivity
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
 				if (NetworkUtilities.isNetworkAvailable(this)) {
-					startLoadingCompetitions();
-					Retrofit retrofit = new Retrofit.Builder()
-							.baseUrl(MuniSportsConstants.BASE_URL)
-							.addConverterFactory(GsonConverterFactory.create())
-							.build();
-					MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-					Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery(idTownSelect);
-					call.enqueue(new CompetitionsAvailableCallback(this, this));
+					updateCompetitions();
 				} else {
 					Utils.showNoInternetAlert(this, activityView);
 					llProgressCompetition.setVisibility(View.INVISIBLE);
@@ -132,6 +127,18 @@ public class MainActivity extends AppCompatActivity
 		}
 	}
 
+	private void updateCompetitions() {
+		startLoadingCompetitions();
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
+		Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl(MuniSportsConstants.BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+		MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
+		Call<List<CompetitionRestEntity>> call = muniSportsRestApi.competitionsQuery(idTownSelect);
+		call.enqueue(new CompetitionsAvailableCallback(this, this));
+	}
 
 	private void endLoadingCompetitions() {
 		llProgressCompetition.setVisibility(View.INVISIBLE);
@@ -157,8 +164,9 @@ public class MainActivity extends AppCompatActivity
 		if (itemId == R.id.action_preferences) {
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
-		}
-		if (itemId == R.id.action_changetown) {
+		} else  if (itemId == R.id.action_update) {
+			updateCompetitions();
+		} else  if (itemId == R.id.action_changetown) {
 			// TODO: 03/08/2017 ask user confirmation.
 			/* cleaning preferences. */
 			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
@@ -174,6 +182,8 @@ public class MainActivity extends AppCompatActivity
 			contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
 			contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
 			contentResolver.delete(SportCourtsEntry.CONTENT_URI, null, null);
+			/* stop the FirebaseJob. */
+			MuniSportsSyncUtils.stopJob(this);
 			finish();
 			startActivity(getIntent());
 		}
@@ -203,6 +213,13 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		Log.d(TAG, "onResume:  " + preferences.contains(MuniSportsConstants.KEY_TOWN_ID));
+		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
+			if (NetworkUtilities.isNetworkAvailable(this)) {
+				MuniSportsSyncUtils.initialize(this);
+			}
+		}
 		/*SharedPreferences preferences = getDefaultSharedPreferences(this);
 		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
 			if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -265,17 +282,21 @@ public class MainActivity extends AppCompatActivity
 
 	private void updateLastUpdateMenuItem(Menu menu) {
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		if (preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
-			Long dateLong = preferences.getLong(MuniSportsConstants.KEY_LASTUPDATE, 1L);
-			String lastUpdateTitle = getString(R.string.action_lastupdate);
-			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-			String title = lastUpdateTitle + " " + dateFormat.format(new Date(dateLong));
-			if (menu != null) {
-				MenuItem item = menu.findItem(R.id.action_lastupdate);
-				item.setTitle(title);
+		if (menu != null) {
+			String title;
+			MenuItem item = menu.findItem(R.id.action_update);
+			if (preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
+				Long dateLong = preferences.getLong(MuniSportsConstants.KEY_LASTUPDATE, 1L);
+				DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
+				title = getString(R.string.action_update, dateFormat.format(new Date(dateLong)));
+			} else {
+				title = getString(R.string.action_update, "");
 			}
+			item.setTitle(title);
 		}
 	}
+
+
 
 	@Override
 	public void updateActivityLoadedCompetitions() {
