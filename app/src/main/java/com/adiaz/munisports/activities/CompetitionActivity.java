@@ -38,8 +38,8 @@ import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
+import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 

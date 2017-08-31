@@ -80,5 +80,7 @@
     <string name="undefined_week">(jornada sin definir)</string>
     <string name="undefined_match">(encuentro sin definir)</string>
     <string name="rest_team">(descansa)</string>
+    <string name="update_competition_notification_title">Actualización: %1$s</string>
+    <string name="update_competition_notification_body">Se ha registrado una actualización en la competición <b>%1$s</b> (%2$s - %3$s) en la que estás suscrito.</string>
 
 </resources>

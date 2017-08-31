@@ -54,13 +54,12 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		loadSportCourts(matches, this.mContext);
 		/* Updating local server update date. */
 		long timeInMillis = Calendar.getInstance().getTimeInMillis();
-		Uri uriCompetitionWithTime = CompetitionsEntry.CONTENT_URI;
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, response.body().getLastPublished());
 		String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
 		String[] selectionArgs = new String[]{idCompetitionServer.toString()};
 		ContentResolver contentResolver = mContext.getContentResolver();
-		contentResolver.update(uriCompetitionWithTime, contentValues, selection, selectionArgs);
+		contentResolver.update(CompetitionsEntry.CONTENT_URI, contentValues, selection, selectionArgs);
 		onFinishLoad.finishLoad();
 	}
 

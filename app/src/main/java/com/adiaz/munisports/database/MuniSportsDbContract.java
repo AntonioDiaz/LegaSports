@@ -1,7 +1,10 @@
 package com.adiaz.munisports.database;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.adiaz.munisports.entities.CompetitionEntity;
 
 /**
  * Created by toni on 20/04/2017.
@@ -41,6 +44,8 @@ public class MuniSportsDbContract {
 		public static final String COLUMN_ID_SERVER = "id_server";
 		public static final String COLUMN_LAST_UPDATE_SERVER = "last_update_server";
 		public static final String COLUMN_LAST_UPDATE_APP = "last_update_app";
+		public static final String COLUMN_LAST_NOTIFICATION = "last_notification";
+
 
 		public static final String[] PROJECTION = {
 				COLUMN_NAME,
@@ -48,7 +53,8 @@ public class MuniSportsDbContract {
 				COLUMN_CATEGORY,
 				COLUMN_ID_SERVER,
 				COLUMN_LAST_UPDATE_SERVER,
-				COLUMN_LAST_UPDATE_APP
+				COLUMN_LAST_UPDATE_APP,
+				COLUMN_LAST_NOTIFICATION
 		};
 		public static final int INDEX_NAME = 0;
 		public static final int INDEX_SPORT = 1;
@@ -56,6 +62,20 @@ public class MuniSportsDbContract {
 		public static final int INDEX_ID_SERVER = 3;
 		public static final int INDEX_LAST_UPDATE_SERVER = 4;
 		public static final int INDEX_LAST_UPDATE_APP = 5;
+		public static final int INDEX_LAST_NOTIFICATION = 6;
+
+		public static CompetitionEntity initCompetition (Cursor c) {
+			CompetitionEntity competitionEntity = new CompetitionEntity();
+			competitionEntity.setServerId(c.getString(CompetitionsEntry.INDEX_ID_SERVER));
+			competitionEntity.setName(c.getString(CompetitionsEntry.INDEX_NAME));
+			competitionEntity.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT));
+			competitionEntity.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
+			competitionEntity.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER));
+			competitionEntity.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP));
+			competitionEntity.setLastNotification(c.getLong(CompetitionsEntry.INDEX_LAST_NOTIFICATION));
+			return competitionEntity;
+		}
+
 	}
 
 	public static final	class MatchesEntry implements BaseColumns {

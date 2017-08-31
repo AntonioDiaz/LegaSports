@@ -9,7 +9,12 @@ public class CompetitionEntity {
 	private String name;
 	private String sportName;
 	private String categoryName;
+	// TODO: 31/08/2017 serverId should be Long.
 	private String serverId;
+	private Long lastUpdateServer;
+	private Long lastUpdateApp;
+	private Long lastNotification;
+
 
 	public String getName() {
 		return name;
@@ -41,5 +46,29 @@ public class CompetitionEntity {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	public Long getLastUpdateServer() {
+		return lastUpdateServer;
+	}
+
+	public void setLastUpdateServer(Long lastUpdateServer) {
+		this.lastUpdateServer = lastUpdateServer;
+	}
+
+	public Long getLastUpdateApp() {
+		return lastUpdateApp;
+	}
+
+	public void setLastUpdateApp(Long lastUpdateApp) {
+		this.lastUpdateApp = lastUpdateApp;
+	}
+
+	public Long getLastNotification() {
+		return lastNotification;
+	}
+
+	public void setLastNotification(Long lastNotification) {
+		this.lastNotification = lastNotification;
 	}
 }

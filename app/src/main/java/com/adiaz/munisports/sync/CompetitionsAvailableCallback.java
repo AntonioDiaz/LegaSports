@@ -5,12 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
+import com.adiaz.munisports.utilities.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,14 +64,12 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 	 */
 	private void loadCompetitions(List<CompetitionRestEntity> competitionsList) {
 		ContentResolver contentResolver = mContext.getContentResolver();
-		Map<Long, Long> mapCompetitions = new HashMap<>();
-		String[] projection = new String[]{CompetitionsEntry.COLUMN_ID_SERVER, CompetitionsEntry.COLUMN_LAST_UPDATE_APP};
-		Cursor cursor = contentResolver.query(CompetitionsEntry.CONTENT_URI, projection, null, null, null);
+		Map<Long, CompetitionEntity> mapCompetitions = new HashMap<>();
+		Cursor cursor = contentResolver.query(CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		try {
 			while (cursor.moveToNext()) {
-				long id = cursor.getLong(0);
-				long lastPublishedOnDevice = cursor.getLong(1);
-				mapCompetitions.put(id, lastPublishedOnDevice);
+				CompetitionEntity competition = CompetitionsEntry.initCompetition(cursor);
+				mapCompetitions.put(new Long (competition.getServerId()), competition);
 			}
 		} finally {
 			cursor.close();
@@ -79,8 +80,10 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			ContentValues cv = new ContentValues();
 			Long idCompetition = competitionsEntity.getId();
 			Long lastPublishedApp = -1L;
+			Long lastNofitication = -1L;
 			if (mapCompetitions.containsKey(idCompetition)) {
-				lastPublishedApp = mapCompetitions.get(idCompetition);
+				lastPublishedApp = mapCompetitions.get(idCompetition).getLastUpdateApp();
+				lastNofitication = mapCompetitions.get(idCompetition).getLastNotification();
 			}
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, idCompetition);
 			cv.put(CompetitionsEntry.COLUMN_NAME, competitionsEntity.getName());
@@ -89,45 +92,38 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, competitionsEntity.getLastPublished());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, lastPublishedApp);
+			cv.put(CompetitionsEntry.COLUMN_LAST_NOTIFICATION, lastNofitication);
 			competitionsContentValues.add(cv);
-			if (competitionsFavs.contains(idCompetition.toString())) {
-				if (lastPublishedApp < competitionsEntity.getLastPublished()) {
-					Log.d(TAG, "loadCompetitions: Show notification!!! " + idCompetition);
-					showNotification(idCompetition);
-				} else {
-					Log.d(TAG, "loadCompetitions: update not necessary. ");
-
-				}
-			}
-/*			if (competitionsFavs.contains(competitionsEntity.getId().toString())) {
-
-				Uri uriCompetition = CompetitionsEntry.buildCompetitionUriWithServerId(Long.parseLong(idCompetitionServer));
-				String[] projection = {	CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER };
-				Cursor cursor = contentResolver.query(uriCompetition, projection, null, null, null);
-				if (cursor.getCount()>0) {
-					cursor.moveToFirst();
-					if (cursor.getLong(0) < competitionsEntity.getLastPublished()) {
-						Log.d(TAG, "loadCompetitions: update competition it is necessary " + idCompetitionServer);
-					} else {
-						Log.d(TAG, "loadCompetitions: no update");
-					}
-				}
-				cursor.close();
-
-			}*/
-
 		}
 
 		ContentValues[] competitions = competitionsContentValues.toArray(new ContentValues[competitionsContentValues.size()]);
 		contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
 		contentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
+		for (String fav : competitionsFavs) {
+			Uri uriCompetition = CompetitionsEntry.buildCompetitionUriWithServerId(new Long(fav));
+			Cursor cursorFav = contentResolver.query(uriCompetition, CompetitionsEntry.PROJECTION, null, null, null);
+			try {
+				cursorFav.moveToNext();
+				CompetitionEntity competitionEntity = CompetitionsEntry.initCompetition(cursorFav);
+				if (competitionEntity.getLastNotification() < competitionEntity.getLastUpdateServer()) {
+					Log.d(TAG, "loadCompetitions: show");
+					showNotification(competitionEntity);
+				} else {
+					Log.d(TAG, "loadCompetitions: notShow");
+				}
+			} finally {
+				cursorFav.close();
+			}
+		}
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putLong(MuniSportsConstants.KEY_LASTUPDATE, new Date().getTime());
 		editor.commit();
 	}
 
-	private void showNotification(Long idCompetition) {
+	private void showNotification(CompetitionEntity competitionEntity) {
+		// TODO: 31/08/2017 check if notifications are activated.
+		NotificationUtils.remindUserBecauseCharging(mContext, competitionEntity);
 
 	}
 
