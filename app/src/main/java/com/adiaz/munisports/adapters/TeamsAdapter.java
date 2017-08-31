@@ -14,7 +14,7 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamMatchEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
 
@@ -144,8 +144,8 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		ButterKnife.bind(this, view);
 		tvHeading.setText(teamEntity);
 		String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
-		String teamName = Utils.generateTeamKey(teamEntity, idCompetitionServer);
-		if (Utils.checkIfFavoritSelected(mContext, teamName, key)) {
+		String teamName = MuniSportsUtils.generateTeamKey(teamEntity, idCompetitionServer);
+		if (MuniSportsUtils.checkIfFavoritSelected(mContext, teamName, key)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite);

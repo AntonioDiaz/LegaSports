@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.CompetitionEntity;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
 
@@ -46,8 +46,8 @@ public class FavoritesCompetitionsAdapter extends RecyclerView.Adapter<Favorites
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		holder.tvTitle.setText(competitionsFavorites.get(position).getName());
-		holder.tvSubTitle01.setText(Utils.getStringResourceByName(context, competitionsFavorites.get(position).getSportName()));
-		holder.tvSubTitle02.setText(Utils.getStringResourceByName(context,competitionsFavorites.get(position).getCategoryName()));
+		holder.tvSubTitle01.setText(MuniSportsUtils.getStringResourceByName(context, competitionsFavorites.get(position).getSportName()));
+		holder.tvSubTitle02.setText(MuniSportsUtils.getStringResourceByName(context,competitionsFavorites.get(position).getCategoryName()));
 		holder.cvCompetitions.setTag(competitionsFavorites.get(position).getServerId());
 	}
 

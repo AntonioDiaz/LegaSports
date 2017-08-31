@@ -39,7 +39,7 @@ import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
@@ -119,8 +119,8 @@ public class CompetitionActivity extends AppCompatActivity
 		String categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
 
-		String sport = Utils.getStringResourceByName(this, sportTag);
-		String category = Utils.getStringResourceByName(this, categoryTag);
+		String sport = MuniSportsUtils.getStringResourceByName(this, sportTag);
+		String category = MuniSportsUtils.getStringResourceByName(this, categoryTag);
 
 		sportTitle = sport + " (" + category + ")";
 
@@ -154,7 +154,7 @@ public class CompetitionActivity extends AppCompatActivity
 			}
 		} else {
 			hideLoading();
-			Utils.showNoInternetAlert(this, activityView);
+			MuniSportsUtils.showNoInternetAlert(this, activityView);
 			finishLoad();
 		}
 	}
@@ -187,7 +187,7 @@ public class CompetitionActivity extends AppCompatActivity
 		for (int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
 				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
-				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
+				if (MuniSportsUtils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -225,11 +225,11 @@ public class CompetitionActivity extends AppCompatActivity
 				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				if (Utils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
-					Utils.unMarkFavoriteTeam(this, idCompetitionServer, key);
+				if (MuniSportsUtils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
+					MuniSportsUtils.unMarkFavoriteTeam(this, idCompetitionServer, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					Utils.markFavoriteTeam(this, idCompetitionServer, key);
+					MuniSportsUtils.markFavoriteTeam(this, idCompetitionServer, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
@@ -246,13 +246,13 @@ public class CompetitionActivity extends AppCompatActivity
 
 	public void selectFavorite(View view) {
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
-		String myTeamId = Utils.generateTeamKey((String) imageView.getTag(), idCompetitionServer);
-		if (Utils.checkIfFavoritSelected(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS)) {
+		String myTeamId = MuniSportsUtils.generateTeamKey((String) imageView.getTag(), idCompetitionServer);
+		if (MuniSportsUtils.checkIfFavoritSelected(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS)) {
 			imageView.setImageResource(R.drawable.ic_favorite);
-			Utils.unMarkFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
+			MuniSportsUtils.unMarkFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			Utils.markFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
+			MuniSportsUtils.markFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		}
 	}
 
@@ -277,7 +277,7 @@ public class CompetitionActivity extends AppCompatActivity
 		Cursor cursorMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
 		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
 		try {
-			this.courtsMap = Utils.initCourts(this);
+			this.courtsMap = MuniSportsUtils.initCourts(this);
 			this.mTeams = initTeams(cursorMatches, this.courtsMap);
 			this.mWeeks = initCalendar(cursorMatches, this.courtsMap);
 			this.mClassificationList = initClassification(cursorClassification);

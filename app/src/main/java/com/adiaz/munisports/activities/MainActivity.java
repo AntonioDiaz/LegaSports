@@ -27,7 +27,7 @@ import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEn
 import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.NetworkUtilities;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
 				Call<List<TownRestEntity>> call = muniSportsRestApi.townsQuery();
 				call.enqueue(new TownsAvailableCallback(this));
 			} else {
-				Utils.showNoInternetAlert(this, activitySplash);
+				MuniSportsUtils.showNoInternetAlert(this, activitySplash);
 				llProgress.setVisibility(View.INVISIBLE);
 			}
 		} else {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
 				if (NetworkUtilities.isNetworkAvailable(this)) {
 					updateCompetitions();
 				} else {
-					Utils.showNoInternetAlert(this, activityView);
+					MuniSportsUtils.showNoInternetAlert(this, activityView);
 					llProgressCompetition.setVisibility(View.INVISIBLE);
 				}
 			} else {

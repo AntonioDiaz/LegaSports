@@ -31,7 +31,7 @@ import com.adiaz.munisports.entities.CourtEntity;
 import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.entities.TeamMatchEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.text.DateFormat;
@@ -77,8 +77,8 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
 		categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String subTitle = competitionName;
-		subTitle += " - " + Utils.getStringResourceByName(this, categoryTag);
-		subTitle += " - " + Utils.getStringResourceByName(this, sportTag);
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, categoryTag);
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, sportTag);
 		collapsingToolbar.setTitle(" ");
 
 		toolbarHeaderView.bindTo(teamName, subTitle, 0);
@@ -99,11 +99,11 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_competition, menu);
-		String favoriteTeamId = Utils.composeFavoriteTeamId(teamName, idCompetitionServer);
+		String favoriteTeamId = MuniSportsUtils.composeFavoriteTeamId(teamName, idCompetitionServer);
 		for(int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
 				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
-				if (Utils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
+				if (MuniSportsUtils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -121,15 +121,15 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
-				String favoriteTeamId = Utils.composeFavoriteTeamId(teamName, idCompetitionServer);
+				String favoriteTeamId = MuniSportsUtils.composeFavoriteTeamId(teamName, idCompetitionServer);
 				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				if (Utils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
-					Utils.unMarkFavoriteTeam(this, favoriteTeamId, key);
+				if (MuniSportsUtils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
+					MuniSportsUtils.unMarkFavoriteTeam(this, favoriteTeamId, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					Utils.markFavoriteTeam(this, favoriteTeamId, key);
+					MuniSportsUtils.markFavoriteTeam(this, favoriteTeamId, key);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
@@ -212,7 +212,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		Cursor cursorMatches = context.getContentResolver().query(uri, MatchesEntry.PROJECTION, null, null, null);
 		cursorMatches.moveToPosition(-1);
 		Integer weeksNumber = -1;
-		Map<Long, CourtEntity> mapCourts = Utils.initCourts(context);
+		Map<Long, CourtEntity> mapCourts = MuniSportsUtils.initCourts(context);
 		while (cursorMatches.moveToNext()) {
 			Integer currentWeek = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
 			if (currentWeek>weeksNumber) {

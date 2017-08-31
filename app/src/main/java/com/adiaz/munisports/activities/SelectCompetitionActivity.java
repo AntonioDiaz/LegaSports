@@ -17,7 +17,7 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.CompetitionsAdapter;
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +44,7 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		setContentView(R.layout.activity_select_competition);
 		ButterKnife.bind(this);
 		sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
-		sportTitle = Utils.getStringResourceByName(this, sportTag);
+		sportTitle = MuniSportsUtils.getStringResourceByName(this, sportTag);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(sportTitle);

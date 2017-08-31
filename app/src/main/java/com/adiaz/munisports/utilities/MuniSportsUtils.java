@@ -27,9 +27,9 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEnt
 import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 /* Created by toni on 28/03/2017. */
 
-public class Utils {
+public class MuniSportsUtils {
 
-	private static final String TAG = Utils.class.getSimpleName();
+	private static final String TAG = MuniSportsUtils.class.getSimpleName();
 
 	public static boolean checkIfFavoritSelected(Context context, String teamName, String key) {
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
@@ -39,12 +39,12 @@ public class Utils {
 	}
 
 	public static void unMarkFavoriteTeam(Context context, String myTeamName, String key) {
-		Utils.updateListFavoritesTeam(context, myTeamName, key, false);
+		MuniSportsUtils.updateListFavoritesTeam(context, myTeamName, key, false);
 	}
 
 
 	public static void markFavoriteTeam(Context context, String myTeamName, String key) {
-		Utils.updateListFavoritesTeam(context, myTeamName, key, true);
+		MuniSportsUtils.updateListFavoritesTeam(context, myTeamName, key, true);
 	}
 
 	private static void updateListFavoritesTeam(Context context, String myTeamName, String key, boolean addFavorite) {
@@ -92,7 +92,7 @@ public class Utils {
 
 	public static List<CompetitionEntity> getCompetitionsFavorites(Context context) {
 		List<CompetitionEntity> competitionsFavorites = new ArrayList<>();
-		List<String> favorites = Utils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
+		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 		Cursor cursorCompetitions = context.getContentResolver().query(
 				CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		while (cursorCompetitions.moveToNext()) {
@@ -115,7 +115,7 @@ public class Utils {
 
 	public static List<TeamFavoriteEntity> getTeamsFavorites(Context context) {
 		List<TeamFavoriteEntity> teamsFavorites = new ArrayList<>();
-		List<String> favorites = Utils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_TEAMS);
+		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		for (String favorite : favorites) {
 			if (favorite.split("\\|").length >= 2) {
 				String teamName = favorite.split("\\|")[0];

@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +74,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cursor.close();
 		}
 		List<ContentValues> competitionsContentValues = new ArrayList<>();
-		List<String> competitionsFavs = Utils.getFavorites(mContext, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
+		List<String> competitionsFavs = MuniSportsUtils.getFavorites(mContext, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 		for (CompetitionRestEntity competitionsEntity : competitionsList) {
 			ContentValues cv = new ContentValues();
 			Long idCompetition = competitionsEntity.getId();

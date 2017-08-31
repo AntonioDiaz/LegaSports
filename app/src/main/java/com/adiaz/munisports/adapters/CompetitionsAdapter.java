@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.database.MuniSportsDbContract;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ public class CompetitionsAdapter extends RecyclerView.Adapter<CompetitionsAdapte
 		String competition = competitions.getString(MuniSportsDbContract.CompetitionsEntry.INDEX_NAME);
 		String category = competitions.getString(MuniSportsDbContract.CompetitionsEntry.INDEX_CATEGORY);
 		holder.tvCompetitionName.setText(competition);
-		holder.tvCategoryName.setText(Utils.getStringResourceByName(context, category.toLowerCase()));
+		holder.tvCategoryName.setText(MuniSportsUtils.getStringResourceByName(context, category.toLowerCase()));
 	}
 
 	@Override

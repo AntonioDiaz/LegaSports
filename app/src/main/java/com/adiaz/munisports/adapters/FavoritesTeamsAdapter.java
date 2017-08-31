@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.TeamFavoriteEntity;
-import com.adiaz.munisports.utilities.Utils;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
 
@@ -47,8 +47,8 @@ public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAd
 		String sportTag = teamsFavorites.get(position).getSportTag();
 		String categoryTag = teamsFavorites.get(position).getCategoryTag();
 		String competitionName = teamsFavorites.get(position).getCompetitionName();
-		String subtitle = Utils.getStringResourceByName(context, sportTag);
-		subtitle += " - " + Utils.getStringResourceByName(context, categoryTag);
+		String subtitle = MuniSportsUtils.getStringResourceByName(context, sportTag);
+		subtitle += " - " + MuniSportsUtils.getStringResourceByName(context, categoryTag);
 		holder.tvTitle.setText(teamName);
 		holder.tvSubTitle01.setText(competitionName);
 		holder.tvSubTitle02.setText(subtitle);
