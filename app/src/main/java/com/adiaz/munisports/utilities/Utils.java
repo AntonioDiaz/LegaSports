@@ -48,6 +48,7 @@ public class Utils {
 	}
 
 	private static void updateListFavoritesTeam(Context context, String myTeamName, String key, boolean addFavorite) {
+		Log.d(TAG, "updateListFavoritesTeam: key " + key);
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
 		Set<String> stringsSetCopy = new HashSet<String>(preferences.getStringSet(key, new HashSet<String>()));
 		if (addFavorite) {
@@ -58,6 +59,7 @@ public class Utils {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putStringSet(key, stringsSetCopy);
 		editor.commit();
+		Log.d(TAG, "updateListFavoritesTeam: favorites teams " + preferences.getStringSet(key, null));
 	}
 
 	public static List<String> getFavorites(Context context, String key) {

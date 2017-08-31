@@ -240,13 +240,8 @@ public class MuniSportsContentProvider extends ContentProvider {
 		int updateRecors = -1;
 		SQLiteDatabase db = muniSportsDbHelper.getWritableDatabase();
 		switch (sUriMatcher.match(uri)) {
-			case COMPETITIONS_WITH_ID_LASTUPDATE:
-				String updateSql =
-						"UPDATE " + CompetitionsEntry.TABLE_NAME +
-						" SET " + CompetitionsEntry.COLUMN_LAST_UPDATE_LOCAL + "=" + uri.getPathSegments().get(2) +
-						" WHERE " + CompetitionsEntry.COLUMN_ID_SERVER + "=" + uri.getPathSegments().get(1);
-				db.execSQL(updateSql);
-				updateRecors = 1;
+			case COMPETITIONS:
+				updateRecors = db.update(CompetitionsEntry.TABLE_NAME, contentValues, selection, selectionArgs);
 				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);

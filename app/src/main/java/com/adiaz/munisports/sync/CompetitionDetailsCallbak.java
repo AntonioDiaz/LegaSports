@@ -3,7 +3,6 @@ package com.adiaz.munisports.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -47,27 +46,21 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 
 	@Override
 	public void onResponse(Call<CompetitionDetails> call, Response<CompetitionDetails> response) {
-		ContentResolver contentResolver = mContext.getContentResolver();
-		/* check if there has been any change since last update.  */
-		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(this.idCompetitionServer);
-		Cursor query = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
-		query.moveToFirst();
-		long lastPublishedServerInDb = query.getLong(CompetitionsEntry.INDEX_LAST_UDPATE_SERVER);
-		long lastPublishedServerInServer = response.body().getLastPublished();
-		query.close();
-		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(this.idCompetitionServer.toString());
-		Cursor queryMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
-		if (lastPublishedServerInDb<lastPublishedServerInServer || queryMatches.getCount()==0) {
-			List<Match> matches = response.body().getMatches();
-			loadMatches(matches, this.idCompetitionServer, this.mContext);
-			List<Classification> classification = response.body().getClassification();
-			loadClassification(classification, this.idCompetitionServer, this.mContext);
-			loadSportCourts(matches, this.mContext);
-		}
+		/* Update matches and classification.  */
+		List<Match> matches = response.body().getMatches();
+		loadMatches(matches, this.idCompetitionServer, this.mContext);
+		List<Classification> classification = response.body().getClassification();
+		loadClassification(classification, this.idCompetitionServer, this.mContext);
+		loadSportCourts(matches, this.mContext);
 		/* Updating local server update date. */
 		long timeInMillis = Calendar.getInstance().getTimeInMillis();
-		Uri uriCompetitionWithTime = CompetitionsEntry.buildCompetitionUriWithServerIdAndTime(idCompetitionServer, timeInMillis);
-		contentResolver.update(uriCompetitionWithTime, null, null, null);
+		Uri uriCompetitionWithTime = CompetitionsEntry.CONTENT_URI;
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, response.body().getLastPublished());
+		String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
+		String[] selectionArgs = new String[]{idCompetitionServer.toString()};
+		ContentResolver contentResolver = mContext.getContentResolver();
+		contentResolver.update(uriCompetitionWithTime, contentValues, selection, selectionArgs);
 		onFinishLoad.finishLoad();
 	}
 

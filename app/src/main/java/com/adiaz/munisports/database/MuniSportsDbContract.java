@@ -27,13 +27,6 @@ public class MuniSportsDbContract {
 					.build();
 		}
 
-		public static Uri buildCompetitionUriWithServerIdAndTime(Long competitionServerId, Long updateTime) {
-			return CONTENT_URI.buildUpon()
-					.appendPath(competitionServerId.toString())
-					.appendPath(updateTime.toString())
-					.build();
-		}
-
 		public static Uri buildCompetitionsUriWithSports(String sport) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(sport)
@@ -47,7 +40,7 @@ public class MuniSportsDbContract {
 		public static final String COLUMN_CATEGORY_ORDER = "category_order";
 		public static final String COLUMN_ID_SERVER = "id_server";
 		public static final String COLUMN_LAST_UPDATE_SERVER = "last_update_server";
-		public static final String COLUMN_LAST_UPDATE_LOCAL = "last_update_local";
+		public static final String COLUMN_LAST_UPDATE_APP = "last_update_app";
 
 		public static final String[] PROJECTION = {
 				COLUMN_NAME,
@@ -55,14 +48,14 @@ public class MuniSportsDbContract {
 				COLUMN_CATEGORY,
 				COLUMN_ID_SERVER,
 				COLUMN_LAST_UPDATE_SERVER,
-				COLUMN_LAST_UPDATE_LOCAL,
+				COLUMN_LAST_UPDATE_APP
 		};
 		public static final int INDEX_NAME = 0;
 		public static final int INDEX_SPORT = 1;
 		public static final int INDEX_CATEGORY = 2;
 		public static final int INDEX_ID_SERVER = 3;
-		public static final int INDEX_LAST_UDPATE_SERVER = 4;
-		public static final int INDEX_LAST_UPDATE_LOCAL = 5;
+		public static final int INDEX_LAST_UPDATE_SERVER = 4;
+		public static final int INDEX_LAST_UPDATE_APP = 5;
 	}
 
 	public static final	class MatchesEntry implements BaseColumns {
@@ -98,7 +91,7 @@ public class MuniSportsDbContract {
 				COLUMN_ID_SERVER,
 				COLUMN_ID_COMPETITION_SERVER
 		};
-		public static final int INDEX_LAST_UDPATE = 0;
+		public static final int INDEX_LAST_UPDATE = 0;
 		public static final int INDEX_TEAM_LOCAL = 1;
 		public static final int INDEX_TEAM_VISITOR = 2;
 		public static final int INDEX_SCORE_LOCAL = 3;

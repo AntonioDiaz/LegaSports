@@ -1,5 +1,6 @@
 package com.adiaz.munisports.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.TeamsAdapter;
+import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.utilities.NonScrollExpandableListView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +29,8 @@ public class TeamsFragment extends Fragment {
 
 	@BindView(R.id.elv_teams) NonScrollExpandableListView expandableListView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
+	private OnDataPassTeams onDataPassTeams;
+
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,9 +48,22 @@ public class TeamsFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.teams, CompetitionActivity.idCompetitionServer);
+		List<TeamEntity> teams = onDataPassTeams.onDataPassTeams();
+		String idCompetition = getArguments().getString(CompetitionActivity.BUNDLE_KEY_ID_COMPETITION);
+		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), teams, idCompetition);
 		expandableListView.setAdapter(teamsAdapter);
 		expandableListView.setEmptyView(tvEmptyListItem);
 		teamsAdapter.notifyDataSetChanged();
 	}
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		onDataPassTeams = (OnDataPassTeams) context;
+	}
+
+	public interface OnDataPassTeams {
+		List<TeamEntity> onDataPassTeams();
+	}
+
 }

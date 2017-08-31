@@ -44,7 +44,6 @@ import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,9 +62,14 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEnt
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
-public class CompetitionActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
+public class CompetitionActivity extends AppCompatActivity
+		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad,
+		TeamsFragment.OnDataPassTeams,
+		CalendarFragment.OnDataPassCalendar,
+		ClassificationFragment.OnDataPassClassification {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
+	public static final String BUNDLE_KEY_ID_COMPETITION = "BUNDLE_KEY_ID_COMPETITION";
 
 	@Nullable
 	@BindView((R.id.layout_activity_competition)) View activityView;
@@ -94,11 +98,11 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 
 	private String sportTitle;
 	// TODO: 18/08/2017 idCompetitionServer should be Long
-	public static String idCompetitionServer;
-	public static List<TeamEntity> teams = new ArrayList<>();
-	public static List<List<MatchEntity>> weeks = new ArrayList<>();
-	public static List<ClassificationEntity> classificationList = new ArrayList<>();
-	public static Map<Long, CourtEntity> courtsMap = new HashMap<>();
+	private String idCompetitionServer;
+	private List<TeamEntity> mTeams = new ArrayList<>();
+	private List<List<MatchEntity>> mWeeks = new ArrayList<>();
+	private List<ClassificationEntity> mClassificationList = new ArrayList<>();
+	private Map<Long, CourtEntity> courtsMap = new HashMap<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -158,12 +162,13 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 	private boolean itIsNecesaryUpdate() {
 		ContentResolver contentResolver = this.getContentResolver();
 		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(Long.parseLong(idCompetitionServer));
-		Cursor cursor = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
+		String[] projection = {	CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, CompetitionsEntry.COLUMN_LAST_UPDATE_APP };
+		Cursor cursor = contentResolver.query(uri, projection, null, null, null);
 		cursor.moveToFirst();
-		long lastUpdateTime = cursor.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_LOCAL);
-		long currentTime = Calendar.getInstance().getTimeInMillis();
+		long lastPublishedOnServer = cursor.getLong(0);
+		long lastPublishedOnApp = cursor.getLong(1);
 		cursor.close();
-		return (currentTime - lastUpdateTime) > MuniSportsConstants.MILISECONDS_NECESSARY_TO_UPDATE;
+		return lastPublishedOnApp<lastPublishedOnServer;
 	}
 
 	private void hideLoading() {
@@ -203,7 +208,11 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 
 	private void setupViewPager(ViewPager viewPager) {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new TeamsFragment(), getString(R.string.teams));
+		TeamsFragment teamsFragment = new TeamsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(BUNDLE_KEY_ID_COMPETITION, idCompetitionServer);
+		teamsFragment.setArguments(bundle);
+		adapter.addFragment(teamsFragment, getString(R.string.teams));
 		adapter.addFragment(new ClassificationFragment(), getString(R.string.classification));
 		adapter.addFragment(new CalendarFragment(), getString(R.string.calendar));
 		viewPager.setAdapter(adapter);
@@ -269,9 +278,9 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
 		try {
 			this.courtsMap = Utils.initCourts(this);
-			this.teams = initTeams(cursorMatches, this.courtsMap);
-			this.weeks = initCalendar(cursorMatches, this.courtsMap);
-			this.classificationList = initClassification(cursorClassification);
+			this.mTeams = initTeams(cursorMatches, this.courtsMap);
+			this.mWeeks = initCalendar(cursorMatches, this.courtsMap);
+			this.mClassificationList = initClassification(cursorClassification);
 		} finally {
 			cursorMatches.close();
 			cursorClassification.close();
@@ -392,6 +401,21 @@ public class CompetitionActivity extends AppCompatActivity implements AppBarLayo
 			list.add(classificationEntry);
 		}
 		return list;
+	}
+
+	@Override
+	public List<TeamEntity> onDataPassTeams() {
+		return mTeams;
+	}
+
+	@Override
+	public List<List<MatchEntity>> onDataPassCalendar() {
+		return mWeeks;
+	}
+
+	@Override
+	public List<ClassificationEntity> onDataPassClassification() {
+		return mClassificationList;
 	}
 }
 

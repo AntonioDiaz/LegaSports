@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class MuniSportsSyncUtils {
 
 
-	private static final int SYNC_INTERVAL_MINUTES = 1;
+	private static final int SYNC_INTERVAL_MINUTES = 30;
 	private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.MINUTES.toSeconds(SYNC_INTERVAL_MINUTES);
 	private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
