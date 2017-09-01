@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_activity_team"
     tools:context="com.adiaz.munisports.activities.FavoriteTeamActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -62,12 +63,45 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true"
         android:scrollbars="none">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_fav_team_jornadas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/listitem_favorite_team_calendar"
-            />
+            android:visibility="visible"
+            tools:listitem="@layout/listitem_favorite_team_calendar" />
+
+        <LinearLayout
+            android:id="@+id/ll_progress_team"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/pb_towns"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/loading_team_calendar"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+        </FrameLayout>
 
     </android.support.v4.widget.NestedScrollView>
     <include

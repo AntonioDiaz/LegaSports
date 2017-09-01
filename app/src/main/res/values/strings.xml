@@ -67,6 +67,7 @@
     <string name="loading_towns">cargando municipios</string>
     <string name="loading_competitions">cargando competiciones</string>
     <string name="loading_competition">cargando competición</string>
+    <string name="loading_team_calendar">cargando calendar</string>
     <string name="action_preferences">Preferencias</string>
     <string name="action_changetown">Cambiar municipio</string>
     <string name="action_update">Actualizar (%1$s)</string>

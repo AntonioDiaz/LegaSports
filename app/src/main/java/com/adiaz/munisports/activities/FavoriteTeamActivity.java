@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
@@ -23,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
@@ -30,8 +32,11 @@ import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.entities.TeamMatch;
+import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
+import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
+import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.text.DateFormat;
@@ -48,7 +53,7 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 
-public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
 
 	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
 	@BindView(R.id.toolbar) Toolbar toolbar;
@@ -57,6 +62,11 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
 	@BindView(R.id.tv_title) TextView tvTitle;
+	@BindView(R.id.ll_progress_team) LinearLayout llProgressTeam;
+	@Nullable
+	@BindView((R.id.layout_activity_team)) View activityView;
+
+
 	private String teamName;
 	private String idCompetitionServer;
 	private String competitionName;
@@ -84,6 +94,28 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		toolbarHeaderView.bindTo(teamName, subTitle, 0);
 		floatHeaderView.bindTo(teamName, subTitle, 16);
 		appBarLayout.addOnOffsetChangedListener(this);
+
+		showLoading();
+		if (NetworkUtilities.isNetworkAvailable(this)) {
+			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), new Long(idCompetitionServer));
+			if (needToUpdate) {
+				CompetitionDbUtils.updateCompetition(this, this, new Long(idCompetitionServer));
+			} else {
+				finishLoad();
+			}
+		} else {
+			MuniSportsUtils.showNoInternetAlert(this, activityView);
+			finishLoad();
+		}
+
+
+		SharedPreferences preferences = getDefaultSharedPreferences(this);
+		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
+	}
+
+	@Override
+	public void finishLoad() {
 		Team team = FavoriteTeamActivity.initTeamCompetition(this, teamName, idCompetitionServer);
 		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this);
 		recyclerView.setHasFixedSize(true);
@@ -91,10 +123,9 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setNestedScrollingEnabled(false);
 		adapter.setTeam(team);
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
-		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
+		hideLoading();
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,5 +280,15 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		}
 		cursorMatches.close();
 		return team;
+	}
+
+	private void hideLoading() {
+		llProgressTeam.setVisibility(View.INVISIBLE);
+		recyclerView.setVisibility(View.VISIBLE);
+	}
+
+	private void showLoading() {
+		llProgressTeam.setVisibility(View.VISIBLE);
+		recyclerView.setVisibility(View.INVISIBLE);
 	}
 }
