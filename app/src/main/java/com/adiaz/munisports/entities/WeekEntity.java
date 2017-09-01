@@ -6,17 +6,17 @@ import java.util.List;
 
 public class WeekEntity {
 
-	List<MatchEntity> matches;
+	List<Match> matches;
 
-	public WeekEntity(List<MatchEntity> matches) {
+	public WeekEntity(List<Match> matches) {
 		this.matches = matches;
 	}
 
-	public List<MatchEntity> getMatches() {
+	public List<Match> getMatches() {
 		return matches;
 	}
 
-	public void setMatches(List<MatchEntity> matches) {
+	public void setMatches(List<Match> matches) {
 		this.matches = matches;
 	}
 }

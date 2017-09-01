@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.MatchEntity;
+import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.text.DateFormat;
@@ -25,7 +25,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 
 	private static final String TAG = CalendarAdapter.class.getSimpleName();
 	private Context mContext;
-	private List<List<MatchEntity>> weeksList;
+	private List<List<Match>> weeksList;
 
 	@Nullable @BindView(R.id.childItem_teamlocal) TextView tvLocalTeam;
 	@Nullable @BindView(R.id.childItem_teamvisitor) TextView tvVisitorTeam;
@@ -33,16 +33,16 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 	@Nullable @BindView(R.id.childItem_place) TextView place;
 	@Nullable @BindView(R.id.heading) TextView textViewHeading;
 
-	public CalendarAdapter(Context mContext, List<List<MatchEntity>> weeksList) {
+	public CalendarAdapter(Context mContext, List<List<Match>> weeksList) {
 		this.mContext = mContext;
 		this.weeksList = weeksList;
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		List<MatchEntity> matches = weeksList.get(groupPosition);
-		MatchEntity matchEntity = matches.get(childPosition);
-		return matchEntity;
+		List<Match> matches = weeksList.get(groupPosition);
+		Match match = matches.get(childPosition);
+		return match;
 	}
 
 	@Override
@@ -52,14 +52,14 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
-		MatchEntity matchEntity = (MatchEntity) getChild(groupPosition, childPosition);
+		Match match = (Match) getChild(groupPosition, childPosition);
 		if (view == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = layoutInflater.inflate(R.layout.listitem_child_calendar, null);
 		}
 		ButterKnife.bind(this, view);
-		String teamLocal = matchEntity.getTeamLocal();
-		String teamVisitor = matchEntity.getTeamVisitor();
+		String teamLocal = match.getTeamLocal();
+		String teamVisitor = match.getTeamVisitor();
 		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD) && teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 			tvLocalTeam.setText(mContext.getString(R.string.undefined_match));
 			tvVisitorTeam.setText("");
@@ -73,13 +73,13 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			}
 			tvVisitorTeam.setText(teamVisitor);
 		}
-		if (matchEntity.getDate().getTime()==0) {
+		if (match.getDate().getTime()==0) {
 			date.setText(mContext.getString(R.string.undefined_date));
 		} else {
 			DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-			date.setText(df.format(matchEntity.getDate()));
+			date.setText(df.format(match.getDate()));
 		}
-		place.setText(matchEntity.getPlaceName());
+		place.setText(match.getPlaceName());
 		return view;
 	}
 

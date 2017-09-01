@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
@@ -24,14 +24,14 @@ public class FavoritesCompetitionsAdapter extends RecyclerView.Adapter<Favorites
 	private Context context;
 	private ListItemClickListener listItemClickListener;
 
-	private List<CompetitionEntity> competitionsFavorites;
+	private List<Competition> competitionsFavorites;
 
 	public FavoritesCompetitionsAdapter(Context context, ListItemClickListener listItemClickListener) {
 		this.context = context;
 		this.listItemClickListener = listItemClickListener;
 	}
 
-	public void setCompetitionsFavorites(List<CompetitionEntity> competitionsFavorites) {
+	public void setCompetitionsFavorites(List<Competition> competitionsFavorites) {
 		this.competitionsFavorites = competitionsFavorites;
 		notifyDataSetChanged();
 	}

@@ -2,7 +2,6 @@ package com.adiaz.munisports.sync;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class MuniSportsSyncUtils {
 
 
-	private static final int SYNC_INTERVAL_MINUTES = 1;
+	private static final int SYNC_INTERVAL_MINUTES = 30;
 	private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.MINUTES.toSeconds(SYNC_INTERVAL_MINUTES);
 	private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
@@ -55,7 +54,6 @@ public class MuniSportsSyncUtils {
 	}
 
 	synchronized public static void initialize(@NonNull final Context context) {
-		Log.d(TAG, "initialize: " + sInitialized);
 		if (sInitialized) {
 			return;
 		}

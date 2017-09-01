@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.ClassificationEntity;
+import com.adiaz.munisports.entities.Classification;
 
 import java.util.List;
 
@@ -23,11 +23,11 @@ public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<Clas
 
 
 	Context mContext;
-	List<ClassificationEntity> classificationList;
+	List<Classification> classificationList;
 	private static final int TYPE_HEADER = 0;
 	private static final int TYPE_ITEM = 1;
 
-	public ClassificationRecyclerViewAdapter(Context mContext, List<ClassificationEntity> classificationList) {
+	public ClassificationRecyclerViewAdapter(Context mContext, List<Classification> classificationList) {
 		this.mContext = mContext;
 		this.classificationList = classificationList;
 	}
@@ -64,7 +64,7 @@ public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<Clas
 			holder.tvPp.setText("PP");
 			holder.tvPt.setText("PT");
 		} else {
-			ClassificationEntity c = classificationList.get(position - 1);
+			Classification c = classificationList.get(position - 1);
 			holder.tvPosition.setText(c.getPosition() == null ? "0" : c.getPosition().toString());
 			holder.tvTeam.setText(c.getTeam());
 			holder.tvPj.setText("" + c.getMatchesPlayed());

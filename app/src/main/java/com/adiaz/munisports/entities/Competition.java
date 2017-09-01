@@ -4,7 +4,7 @@ package com.adiaz.munisports.entities;
  * Created by toni on 27/04/2017.
  */
 
-public class CompetitionEntity {
+public class Competition {
 
 	private String name;
 	private String sportName;

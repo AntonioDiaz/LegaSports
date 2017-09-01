@@ -15,7 +15,7 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.FavoriteTeamActivity;
 import com.adiaz.munisports.activities.FavoritesActivity;
 import com.adiaz.munisports.adapters.FavoritesTeamsAdapter;
-import com.adiaz.munisports.entities.TeamFavoriteEntity;
+import com.adiaz.munisports.entities.TeamFavorite;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import butterknife.BindView;
@@ -64,12 +64,12 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 	@Override
 	public void onListItemClick(int clickedItemIndex) {
 		Intent intent = new Intent(getActivity(), FavoriteTeamActivity.class);
-		TeamFavoriteEntity teamFavoriteEntity = FavoritesActivity.teamsFavorites.get(clickedItemIndex);
-		intent.putExtra(MuniSportsConstants.INTENT_TEAM_NAME, teamFavoriteEntity.getName());
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, teamFavoriteEntity.getIdCompetitionServer());
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, teamFavoriteEntity.getCompetitionName());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, teamFavoriteEntity.getSportTag());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, teamFavoriteEntity.getCategoryTag());
+		TeamFavorite teamFavorite = FavoritesActivity.teamsFavorites.get(clickedItemIndex);
+		intent.putExtra(MuniSportsConstants.INTENT_TEAM_NAME, teamFavorite.getName());
+		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, teamFavorite.getIdCompetitionServer());
+		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, teamFavorite.getCompetitionName());
+		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, teamFavorite.getSportTag());
+		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, teamFavorite.getCategoryTag());
 		startActivity(intent);
 	}
 }

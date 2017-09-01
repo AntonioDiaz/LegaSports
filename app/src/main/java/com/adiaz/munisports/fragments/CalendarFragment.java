@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.CalendarAdapter;
-import com.adiaz.munisports.entities.MatchEntity;
+import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.utilities.NonScrollExpandableListView;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class CalendarFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		List<List<MatchEntity>> weeks = CompetitionActivity.mWeeks;
+		List<List<Match>> weeks = CompetitionActivity.mWeeks;
 		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), weeks);
 		nonScrollExpandableListView.setAdapter(calendarAdapter);
 		nonScrollExpandableListView.setEmptyView(tvEmptyListItem);

@@ -4,9 +4,9 @@ import java.util.Date;
 
 /** Created by toni on 23/03/2017. */
 
-public class MatchEntity {
+public class Match {
 
-	private static final String TAG = MatchEntity.class.getSimpleName();
+	private static final String TAG = Match.class.getSimpleName();
 	private Date date;
 	private String teamLocal;
 	private String teamVisitor;

@@ -4,7 +4,7 @@ package com.adiaz.munisports.entities;
  * Created by toni on 03/05/2017.
  */
 
-public class ClassificationEntity {
+public class Classification {
 	private Integer position = 0;
 	private String team;
 	private Integer matchesPlayed = 0;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.TeamFavoriteEntity;
+import com.adiaz.munisports.entities.TeamFavorite;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAdapter.ViewHolder> {
 
-	List<TeamFavoriteEntity> teamsFavorites;
+	List<TeamFavorite> teamsFavorites;
 	Context context;
 	private ListItemClickListener listItemClickListener;
 
@@ -30,7 +30,7 @@ public class FavoritesTeamsAdapter extends RecyclerView.Adapter<FavoritesTeamsAd
 		this.listItemClickListener = listItemClickListener;
 	}
 
-	public void setTeamsFavorites(List<TeamFavoriteEntity> teamsFavorites) {
+	public void setTeamsFavorites(List<TeamFavorite> teamsFavorites) {
 		this.teamsFavorites = teamsFavorites;
 		notifyDataSetChanged();
 	}

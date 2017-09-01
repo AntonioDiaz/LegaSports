@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 
 /**
  * Created by toni on 20/04/2017.
@@ -64,16 +64,16 @@ public class MuniSportsDbContract {
 		public static final int INDEX_LAST_UPDATE_APP = 5;
 		public static final int INDEX_LAST_NOTIFICATION = 6;
 
-		public static CompetitionEntity initCompetition (Cursor c) {
-			CompetitionEntity competitionEntity = new CompetitionEntity();
-			competitionEntity.setServerId(c.getString(CompetitionsEntry.INDEX_ID_SERVER));
-			competitionEntity.setName(c.getString(CompetitionsEntry.INDEX_NAME));
-			competitionEntity.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT));
-			competitionEntity.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
-			competitionEntity.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER));
-			competitionEntity.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP));
-			competitionEntity.setLastNotification(c.getLong(CompetitionsEntry.INDEX_LAST_NOTIFICATION));
-			return competitionEntity;
+		public static Competition initCompetition (Cursor c) {
+			Competition competition = new Competition();
+			competition.setServerId(c.getString(CompetitionsEntry.INDEX_ID_SERVER));
+			competition.setName(c.getString(CompetitionsEntry.INDEX_NAME));
+			competition.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT));
+			competition.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
+			competition.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER));
+			competition.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP));
+			competition.setLastNotification(c.getLong(CompetitionsEntry.INDEX_LAST_NOTIFICATION));
+			return competition;
 		}
 
 	}

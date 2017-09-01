@@ -4,7 +4,7 @@ import java.util.Date;
 
 /* Created by toni on 28/03/2017. */
 
-public class TeamMatchEntity {
+public class TeamMatch {
 
 	private boolean isLocal;
 	private Date date;
@@ -14,7 +14,7 @@ public class TeamMatchEntity {
 	private Integer opponentScore;
 	private Integer teamScore;
 
-	public TeamMatchEntity() {
+	public TeamMatch() {
 		super();
 	}
 

@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.TeamEntity;
-import com.adiaz.munisports.entities.TeamMatchEntity;
+import com.adiaz.munisports.entities.Team;
+import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
@@ -27,7 +27,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 	// private static final String TAG = TeamsAdapter.class.getSimpleName();
 
 	private Context mContext;
-	private List<TeamEntity> teamsList;
+	private List<Team> teamsList;
 	private String idCompetitionServer;
 
 	@Nullable @BindView(R.id.ll_matchinfo) LinearLayout llMatchInfo;
@@ -40,7 +40,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 	@Nullable @BindView(R.id.iv_favorites) ImageView imageView;
 	@Nullable @BindView(R.id.tv_week) TextView tvWeek;
 
-	public TeamsAdapter(Context mContext, List<TeamEntity> teamsList, String idCompetitionServer) {
+	public TeamsAdapter(Context mContext, List<Team> teamsList, String idCompetitionServer) {
 		this.mContext = mContext;
 		this.teamsList = teamsList;
 		this.idCompetitionServer = idCompetitionServer;
@@ -48,8 +48,8 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		TeamEntity teamEntity = teamsList.get(groupPosition);
-		return teamEntity.getMatches()[childPosition];
+		Team team = teamsList.get(groupPosition);
+		return team.getMatches()[childPosition];
 	}
 
 	@Override
@@ -65,10 +65,10 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		}
 		ButterKnife.bind(this, view);
 		tvWeek.setText(Integer.toString(childPosition + 1));
-		TeamMatchEntity teamMatchEntity = (TeamMatchEntity) getChild(groupPosition, childPosition);
-		if (teamMatchEntity != null) {
+		TeamMatch teamMatch = (TeamMatch) getChild(groupPosition, childPosition);
+		if (teamMatch != null) {
 			/*Check if the time have rest this week. */
-			if (teamMatchEntity.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			if (teamMatch.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				llMatchInfo.setVisibility(View.GONE);
 				tvUndefined.setVisibility(View.VISIBLE);
 				tvUndefined.setText(mContext.getString(R.string.rest_team));
@@ -80,20 +80,20 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 				String visitorStr;
 				String localScoreStr;
 				String visitorScoreStr;
-				if (teamMatchEntity.isLocal()) {
+				if (teamMatch.isLocal()) {
 					localStr = teamEntity;
-					localScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
-					visitorStr = teamMatchEntity.getOpponent();
-					visitorScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
+					localScoreStr = teamMatch.getTeamScore() == null ? "_" : teamMatch.getTeamScore().toString();
+					visitorStr = teamMatch.getOpponent();
+					visitorScoreStr = teamMatch.getOpponentScore() == null ? "_" : teamMatch.getOpponentScore().toString();
 /*					tvLocal.setTypeface(null, Typeface.BOLD);
 					tvLocalScore.setTypeface(null, Typeface.BOLD);
 					tvVisitor.setTypeface(null, Typeface.NORMAL);
 					tvVisitorScore.setTypeface(null, Typeface.NORMAL);*/
 				} else {
 					visitorStr = teamEntity;
-					localStr = teamMatchEntity.getOpponent();
-					localScoreStr = teamMatchEntity.getOpponentScore() == null ? "_" : teamMatchEntity.getOpponentScore().toString();
-					visitorScoreStr = teamMatchEntity.getTeamScore() == null ? "_" : teamMatchEntity.getTeamScore().toString();
+					localStr = teamMatch.getOpponent();
+					localScoreStr = teamMatch.getOpponentScore() == null ? "_" : teamMatch.getOpponentScore().toString();
+					visitorScoreStr = teamMatch.getTeamScore() == null ? "_" : teamMatch.getTeamScore().toString();
 /*
 					tvLocal.setTypeface(null, Typeface.NORMAL);
 					tvLocalScore.setTypeface(null, Typeface.NORMAL);

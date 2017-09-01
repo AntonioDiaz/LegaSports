@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
@@ -64,11 +64,11 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 	 */
 	private void loadCompetitions(List<CompetitionRestEntity> competitionsList) {
 		ContentResolver contentResolver = mContext.getContentResolver();
-		Map<Long, CompetitionEntity> mapCompetitions = new HashMap<>();
+		Map<Long, Competition> mapCompetitions = new HashMap<>();
 		Cursor cursor = contentResolver.query(CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		try {
 			while (cursor.moveToNext()) {
-				CompetitionEntity competition = CompetitionsEntry.initCompetition(cursor);
+				Competition competition = CompetitionsEntry.initCompetition(cursor);
 				mapCompetitions.put(new Long (competition.getServerId()), competition);
 			}
 		} finally {
@@ -104,10 +104,10 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			Cursor cursorFav = contentResolver.query(uriCompetition, CompetitionsEntry.PROJECTION, null, null, null);
 			try {
 				cursorFav.moveToNext();
-				CompetitionEntity competitionEntity = CompetitionsEntry.initCompetition(cursorFav);
-				if (competitionEntity.getLastNotification() < competitionEntity.getLastUpdateServer()) {
+				Competition competition = CompetitionsEntry.initCompetition(cursorFav);
+				if (competition.getLastNotification() < competition.getLastUpdateServer()) {
 					Log.d(TAG, "loadCompetitions: show");
-					showNotification(competitionEntity);
+					showNotification(competition);
 				} else {
 					Log.d(TAG, "loadCompetitions: notShow");
 				}
@@ -121,9 +121,9 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		editor.commit();
 	}
 
-	private void showNotification(CompetitionEntity competitionEntity) {
+	private void showNotification(Competition competition) {
 		// TODO: 31/08/2017 check if notifications are activated.
-		NotificationUtils.remindUserBecauseCharging(mContext, competitionEntity);
+		NotificationUtils.remindUserBecauseCharging(mContext, competition);
 
 	}
 

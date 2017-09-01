@@ -4,7 +4,7 @@ package com.adiaz.munisports.entities;
  * Created by toni on 28/04/2017.
  */
 
-public class TeamFavoriteEntity {
+public class TeamFavorite {
 	private String name;
 	private String idCompetitionServer;
 	private String competitionName;

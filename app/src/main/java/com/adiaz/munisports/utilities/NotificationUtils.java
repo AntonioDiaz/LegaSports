@@ -16,7 +16,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 
@@ -30,7 +30,7 @@ public class NotificationUtils {
 	private static final int UPDATED_COMPETITION_NOTIFICATION_ID = 1138;
 	private static final int UPDATED_COMPETITION_PENDING_INTENT_ID = 3417;
 
-	public static void remindUserBecauseCharging(Context context, CompetitionEntity competition) {
+	public static void remindUserBecauseCharging(Context context, Competition competition) {
 		String category = MuniSportsUtils.getStringResourceByName(context, competition.getCategoryName());
 		String sport = MuniSportsUtils.getStringResourceByName(context, competition.getSportName());
 		String notificationTitle = context.getString(R.string.update_competition_notification_title, competition.getName());
@@ -65,12 +65,12 @@ public class NotificationUtils {
 		return bitmap;
 	}
 
-	public static PendingIntent contentIntent(Context context, CompetitionEntity competitionEntity) {
+	public static PendingIntent contentIntent(Context context, Competition competition) {
 		Intent intent = new Intent(context, CompetitionActivity.class);
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competitionEntity.getServerId());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, competitionEntity.getSportName());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, competitionEntity.getCategoryName());
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, competitionEntity.getName());
+		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.getServerId());
+		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, competition.getSportName());
+		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, competition.getCategoryName());
+		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, competition.getName());
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				context, UPDATED_COMPETITION_PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		return pendingIntent;

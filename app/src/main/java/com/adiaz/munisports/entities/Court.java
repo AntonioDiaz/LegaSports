@@ -4,7 +4,7 @@ package com.adiaz.munisports.entities;
  * Created by toni on 23/08/2017.
  */
 
-public class CourtEntity {
+public class Court {
 	private String courtName;
 	private String centerName;
 	private String courtFullName;

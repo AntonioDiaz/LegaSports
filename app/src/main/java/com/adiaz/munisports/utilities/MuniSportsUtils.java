@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.CompetitionEntity;
-import com.adiaz.munisports.entities.CourtEntity;
-import com.adiaz.munisports.entities.TeamFavoriteEntity;
+import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.Court;
+import com.adiaz.munisports.entities.TeamFavorite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,8 +90,8 @@ public class MuniSportsUtils {
 		return teamName + "|" + idCompetitionServer;
 	}
 
-	public static List<CompetitionEntity> getCompetitionsFavorites(Context context) {
-		List<CompetitionEntity> competitionsFavorites = new ArrayList<>();
+	public static List<Competition> getCompetitionsFavorites(Context context) {
+		List<Competition> competitionsFavorites = new ArrayList<>();
 		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 		Cursor cursorCompetitions = context.getContentResolver().query(
 				CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
@@ -101,7 +101,7 @@ public class MuniSportsUtils {
 			String sport = cursorCompetitions.getString(CompetitionsEntry.INDEX_SPORT);
 			String category = cursorCompetitions.getString(CompetitionsEntry.INDEX_CATEGORY);
 			if (favorites.contains(idServer)) {
-				CompetitionEntity myCompetition = new CompetitionEntity();
+				Competition myCompetition = new Competition();
 				myCompetition.setServerId(idServer);
 				myCompetition.setName(name);
 				myCompetition.setSportName(sport);
@@ -113,31 +113,31 @@ public class MuniSportsUtils {
 		return competitionsFavorites;
 	}
 
-	public static List<TeamFavoriteEntity> getTeamsFavorites(Context context) {
-		List<TeamFavoriteEntity> teamsFavorites = new ArrayList<>();
+	public static List<TeamFavorite> getTeamsFavorites(Context context) {
+		List<TeamFavorite> teamsFavorites = new ArrayList<>();
 		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_TEAMS);
 		for (String favorite : favorites) {
 			if (favorite.split("\\|").length >= 2) {
 				String teamName = favorite.split("\\|")[0];
 				String idCompetitionsServer = favorite.split("\\|")[1];
-				TeamFavoriteEntity teamFavoriteEntity = null;
+				TeamFavorite teamFavorite = null;
 				if (!TextUtils.isEmpty(idCompetitionsServer)) {
-					teamFavoriteEntity = new TeamFavoriteEntity();
-					teamFavoriteEntity.setName(teamName);
-					teamFavoriteEntity.setIdCompetitionServer(idCompetitionsServer);
+					teamFavorite = new TeamFavorite();
+					teamFavorite.setName(teamName);
+					teamFavorite.setIdCompetitionServer(idCompetitionsServer);
 					String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
 					String[] selectionArgs = new String[]{idCompetitionsServer};
 					Cursor cursor = context.getContentResolver().query(
 							CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, selection, selectionArgs, null);
 					if (cursor.getCount() == 1) {
 						cursor.moveToNext();
-						teamFavoriteEntity.setSportTag(cursor.getString(CompetitionsEntry.INDEX_SPORT));
-						teamFavoriteEntity.setCategoryTag(cursor.getString(CompetitionsEntry.INDEX_CATEGORY));
-						teamFavoriteEntity.setCompetitionName(cursor.getString(CompetitionsEntry.INDEX_NAME));
+						teamFavorite.setSportTag(cursor.getString(CompetitionsEntry.INDEX_SPORT));
+						teamFavorite.setCategoryTag(cursor.getString(CompetitionsEntry.INDEX_CATEGORY));
+						teamFavorite.setCompetitionName(cursor.getString(CompetitionsEntry.INDEX_NAME));
 					}
 					cursor.close();
 				}
-				teamsFavorites.add(teamFavoriteEntity);
+				teamsFavorites.add(teamFavorite);
 			}
 		}
 		return teamsFavorites;
@@ -149,24 +149,24 @@ public class MuniSportsUtils {
 		snackbar.show();
 	}
 
-	public static Map<Long, CourtEntity> initCourts(Context context) {
+	public static Map<Long, Court> initCourts(Context context) {
 		Uri uriCourts = SportCourtsEntry.CONTENT_URI;
 		Cursor cursorCourts = context.getContentResolver().query(uriCourts, SportCourtsEntry.PROJECTION, null, null, null);
-		Map<Long, CourtEntity> mapCourts = new HashMap<>();
+		Map<Long, Court> mapCourts = new HashMap<>();
 		try {
 			while (cursorCourts.moveToNext()) {
-				CourtEntity courtEntity = new CourtEntity();
+				Court court = new Court();
 				Long id = cursorCourts.getLong(SportCourtsEntry.INDEX_ID_SERVER);
 				String centerName = cursorCourts.getString(SportCourtsEntry.INDEX_CENTER_NAME);
 				String courtName = cursorCourts.getString(SportCourtsEntry.INDEX_COURT_NAME);
-				courtEntity.setCenterName(centerName);
-				courtEntity.setCourtName(courtName);
-				courtEntity.setCourtFullName(centerName);
+				court.setCenterName(centerName);
+				court.setCourtName(courtName);
+				court.setCourtFullName(centerName);
 				if (!TextUtils.isEmpty(courtName)) {
-					courtEntity.setCourtFullName(centerName + " - " + courtName);
+					court.setCourtFullName(centerName + " - " + courtName);
 				}
-				courtEntity.setCenterAddress(cursorCourts.getString(SportCourtsEntry.INDEX_CENTER_ADDRESS));
-				mapCourts.put(id, courtEntity);
+				court.setCenterAddress(cursorCourts.getString(SportCourtsEntry.INDEX_CENTER_ADDRESS));
+				mapCourts.put(id, court);
 			}
 		} finally {
 			cursorCourts.close();

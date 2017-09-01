@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.ClassificationRecyclerViewAdapter;
-import com.adiaz.munisports.entities.ClassificationEntity;
+import com.adiaz.munisports.entities.Classification;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class ClassificationFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		List<ClassificationEntity> classificationList = CompetitionActivity.mClassificationList;
+		List<Classification> classificationList = CompetitionActivity.mClassificationList;
 		ClassificationRecyclerViewAdapter adapter = new ClassificationRecyclerViewAdapter(getActivity(), classificationList);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);

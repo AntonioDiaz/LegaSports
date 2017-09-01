@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.TeamEntity;
-import com.adiaz.munisports.entities.TeamMatchEntity;
+import com.adiaz.munisports.entities.Team;
+import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.text.DateFormat;
@@ -25,14 +25,14 @@ import butterknife.ButterKnife;
 public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapter.ViewHolder> {
 
 	private Context context;
-	private TeamEntity teamEntity;
+	private Team team;
 
 	public FavoriteTeamAdapter(Context context) {
 		this.context = context;
 	}
 
-	public void setTeamEntity(TeamEntity teamEntity) {
-		this.teamEntity = teamEntity;
+	public void setTeam(Team team) {
+		this.team = team;
 		notifyDataSetChanged();
 	}
 
@@ -47,12 +47,12 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		String jornadaStr = context.getString(R.string.jornada_header, position + 1);
-		TeamMatchEntity teamMatchEntity = teamEntity.getMatches()[position];
-		if (teamMatchEntity==null || teamMatchEntity.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+		TeamMatch teamMatch = team.getMatches()[position];
+		if (teamMatch ==null || teamMatch.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 			holder.tvJornadaEmpty.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.GONE);
 			holder.clMatchEmpty.setVisibility(View.VISIBLE);
-			if (teamMatchEntity==null) {
+			if (teamMatch ==null) {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.undefined_week));
 			} else {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.rest_team));
@@ -62,33 +62,33 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.clMatchDetails.setVisibility(View.VISIBLE);
 			holder.clMatchEmpty.setVisibility(View.GONE);
 			String dateStr = context.getString(R.string.undefined_date);
-			if (teamMatchEntity.getDate()!=null && teamMatchEntity.getDate().getTime()!=0) {
+			if (teamMatch.getDate()!=null && teamMatch.getDate().getTime()!=0) {
 				DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-				dateStr = dateFormat.format(teamMatchEntity.getDate());
+				dateStr = dateFormat.format(teamMatch.getDate());
 			}
 			holder.tvDate.setText(dateStr);
-			holder.tvPlace.setText(teamMatchEntity.getPlaceName());
-			if (teamMatchEntity.isLocal()) {
-				holder.tvTeamLocal.setText(teamEntity.getTeamName());
-				holder.tvTeamLocalScore.setText(teamMatchEntity.getTeamScore().toString());
-				holder.tvTeamVisitor.setText(teamMatchEntity.getOpponent());
-				holder.tvTeamVisitorScore.setText(teamMatchEntity.getOpponentScore().toString());
+			holder.tvPlace.setText(teamMatch.getPlaceName());
+			if (teamMatch.isLocal()) {
+				holder.tvTeamLocal.setText(team.getTeamName());
+				holder.tvTeamLocalScore.setText(teamMatch.getTeamScore().toString());
+				holder.tvTeamVisitor.setText(teamMatch.getOpponent());
+				holder.tvTeamVisitorScore.setText(teamMatch.getOpponentScore().toString());
 			} else {
-				holder.tvTeamLocal.setText(teamMatchEntity.getOpponent());
-				holder.tvTeamLocalScore.setText(teamMatchEntity.getOpponentScore().toString());
-				holder.tvTeamVisitor.setText(teamEntity.getTeamName());
-				holder.tvTeamVisitorScore.setText(teamMatchEntity.getTeamScore().toString());
+				holder.tvTeamLocal.setText(teamMatch.getOpponent());
+				holder.tvTeamLocalScore.setText(teamMatch.getOpponentScore().toString());
+				holder.tvTeamVisitor.setText(team.getTeamName());
+				holder.tvTeamVisitorScore.setText(teamMatch.getTeamScore().toString());
 			}
-			holder.ivLocation.setTag(teamMatchEntity);
-			holder.ivCalendar.setTag(teamMatchEntity);
-			holder.ivShare.setTag(teamMatchEntity);
+			holder.ivLocation.setTag(teamMatch);
+			holder.ivCalendar.setTag(teamMatch);
+			holder.ivShare.setTag(teamMatch);
 		}
 
 	}
 
 	@Override
 	public int getItemCount() {
-		return teamEntity == null ? 0 : teamEntity.getMatches().length;
+		return team == null ? 0 : team.getMatches().length;
 	}
 
 
