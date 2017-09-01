@@ -63,10 +63,7 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 public class CompetitionActivity extends AppCompatActivity
-		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad,
-		TeamsFragment.OnDataPassTeams,
-		CalendarFragment.OnDataPassCalendar,
-		ClassificationFragment.OnDataPassClassification {
+		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 	public static final String BUNDLE_KEY_ID_COMPETITION = "BUNDLE_KEY_ID_COMPETITION";
@@ -98,10 +95,10 @@ public class CompetitionActivity extends AppCompatActivity
 
 	private String sportTitle;
 	// TODO: 18/08/2017 idCompetitionServer should be Long
-	private String idCompetitionServer;
-	private List<TeamEntity> mTeams = new ArrayList<>();
-	private List<List<MatchEntity>> mWeeks = new ArrayList<>();
-	private List<ClassificationEntity> mClassificationList = new ArrayList<>();
+	public static String idCompetitionServer;
+	public static List<TeamEntity> mTeams = new ArrayList<>();
+	public static List<List<MatchEntity>> mWeeks = new ArrayList<>();
+	public static List<ClassificationEntity> mClassificationList = new ArrayList<>();
 	private Map<Long, CourtEntity> courtsMap = new HashMap<>();
 
 	@Override
@@ -208,13 +205,10 @@ public class CompetitionActivity extends AppCompatActivity
 
 	private void setupViewPager(ViewPager viewPager) {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		TeamsFragment teamsFragment = new TeamsFragment();
-		Bundle bundle = new Bundle();
-		bundle.putString(BUNDLE_KEY_ID_COMPETITION, idCompetitionServer);
-		teamsFragment.setArguments(bundle);
-		adapter.addFragment(teamsFragment, getString(R.string.teams));
+		adapter.addFragment(new TeamsFragment(), getString(R.string.teams));
 		adapter.addFragment(new ClassificationFragment(), getString(R.string.classification));
 		adapter.addFragment(new CalendarFragment(), getString(R.string.calendar));
+		adapter.notifyDataSetChanged();
 		viewPager.setAdapter(adapter);
 	}
 
@@ -289,9 +283,6 @@ public class CompetitionActivity extends AppCompatActivity
 		tabLayout.setupWithViewPager(viewPager);
 		hideLoading();
 	}
-
-
-
 
 	private static List<TeamEntity> initTeams(Cursor cursorMatches, Map<Long, CourtEntity> courtsMap) {
 		Integer maxWeek = -1;
@@ -403,19 +394,5 @@ public class CompetitionActivity extends AppCompatActivity
 		return list;
 	}
 
-	@Override
-	public List<TeamEntity> onDataPassTeams() {
-		return mTeams;
-	}
-
-	@Override
-	public List<List<MatchEntity>> onDataPassCalendar() {
-		return mWeeks;
-	}
-
-	@Override
-	public List<ClassificationEntity> onDataPassClassification() {
-		return mClassificationList;
-	}
 }
 

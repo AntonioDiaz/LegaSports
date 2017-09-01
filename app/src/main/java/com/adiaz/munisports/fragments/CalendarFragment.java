@@ -1,6 +1,5 @@
 package com.adiaz.munisports.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.CalendarAdapter;
 import com.adiaz.munisports.entities.MatchEntity;
 import com.adiaz.munisports.utilities.NonScrollExpandableListView;
@@ -27,7 +27,6 @@ public class CalendarFragment extends Fragment {
 
 	@BindView(R.id.elv_jornadas) NonScrollExpandableListView nonScrollExpandableListView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
-	private OnDataPassCalendar mOnDataPassCalendar;
 
 	public CalendarFragment() { }
 
@@ -47,21 +46,10 @@ public class CalendarFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		List<List<MatchEntity>> weeks = mOnDataPassCalendar.onDataPassCalendar();
+		List<List<MatchEntity>> weeks = CompetitionActivity.mWeeks;
 		CalendarAdapter calendarAdapter = new CalendarAdapter(getActivity(), weeks);
 		nonScrollExpandableListView.setAdapter(calendarAdapter);
 		nonScrollExpandableListView.setEmptyView(tvEmptyListItem);
 		calendarAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		mOnDataPassCalendar = (OnDataPassCalendar) context;
-
-	}
-
-	public interface OnDataPassCalendar {
-		List<List<MatchEntity>> onDataPassCalendar();
 	}
 }

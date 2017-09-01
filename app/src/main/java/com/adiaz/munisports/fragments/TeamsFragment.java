@@ -1,9 +1,9 @@
 package com.adiaz.munisports.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +12,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.TeamsAdapter;
-import com.adiaz.munisports.entities.TeamEntity;
 import com.adiaz.munisports.utilities.NonScrollExpandableListView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +26,7 @@ public class TeamsFragment extends Fragment {
 
 	@BindView(R.id.elv_teams) NonScrollExpandableListView expandableListView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
-	private OnDataPassTeams onDataPassTeams;
+	private TeamsAdapter teamsAdapter;
 
 
 	@Override
@@ -42,28 +39,17 @@ public class TeamsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_teams, container, false);
 		ButterKnife.bind(this, view);
+		Log.d(TAG, "onCreateView: expandableListView " + expandableListView);
 		return view;
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		List<TeamEntity> teams = onDataPassTeams.onDataPassTeams();
-		String idCompetition = getArguments().getString(CompetitionActivity.BUNDLE_KEY_ID_COMPETITION);
-		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), teams, idCompetition);
+		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.mTeams, CompetitionActivity.idCompetitionServer);
 		expandableListView.setAdapter(teamsAdapter);
 		expandableListView.setEmptyView(tvEmptyListItem);
 		teamsAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		onDataPassTeams = (OnDataPassTeams) context;
-	}
-
-	public interface OnDataPassTeams {
-		List<TeamEntity> onDataPassTeams();
 	}
 
 }

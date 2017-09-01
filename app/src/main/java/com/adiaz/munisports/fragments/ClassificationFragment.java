@@ -1,6 +1,5 @@
 package com.adiaz.munisports.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.adapters.ClassificationRecyclerViewAdapter;
 import com.adiaz.munisports.entities.ClassificationEntity;
 
@@ -26,8 +26,6 @@ public class ClassificationFragment extends Fragment {
 
 	@BindView(R.id.rv_classification) RecyclerView recyclerView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
-	private OnDataPassClassification mOnDataPassClassification;
-
 
 	public ClassificationFragment() {}
 
@@ -48,7 +46,7 @@ public class ClassificationFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		List<ClassificationEntity> classificationList = mOnDataPassClassification.onDataPassClassification();
+		List<ClassificationEntity> classificationList = CompetitionActivity.mClassificationList;
 		ClassificationRecyclerViewAdapter adapter = new ClassificationRecyclerViewAdapter(getActivity(), classificationList);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
@@ -60,15 +58,5 @@ public class ClassificationFragment extends Fragment {
 			recyclerView.setVisibility(View.VISIBLE);
 			tvEmptyListItem.setVisibility(View.GONE);
 		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		mOnDataPassClassification = (OnDataPassClassification)context;
-	}
-
-	public interface OnDataPassClassification {
-		List<ClassificationEntity> onDataPassClassification();
 	}
 }
