@@ -13,8 +13,6 @@ public class Competition {
 	private String serverId;
 	private Long lastUpdateServer;
 	private Long lastUpdateApp;
-	private Long lastNotification;
-
 
 	public String getName() {
 		return name;
@@ -64,11 +62,4 @@ public class Competition {
 		this.lastUpdateApp = lastUpdateApp;
 	}
 
-	public Long getLastNotification() {
-		return lastNotification;
-	}
-
-	public void setLastNotification(Long lastNotification) {
-		this.lastNotification = lastNotification;
-	}
 }

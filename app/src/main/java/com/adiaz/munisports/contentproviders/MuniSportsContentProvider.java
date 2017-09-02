@@ -4,20 +4,20 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.adiaz.munisports.database.MuniSportsDbContract;
 import com.adiaz.munisports.database.MuniSportsDbHelper;
 
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.FavoritesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
-
 /**
  * Created by toni on 22/04/2017.
  */
@@ -36,6 +36,8 @@ public class MuniSportsContentProvider extends ContentProvider {
 	public static final int CLASSIFICATION = 300;
 	public static final int CLASSIFICATION_WITH_COMPETITION = 301;
 	public static final int SPORTCOURTS = 400;
+	public static final int FAVORITES = 500;
+	public static final int FAVORITES_WITH_ID = 501;
 
 
 	private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -51,6 +53,8 @@ public class MuniSportsContentProvider extends ContentProvider {
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION, CLASSIFICATION);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_CLASSIFICATION + "/#", CLASSIFICATION_WITH_COMPETITION);
 		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_SPORT_COURTS, SPORTCOURTS);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_FAVORITES, FAVORITES);
+		uriMatcher.addURI(MuniSportsDbContract.AUTHORITY, MuniSportsDbContract.PATH_FAVORITES + "/#", FAVORITES_WITH_ID);
 		return uriMatcher;
 	}
 
@@ -125,8 +129,6 @@ public class MuniSportsContentProvider extends ContentProvider {
 				return super.bulkInsert(uri, values);
 		}
 		if (rowsInserted>0) {
-			Log.d(TAG, "bulkInsert: deletedItems: " + rowsInserted);
-			Log.d(TAG, "bulkInsert: uri: " + uri);
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		return rowsInserted;
@@ -135,7 +137,22 @@ public class MuniSportsContentProvider extends ContentProvider {
 	@Nullable
 	@Override
 	public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-		throw new RuntimeException("We are not implementing insert in MuniSports. Use bulkInsert instead");
+		Uri uriReturned = null;
+		SQLiteDatabase db = muniSportsDbHelper.getWritableDatabase();
+		switch (sUriMatcher.match(uri)) {
+			case FAVORITES:
+				long idInserted = db.insert(FavoritesEntry.TABLE_NAME, null, contentValues);
+				if (idInserted>0) {
+					uriReturned = FavoritesEntry.buildFavoritesUri(idInserted);
+				} else {
+					throw new SQLException("error no insert for " + uri);
+				}
+				break;
+			default:
+				throw new UnsupportedOperationException("error " + uri);
+		}
+		getContext().getContentResolver().notifyChange(uriReturned, null);
+		return uriReturned;
 	}
 
 	@Nullable
@@ -181,9 +198,17 @@ public class MuniSportsContentProvider extends ContentProvider {
 			case SPORTCOURTS:
 				cursorReturned = db.query(SportCourtsEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
 				break;
+			case FAVORITES:
+				cursorReturned = db.query(FavoritesEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
+			case FAVORITES_WITH_ID:
+				String idFavorite = uri.getPathSegments().get(1);
+				selection = FavoritesEntry._ID + "=?";
+				selectionArgs = new String[]{idFavorite};
+				cursorReturned = db.query(FavoritesEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);
-
 		}
 		if (cursorReturned!=null) {
 			cursorReturned.setNotificationUri(getContext().getContentResolver(), uri);
@@ -224,12 +249,19 @@ public class MuniSportsContentProvider extends ContentProvider {
 			case SPORTCOURTS:
 				deletedItems = db.delete(SportCourtsEntry.TABLE_NAME, selection, selectionArgs);
 				break;
+			case FAVORITES:
+				deletedItems = db.delete(FavoritesEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case FAVORITES_WITH_ID:
+				String idFavorite = uri.getPathSegments().get(1);
+				selection = FavoritesEntry._ID + "=?";
+				selectionArgs = new String[]{idFavorite};
+				deletedItems = db.delete(FavoritesEntry.TABLE_NAME, selection, selectionArgs);
+				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);
 		}
 		if (deletedItems>0) {
-			Log.d(TAG, "delete: deletedItems: " + deletedItems);
-			Log.d(TAG, "delete: uri: " + uri);
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		return deletedItems;
@@ -242,6 +274,12 @@ public class MuniSportsContentProvider extends ContentProvider {
 		switch (sUriMatcher.match(uri)) {
 			case COMPETITIONS:
 				updateRecors = db.update(CompetitionsEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+				break;
+			case FAVORITES_WITH_ID:
+				String idFavorite = uri.getPathSegments().get(1);
+				selection = FavoritesEntry._ID + "=?";
+				selectionArgs = new String[]{idFavorite};
+				updateRecors = db.update(FavoritesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
 				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);

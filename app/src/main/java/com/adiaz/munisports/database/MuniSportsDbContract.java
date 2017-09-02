@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.Favorite;
 
 /**
  * Created by toni on 20/04/2017.
@@ -18,19 +19,20 @@ public class MuniSportsDbContract {
 	public static final String PATH_MATCHES = "matches";
 	public static final String PATH_CLASSIFICATION = "classification";
 	public static final String PATH_SPORT_COURTS = "sportcourts";
+	public static final String PATH_FAVORITES = "favorites";
 
 
 
 	public static final	class CompetitionsEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_COMPETITIONS).build();
 
-		public static Uri buildCompetitionUriWithServerId(Long competitionServerId) {
+		public static final Uri buildCompetitionUriWithServerId(Long competitionServerId) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(competitionServerId.toString())
 					.build();
 		}
 
-		public static Uri buildCompetitionsUriWithSports(String sport) {
+		public static final Uri buildCompetitionsUriWithSports(String sport) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(sport)
 					.build();
@@ -44,8 +46,6 @@ public class MuniSportsDbContract {
 		public static final String COLUMN_ID_SERVER = "id_server";
 		public static final String COLUMN_LAST_UPDATE_SERVER = "last_update_server";
 		public static final String COLUMN_LAST_UPDATE_APP = "last_update_app";
-		public static final String COLUMN_LAST_NOTIFICATION = "last_notification";
-
 
 		public static final String[] PROJECTION = {
 				COLUMN_NAME,
@@ -53,8 +53,7 @@ public class MuniSportsDbContract {
 				COLUMN_CATEGORY,
 				COLUMN_ID_SERVER,
 				COLUMN_LAST_UPDATE_SERVER,
-				COLUMN_LAST_UPDATE_APP,
-				COLUMN_LAST_NOTIFICATION
+				COLUMN_LAST_UPDATE_APP
 		};
 		public static final int INDEX_NAME = 0;
 		public static final int INDEX_SPORT = 1;
@@ -62,9 +61,8 @@ public class MuniSportsDbContract {
 		public static final int INDEX_ID_SERVER = 3;
 		public static final int INDEX_LAST_UPDATE_SERVER = 4;
 		public static final int INDEX_LAST_UPDATE_APP = 5;
-		public static final int INDEX_LAST_NOTIFICATION = 6;
 
-		public static Competition initCompetition (Cursor c) {
+		public static Competition initEntity(Cursor c) {
 			Competition competition = new Competition();
 			competition.setServerId(c.getString(CompetitionsEntry.INDEX_ID_SERVER));
 			competition.setName(c.getString(CompetitionsEntry.INDEX_NAME));
@@ -72,7 +70,6 @@ public class MuniSportsDbContract {
 			competition.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
 			competition.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER));
 			competition.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP));
-			competition.setLastNotification(c.getLong(CompetitionsEntry.INDEX_LAST_NOTIFICATION));
 			return competition;
 		}
 
@@ -80,8 +77,7 @@ public class MuniSportsDbContract {
 
 	public static final	class MatchesEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_MATCHES).build();
-
-		public static Uri buildMatchesUriWithCompetitions(String competition) {
+		public static final Uri buildMatchesUriWithCompetitions(String competition) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(competition)
 					.build();
@@ -125,8 +121,7 @@ public class MuniSportsDbContract {
 
 	public static final	class ClassificationEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_CLASSIFICATION).build();
-
-		public static Uri buildClassificationUriWithCompetitions(String competition) {
+		public static final Uri buildClassificationUriWithCompetitions(String competition) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(competition)
 					.build();
@@ -166,7 +161,7 @@ public class MuniSportsDbContract {
 
 	public static final	class SportCourtsEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_SPORT_COURTS).build();
-		public static Uri buildSportCourtsUri(Long sportCourtId) {
+		public static final Uri buildSportCourtsUri(Long sportCourtId) {
 			return CONTENT_URI.buildUpon()
 					.appendPath(sportCourtId.toString())
 					.build();
@@ -187,6 +182,34 @@ public class MuniSportsDbContract {
 
 	}
 
+	public static final class FavoritesEntry implements BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_FAVORITES).build();
+		public static final Uri buildFavoritesUri (Long id) {
+			return CONTENT_URI.buildUpon()
+					.appendPath(id.toString())
+					.build();
+		}
+		public static final String TABLE_NAME = "Favorites";
+		public static final String COLUMN_ID_COMPETITION = "id_competition";
+		public static final String COLUMN_ID_TEAM = "id_team";
+		public static final String COLUMN_LAST_NOTIFICATION = "last_notification";
+
+		public static final String[] PROJECTION = {_ID, COLUMN_ID_COMPETITION, COLUMN_ID_TEAM, COLUMN_LAST_NOTIFICATION};
+		public static final int INDEX_ID = 0;
+		public static final int INDEX_ID_COMPETITION = 1;
+		public static final int INDEX_ID_TEAM = 2;
+		public static final int INDEX_ID_LAST_NOTIFICATION = 3;
+
+
+		public static Favorite initEntity(Cursor cursor) {
+			Favorite favorite = new Favorite();
+			favorite.setId(cursor.getLong(INDEX_ID));
+			favorite.setIdCompetition(cursor.getLong(INDEX_ID_COMPETITION));
+			favorite.setTeamName(cursor.getString(INDEX_ID_TEAM));
+			favorite.setLastNotification(cursor.getLong(INDEX_ID_LAST_NOTIFICATION));
+			return favorite;
+		}
+	}
 }
 
 

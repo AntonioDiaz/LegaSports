@@ -30,10 +30,12 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
 import com.adiaz.munisports.entities.Court;
+import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
+import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
@@ -68,7 +70,9 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 
 
 	private String teamName;
+	// TODO: 02/09/2017 idCompetitionServer should be Long.
 	private String idCompetitionServer;
+	private Long idCompetitionServerLong;
 	private String competitionName;
 	private String sportTag;
 	private String categoryTag;
@@ -84,6 +88,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		teamName = getIntent().getStringExtra(MuniSportsConstants.INTENT_TEAM_NAME);
 		competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
 		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
+		idCompetitionServerLong = Long.parseLong(idCompetitionServer);
 		sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
 		categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String subTitle = competitionName;
@@ -130,11 +135,9 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_competition, menu);
-		String favoriteTeamId = MuniSportsUtils.composeFavoriteTeamId(teamName, idCompetitionServer);
 		for(int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId()== R.id.action_favorites) {
-				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
-				if (MuniSportsUtils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
+				if (FavoritesUtils.isFavoriteTeam(this, idCompetitionServerLong, teamName)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -152,15 +155,14 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
-				String favoriteTeamId = MuniSportsUtils.composeFavoriteTeamId(teamName, idCompetitionServer);
-				String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				if (MuniSportsUtils.checkIfFavoritSelected(this, favoriteTeamId, key)) {
-					MuniSportsUtils.unMarkFavoriteTeam(this, favoriteTeamId, key);
+				Favorite favorite = FavoritesUtils.queryFavoriteTeam(this, idCompetitionServerLong, teamName);
+				if (favorite!=null) {
+					FavoritesUtils.removeFavorites(this, favorite.getId());
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					MuniSportsUtils.markFavoriteTeam(this, favoriteTeamId, key);
+					FavoritesUtils.addFavorites(this, idCompetitionServerLong, teamName);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);

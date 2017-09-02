@@ -32,9 +32,14 @@ public class CompetitionRestEntity {
     @SerializedName("lastPublished")
     @Expose
     private Long lastPublished;
+
     @SerializedName("teamsDeref")
     @Expose
     private List<TeamsDeref> teamsDeref = null;
+
+    @SerializedName("teamsAffectedByLastUpdateDeref")
+    @Expose
+    private List<TeamsDeref> teamsAffectedByLastUpdateDeref = null;
 
     public Long getId() {
         return id;
@@ -108,4 +113,11 @@ public class CompetitionRestEntity {
         this.teamsDeref = teamsDeref;
     }
 
+    public List<TeamsDeref> getTeamsAffectedByLastUpdateDeref() {
+        return teamsAffectedByLastUpdateDeref;
+    }
+
+    public void setTeamsAffectedByLastUpdateDeref(List<TeamsDeref> teamsAffectedByLastUpdateDeref) {
+        this.teamsAffectedByLastUpdateDeref = teamsAffectedByLastUpdateDeref;
+    }
 }

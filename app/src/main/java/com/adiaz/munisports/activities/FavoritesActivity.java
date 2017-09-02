@@ -14,8 +14,8 @@ import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.TeamFavorite;
 import com.adiaz.munisports.fragments.FavoritesCompetitionsFragment;
 import com.adiaz.munisports.fragments.FavoritesTeamsFragment;
+import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 
 import java.util.List;
@@ -58,8 +58,8 @@ public class FavoritesActivity extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		competitionsFavorites = MuniSportsUtils.getCompetitionsFavorites(this);
-		teamsFavorites = MuniSportsUtils.getTeamsFavorites(this);
+		competitionsFavorites = FavoritesUtils.getCompetitionsFavorites(this);
+		teamsFavorites = FavoritesUtils.getTeamsFavorites(this);
 	}
 
 	private void setupViewPager(ViewPager viewPager) {

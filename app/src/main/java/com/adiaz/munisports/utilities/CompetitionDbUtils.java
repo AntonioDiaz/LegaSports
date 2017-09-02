@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
@@ -22,14 +23,34 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEnt
 
 public class CompetitionDbUtils {
 
+	public static final Competition queryCompetition (ContentResolver contentResolver, Long idCompetition) {
+		Competition competition = null;
+		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(idCompetition);
+		Cursor cursor = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
+		try {
+			if (cursor.moveToNext()) {
+				competition = CompetitionsEntry.initEntity(cursor);
+			}
+		} finally {
+			cursor.close();
+		}
+		return competition;
+	}
+
 	public static final boolean itIsNecesaryUpdate(ContentResolver contentResolver, Long idCompetition) {
 		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(idCompetition);
 		String[] projection = {	CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, CompetitionsEntry.COLUMN_LAST_UPDATE_APP };
 		Cursor cursor = contentResolver.query(uri, projection, null, null, null);
-		cursor.moveToFirst();
-		long lastPublishedOnServer = cursor.getLong(0);
-		long lastPublishedOnApp = cursor.getLong(1);
-		cursor.close();
+		long lastPublishedOnServer;
+		long lastPublishedOnApp;
+		try {
+			cursor.moveToFirst();
+			lastPublishedOnServer = cursor.getLong(0);
+			lastPublishedOnApp = cursor.getLong(1);
+		} finally {
+			cursor.close();
+
+		}
 		return lastPublishedOnApp<lastPublishedOnServer;
 	}
 

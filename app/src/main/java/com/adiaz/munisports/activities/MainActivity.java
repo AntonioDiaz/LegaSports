@@ -26,8 +26,8 @@ import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
+import com.adiaz.munisports.utilities.NetworkUtilities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
+import static com.adiaz.munisports.database.MuniSportsDbContract.FavoritesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity
 			contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
 			contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
 			contentResolver.delete(SportCourtsEntry.CONTENT_URI, null, null);
+			contentResolver.delete(FavoritesEntry.CONTENT_URI, null, null);
 			/* stop the FirebaseJob. */
 			MuniSportsSyncUtils.stopJob(this);
 			finish();
@@ -220,21 +222,6 @@ public class MainActivity extends AppCompatActivity
 				MuniSportsSyncUtils.initialize(this);
 			}
 		}
-		/*SharedPreferences preferences = getDefaultSharedPreferences(this);
-		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
-			if (NetworkUtilities.isNetworkAvailable(this)) {
-				MuniSportsSyncUtils.initializeSimple(this);
-			} else {
-				Cursor cursor = getContentResolver().query(
-						MuniSportsDbContract.CompetitionsEntry.CONTENT_URI, null, null, null, null);
-				if (cursor.getCount() == 0) {
-					String strError = getString(R.string.internet_required);
-					final Snackbar snackbar = Snackbar.make(activityView, strError, Snackbar.LENGTH_LONG);
-					snackbar.show();
-					// TODO: 26/04/2017 should disabled all link (sports and favorites).
-				}
-			}
-		}*/
 	}
 
 	public void openSport(View view) {

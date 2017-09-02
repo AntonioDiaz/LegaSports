@@ -10,20 +10,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Court;
-import com.adiaz.munisports.entities.TeamFavorite;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
+import static android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
 /* Created by toni on 28/03/2017. */
 
@@ -31,44 +23,6 @@ public class MuniSportsUtils {
 
 	private static final String TAG = MuniSportsUtils.class.getSimpleName();
 
-	public static boolean checkIfFavoritSelected(Context context, String teamName, String key) {
-		SharedPreferences preferences = getDefaultSharedPreferences(context);
-		Set<String> defaultSet = new HashSet<>();
-		Set<String> stringsSet = preferences.getStringSet(key, defaultSet);
-		return stringsSet.contains(teamName);
-	}
-
-	public static void unMarkFavoriteTeam(Context context, String myTeamName, String key) {
-		MuniSportsUtils.updateListFavoritesTeam(context, myTeamName, key, false);
-	}
-
-
-	public static void markFavoriteTeam(Context context, String myTeamName, String key) {
-		MuniSportsUtils.updateListFavoritesTeam(context, myTeamName, key, true);
-	}
-
-	private static void updateListFavoritesTeam(Context context, String myTeamName, String key, boolean addFavorite) {
-		Log.d(TAG, "updateListFavoritesTeam: key " + key);
-		SharedPreferences preferences = getDefaultSharedPreferences(context);
-		Set<String> stringsSetCopy = new HashSet<String>(preferences.getStringSet(key, new HashSet<String>()));
-		if (addFavorite) {
-			stringsSetCopy.add(myTeamName);
-		} else {
-			stringsSetCopy.remove(myTeamName);
-		}
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putStringSet(key, stringsSetCopy);
-		editor.commit();
-		Log.d(TAG, "updateListFavoritesTeam: favorites teams " + preferences.getStringSet(key, null));
-	}
-
-	public static List<String> getFavorites(Context context, String key) {
-		SharedPreferences preferences = getDefaultSharedPreferences(context);
-		Set<String> favoritesSet = preferences.getStringSet(key, new HashSet<String>());
-		List<String> favoritesList = new ArrayList<>(favoritesSet);
-		Collections.sort(favoritesList);
-		return favoritesList;
-	}
 
 	public static String getStringResourceByName(Context context, String aString) {
 		String packageName = context.getPackageName();
@@ -80,67 +34,6 @@ public class MuniSportsUtils {
 			Log.e(TAG, "getStringResourceByName: " + e.getMessage(), e);
 		}
 		return strResource;
-	}
-
-	public static String generateTeamKey(String tag, String idCompetitionServer) {
-		return tag + "|" + idCompetitionServer;
-	}
-
-	public static String composeFavoriteTeamId(String teamName, String idCompetitionServer) {
-		return teamName + "|" + idCompetitionServer;
-	}
-
-	public static List<Competition> getCompetitionsFavorites(Context context) {
-		List<Competition> competitionsFavorites = new ArrayList<>();
-		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
-		Cursor cursorCompetitions = context.getContentResolver().query(
-				CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
-		while (cursorCompetitions.moveToNext()) {
-			String idServer = cursorCompetitions.getString(CompetitionsEntry.INDEX_ID_SERVER);
-			String name = cursorCompetitions.getString(CompetitionsEntry.INDEX_NAME);
-			String sport = cursorCompetitions.getString(CompetitionsEntry.INDEX_SPORT);
-			String category = cursorCompetitions.getString(CompetitionsEntry.INDEX_CATEGORY);
-			if (favorites.contains(idServer)) {
-				Competition myCompetition = new Competition();
-				myCompetition.setServerId(idServer);
-				myCompetition.setName(name);
-				myCompetition.setSportName(sport);
-				myCompetition.setCategoryName(category);
-				competitionsFavorites.add(myCompetition);
-			}
-		}
-		cursorCompetitions.close();
-		return competitionsFavorites;
-	}
-
-	public static List<TeamFavorite> getTeamsFavorites(Context context) {
-		List<TeamFavorite> teamsFavorites = new ArrayList<>();
-		List<String> favorites = MuniSportsUtils.getFavorites(context, MuniSportsConstants.KEY_FAVORITES_TEAMS);
-		for (String favorite : favorites) {
-			if (favorite.split("\\|").length >= 2) {
-				String teamName = favorite.split("\\|")[0];
-				String idCompetitionsServer = favorite.split("\\|")[1];
-				TeamFavorite teamFavorite = null;
-				if (!TextUtils.isEmpty(idCompetitionsServer)) {
-					teamFavorite = new TeamFavorite();
-					teamFavorite.setName(teamName);
-					teamFavorite.setIdCompetitionServer(idCompetitionsServer);
-					String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
-					String[] selectionArgs = new String[]{idCompetitionsServer};
-					Cursor cursor = context.getContentResolver().query(
-							CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, selection, selectionArgs, null);
-					if (cursor.getCount() == 1) {
-						cursor.moveToNext();
-						teamFavorite.setSportTag(cursor.getString(CompetitionsEntry.INDEX_SPORT));
-						teamFavorite.setCategoryTag(cursor.getString(CompetitionsEntry.INDEX_CATEGORY));
-						teamFavorite.setCompetitionName(cursor.getString(CompetitionsEntry.INDEX_NAME));
-					}
-					cursor.close();
-				}
-				teamsFavorites.add(teamFavorite);
-			}
-		}
-		return teamsFavorites;
 	}
 
 	public static void showNoInternetAlert(Context context, View view) {
@@ -172,6 +65,12 @@ public class MuniSportsUtils {
 			cursorCourts.close();
 		}
 		return mapCourts;
+	}
+
+	public static boolean isShowNotification(Context context) {
+		SharedPreferences preferences = getDefaultSharedPreferences(context);
+		String notificationsKey = context.getString(R.string.pref_notifications_key);
+		return  preferences.getBoolean(notificationsKey, false);
 	}
 }
 

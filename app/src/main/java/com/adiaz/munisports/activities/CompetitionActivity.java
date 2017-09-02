@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Classification;
 import com.adiaz.munisports.entities.Court;
+import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.entities.TeamMatch;
@@ -36,6 +38,7 @@ import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
+import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
@@ -91,6 +94,7 @@ public class CompetitionActivity extends AppCompatActivity
 	private String sportTitle;
 	// TODO: 18/08/2017 idCompetitionServer should be Long
 	public static String idCompetitionServer;
+	public static Long idCompetitionServerLong;
 	public static List<Team> mTeams = new ArrayList<>();
 	public static List<List<Match>> mWeeks = new ArrayList<>();
 	public static List<Classification> mClassificationList = new ArrayList<>();
@@ -106,7 +110,7 @@ public class CompetitionActivity extends AppCompatActivity
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 
 		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
-
+		idCompetitionServerLong = new Long (idCompetitionServer);
 		String sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
 		String categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
@@ -160,7 +164,7 @@ public class CompetitionActivity extends AppCompatActivity
 		for (int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
 				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
-				if (MuniSportsUtils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
+				if (FavoritesUtils.isFavoriteCompetition(this, idCompetitionServerLong)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -192,14 +196,14 @@ public class CompetitionActivity extends AppCompatActivity
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_favorites:
-				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				if (MuniSportsUtils.checkIfFavoritSelected(this, idCompetitionServer, key)) {
-					MuniSportsUtils.unMarkFavoriteTeam(this, idCompetitionServer, key);
+				Favorite favorite = FavoritesUtils.queryFavoriteCompetition(this, idCompetitionServerLong);
+				if (favorite!=null) {
+					FavoritesUtils.removeFavorites(this, favorite.getId());
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					MuniSportsUtils.markFavoriteTeam(this, idCompetitionServer, key);
+					FavoritesUtils.addFavorites(this, idCompetitionServerLong);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
@@ -216,13 +220,15 @@ public class CompetitionActivity extends AppCompatActivity
 
 	public void selectFavorite(View view) {
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
-		String myTeamId = MuniSportsUtils.generateTeamKey((String) imageView.getTag(), idCompetitionServer);
-		if (MuniSportsUtils.checkIfFavoritSelected(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS)) {
+		String idTeam = (String) imageView.getTag();
+		Log.d(TAG, "selectFavorite: " + idTeam);
+		Favorite favorite = FavoritesUtils.queryFavoriteTeam(this, idCompetitionServerLong, idTeam);
+		if (favorite!=null) {
 			imageView.setImageResource(R.drawable.ic_favorite);
-			MuniSportsUtils.unMarkFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
+			FavoritesUtils.removeFavorites(this, favorite.getId());
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			MuniSportsUtils.markFavoriteTeam(this, myTeamId, MuniSportsConstants.KEY_FAVORITES_TEAMS);
+			FavoritesUtils.addFavorites(this, idCompetitionServerLong, idTeam);
 		}
 	}
 

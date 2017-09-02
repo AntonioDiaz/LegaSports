@@ -5,12 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
+import com.adiaz.munisports.sync.retrofit.entities.competition.TeamsDeref;
+import com.adiaz.munisports.utilities.CompetitionDbUtils;
+import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NotificationUtils;
@@ -68,14 +71,13 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		Cursor cursor = contentResolver.query(CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		try {
 			while (cursor.moveToNext()) {
-				Competition competition = CompetitionsEntry.initCompetition(cursor);
+				Competition competition = CompetitionsEntry.initEntity(cursor);
 				mapCompetitions.put(new Long (competition.getServerId()), competition);
 			}
 		} finally {
 			cursor.close();
 		}
 		List<ContentValues> competitionsContentValues = new ArrayList<>();
-		List<String> competitionsFavs = MuniSportsUtils.getFavorites(mContext, MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
 		for (CompetitionRestEntity competitionsEntity : competitionsList) {
 			ContentValues cv = new ContentValues();
 			Long idCompetition = competitionsEntity.getId();
@@ -83,7 +85,6 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			Long lastNofitication = -1L;
 			if (mapCompetitions.containsKey(idCompetition)) {
 				lastPublishedApp = mapCompetitions.get(idCompetition).getLastUpdateApp();
-				lastNofitication = mapCompetitions.get(idCompetition).getLastNotification();
 			}
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, idCompetition);
 			cv.put(CompetitionsEntry.COLUMN_NAME, competitionsEntity.getName());
@@ -92,27 +93,29 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionsEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, competitionsEntity.getLastPublished());
 			cv.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, lastPublishedApp);
-			cv.put(CompetitionsEntry.COLUMN_LAST_NOTIFICATION, lastNofitication);
+
+			/* check if it is necessary to show notification: if any of the teams affected is on favorites. */
+			List<TeamsDeref> teamsAffected = competitionsEntity.getTeamsAffectedByLastUpdateDeref();
+			for (TeamsDeref teamsDeref : teamsAffected) {
+				Favorite favorite = FavoritesUtils.queryFavoriteTeam(mContext, idCompetition, teamsDeref.getName());
+				if (favorite!=null && favorite.getLastNotification()<competitionsEntity.getLastPublished()) {
+					Competition competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), idCompetition);
+					if (competition!=null) {
+						showNotificationTeam(competition, favorite);
+					}
+				}
+			}
 			competitionsContentValues.add(cv);
 		}
 
 		ContentValues[] competitions = competitionsContentValues.toArray(new ContentValues[competitionsContentValues.size()]);
 		contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
 		contentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
-		for (String fav : competitionsFavs) {
-			Uri uriCompetition = CompetitionsEntry.buildCompetitionUriWithServerId(new Long(fav));
-			Cursor cursorFav = contentResolver.query(uriCompetition, CompetitionsEntry.PROJECTION, null, null, null);
-			try {
-				cursorFav.moveToNext();
-				Competition competition = CompetitionsEntry.initCompetition(cursorFav);
-				if (competition.getLastNotification() < competition.getLastUpdateServer()) {
-					Log.d(TAG, "loadCompetitions: show");
-					showNotification(competition);
-				} else {
-					Log.d(TAG, "loadCompetitions: notShow");
-				}
-			} finally {
-				cursorFav.close();
+		List<Favorite> competitionsFavorites = FavoritesUtils.queryFavoritesCompetitions(mContext);
+		for (Favorite fav : competitionsFavorites) {
+			Competition competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), fav.getIdCompetition());
+			if (fav.getLastNotification() < competition.getLastUpdateServer()) {
+				showNotificationCompetition(competition, fav);
 			}
 		}
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -121,10 +124,19 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		editor.commit();
 	}
 
-	private void showNotification(Competition competition) {
-		// TODO: 31/08/2017 check if notifications are activated.
-		NotificationUtils.remindUserBecauseCharging(mContext, competition);
+	private void showNotificationTeam(Competition competition, Favorite favorite) {
+		if (MuniSportsUtils.isShowNotification(mContext)) {
+			NotificationUtils.remindUpdatedTeam(mContext, competition, favorite.getTeamName());
+		}
+		FavoritesUtils.updateLastNotification(mContext.getContentResolver(), favorite.getId(), competition.getLastUpdateServer());
+	}
 
+	private void showNotificationCompetition(Competition competition, Favorite favorite) {
+		if (MuniSportsUtils.isShowNotification(mContext)) {
+			NotificationUtils.remindUpdatedCompetition(mContext, competition);
+		}
+		//disable notification for this favorite.
+		FavoritesUtils.updateLastNotification(mContext.getContentResolver(), favorite.getId(), competition.getLastUpdateServer());
 	}
 
 	@Override

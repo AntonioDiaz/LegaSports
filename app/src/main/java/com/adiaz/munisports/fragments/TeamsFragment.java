@@ -46,7 +46,7 @@ public class TeamsFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.mTeams, CompetitionActivity.idCompetitionServer);
+		TeamsAdapter teamsAdapter = new TeamsAdapter(getActivity(), CompetitionActivity.mTeams, CompetitionActivity.idCompetitionServerLong);
 		expandableListView.setAdapter(teamsAdapter);
 		expandableListView.setEmptyView(tvEmptyListItem);
 		teamsAdapter.notifyDataSetChanged();

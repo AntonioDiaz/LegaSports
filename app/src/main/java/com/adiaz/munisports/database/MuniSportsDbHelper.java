@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
-import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntry;
-
+import static com.adiaz.munisports.database.MuniSportsDbContract.FavoritesEntry;
 /**
  * Created by toni on 20/04/2017.
  */
@@ -16,7 +16,7 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "munisports.db";
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 15;
 
 	public MuniSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,6 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 							CompetitionsEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER + " INTEGER NOT NULL, " +
 							CompetitionsEntry.COLUMN_LAST_UPDATE_APP + " INTEGER NOT NULL, " +
-							CompetitionsEntry.COLUMN_LAST_NOTIFICATION + " INTEGER NOT NULL, " +
 							"UNIQUE (" + CompetitionsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";
 
@@ -77,14 +76,27 @@ public class MuniSportsDbHelper extends SQLiteOpenHelper {
 						SportCourtsEntry.COLUMN_CENTER_ADDRESS + " TEXT NOT NULL, " +
 						"UNIQUE (" + SportCourtsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";
+
+		String SQL_CREATE_TABLE_FAVORITES =
+				"CREATE TABLE " + FavoritesEntry.TABLE_NAME +
+						"(" +
+						FavoritesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+						FavoritesEntry.COLUMN_ID_COMPETITION + " INTEGER NOT NULL, " +
+						FavoritesEntry.COLUMN_ID_TEAM + " TEXT, " +
+						FavoritesEntry.COLUMN_LAST_NOTIFICATION + " INTEGER" +
+						") ";
+
+
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_COMPETITION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_MATCHES);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_CLASSIFICATION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_SPORTCOURTS);
+		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_FAVORITES);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FavoritesEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SportCourtsEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MatchesEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ClassificationEntry.TABLE_NAME);

@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.entities.TeamMatch;
+import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 
 	private Context mContext;
 	private List<Team> teamsList;
-	private String idCompetitionServer;
+	private Long idCompetitionServer;
 
 	@Nullable @BindView(R.id.ll_matchinfo) LinearLayout llMatchInfo;
 	@Nullable @BindView(R.id.tv_undefined) TextView tvUndefined;
@@ -40,7 +40,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 	@Nullable @BindView(R.id.iv_favorites) ImageView imageView;
 	@Nullable @BindView(R.id.tv_week) TextView tvWeek;
 
-	public TeamsAdapter(Context mContext, List<Team> teamsList, String idCompetitionServer) {
+	public TeamsAdapter(Context mContext, List<Team> teamsList, Long idCompetitionServer) {
 		this.mContext = mContext;
 		this.teamsList = teamsList;
 		this.idCompetitionServer = idCompetitionServer;
@@ -144,8 +144,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		ButterKnife.bind(this, view);
 		tvHeading.setText(teamEntity);
 		String key = MuniSportsConstants.KEY_FAVORITES_TEAMS;
-		String teamName = MuniSportsUtils.generateTeamKey(teamEntity, idCompetitionServer);
-		if (MuniSportsUtils.checkIfFavoritSelected(mContext, teamName, key)) {
+		if (FavoritesUtils.isFavoriteTeam(mContext, idCompetitionServer, teamEntity)) {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite);
