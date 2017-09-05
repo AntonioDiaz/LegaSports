@@ -33,6 +33,9 @@ public class Match {
     @SerializedName("teamVisitorEntity")
     @Expose
     private TeamVisitorEntity teamVisitorEntity;
+    @SerializedName("state")
+    @Expose
+    private Long state;
 
     public Long getId() {
         return id;
@@ -106,4 +109,11 @@ public class Match {
         this.teamVisitorEntity = teamVisitorEntity;
     }
 
+    public Long getState() {
+        return state;
+    }
+
+    public void setState(Long state) {
+        this.state = state;
+    }
 }

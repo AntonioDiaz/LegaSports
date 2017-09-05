@@ -94,6 +94,7 @@ public class MuniSportsDbContract {
 		public static final String COLUMN_DATE = "date";
 		public static final String COLUMN_ID_SERVER = "id_server";
 		public static final String COLUMN_ID_COMPETITION_SERVER = "id_competition_server";
+		public static final String COLUMN_STATE = "state";
 
 		public static final String[] PROJECTION = {
 				COLUMN_LAST_UPDATE,
@@ -105,7 +106,8 @@ public class MuniSportsDbContract {
 				COLUMN_ID_SPORTCENTER,
 				COLUMN_DATE,
 				COLUMN_ID_SERVER,
-				COLUMN_ID_COMPETITION_SERVER
+				COLUMN_ID_COMPETITION_SERVER,
+				COLUMN_STATE
 		};
 		public static final int INDEX_LAST_UPDATE = 0;
 		public static final int INDEX_TEAM_LOCAL = 1;
@@ -117,6 +119,7 @@ public class MuniSportsDbContract {
 		public static final int INDEX_DATE = 7;
 		public static final int INDEX_ID_SERVER = 8;
 		public static final int INDEX_ID_COMPETITION_SERVER = 9;
+		public static final int INDEX_STATE = 10;
 	}
 
 	public static final	class ClassificationEntry implements BaseColumns {

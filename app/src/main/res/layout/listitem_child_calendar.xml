@@ -1,68 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.GridLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:grid="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
-    android:id="@+id/choice_grid"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:paddingBottom="0dp"
     android:paddingLeft="@dimen/calendar_item_padding_left"
     android:paddingRight="@dimen/calendar_item_padding_right"
-    android:paddingTop="0dp"
+    android:paddingTop="0dp">
 
-    grid:alignmentMode="alignBounds"
-    grid:columnCount="4"
-    grid:orientation="horizontal"
-    grid:rowOrderPreserved="false"
-    grid:useDefaultMargins="false">
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
 
     <TextView
         android:id="@+id/childItem_teamlocal"
+        style="@style/child_expandable_list"
         android:layout_width="0dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:visibility="visible"
-        grid:layout_columnSpan="2"
-        grid:layout_columnWeight="2"
+        grid:layout_constraintLeft_toLeftOf="parent"
+        grid:layout_constraintRight_toLeftOf="@+id/guideline"
+        grid:layout_constraintTop_toTopOf="parent"
         tools:text="ADCR ATLETICO LEGANES 7"/>
 
     <TextView
         android:id="@+id/childItem_teamvisitor"
+        style="@style/child_expandable_list"
         android:layout_width="0dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:visibility="visible"
-        grid:layout_columnSpan="2"
-        grid:layout_columnWeight="2"
-        tools:text="ADCR ATLETICO LEGANES 78"/>
+        android:ellipsize="end"
+        android:maxLines="1"
+        grid:layout_constraintHorizontal_bias="0.0"
+        grid:layout_constraintLeft_toRightOf="@+id/guideline"
+        grid:layout_constraintRight_toRightOf="parent"
+        grid:layout_constraintTop_toTopOf="parent"
+        tools:text="ADCR ATLETICO LEGANES 7"/>
+
+    <TextView
+        android:id="@+id/childItem_dateLabel"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="@string/date"
+        grid:layout_constraintLeft_toLeftOf="@id/childItem_teamlocal"
+        grid:layout_constraintTop_toBottomOf="@id/childItem_teamlocal"
+        style="@style/child_detail_expandable_list"
+        tools:text="@string/date"/>
+
+    <TextView
+        android:id="@+id/childItem_courtLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/court"
+        grid:layout_constraintLeft_toLeftOf="@id/childItem_dateLabel"
+        grid:layout_constraintTop_toBottomOf="@id/childItem_dateLabel"
+        style="@style/child_detail_expandable_list"
+        tools:text="@string/court"/>
+    <TextView
+        android:id="@+id/childItem_resultLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/result"
+        grid:layout_constraintLeft_toLeftOf="@id/childItem_courtLabel"
+        grid:layout_constraintTop_toBottomOf="@id/childItem_courtLabel"
+        style="@style/child_detail_expandable_list"
+        tools:text="@string/result"/>
 
     <TextView
         android:id="@+id/childItem_date"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-        android:layout_width="0dp"
-        grid:layout_columnWeight="1"
-        grid:layout_columnSpan="4"
-        tools:text="12/02/2017 12:30"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        grid:layout_constraintLeft_toRightOf="@id/childItem_dateLabel"
+        grid:layout_constraintTop_toTopOf="@id/childItem_dateLabel"
+        style="@style/child_detail_expandable_list"
+        android:textStyle="bold"
+        tools:text="@string/date_example"/>
+
     <TextView
         android:id="@+id/childItem_place"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-        android:layout_width="0dp"
-        grid:layout_columnWeight="1"
-        grid:layout_row="2"
-        grid:layout_column="0"
-        grid:layout_columnSpan="4"
-        tools:text="La Cantera FT2"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        grid:layout_constraintLeft_toLeftOf="@id/childItem_date"
+        grid:layout_constraintTop_toBottomOf="@id/childItem_date"
+        style="@style/child_detail_expandable_list"
+        android:textStyle="bold"
+        tools:text="@string/example_place"/>
+
+    <TextView
+        android:id="@+id/childItem_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        grid:layout_constraintLeft_toLeftOf="@id/childItem_date"
+        grid:layout_constraintTop_toBottomOf="@id/childItem_place"
+        style="@style/child_detail_expandable_list"
+        android:textStyle="bold"
+        tools:text="@string/example_result"/>
 
 
+</android.support.constraint.ConstraintLayout>
 
-</android.support.v7.widget.GridLayout>

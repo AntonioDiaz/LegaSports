@@ -185,9 +185,9 @@ public class CompetitionActivity extends AppCompatActivity
 
 	private void setupViewPager(ViewPager viewPager) {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new TeamsFragment(), getString(R.string.teams));
-		adapter.addFragment(new ClassificationFragment(), getString(R.string.classification));
 		adapter.addFragment(new CalendarFragment(), getString(R.string.calendar));
+		adapter.addFragment(new ClassificationFragment(), getString(R.string.classification));
+		adapter.addFragment(new TeamsFragment(), getString(R.string.teams));
 		adapter.notifyDataSetChanged();
 		viewPager.setAdapter(adapter);
 	}
@@ -349,6 +349,7 @@ public class CompetitionActivity extends AppCompatActivity
 			match.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
 			match.setPlaceAddress(courtsMap.get(idSportCenter).getCenterAddress());
 			match.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
+			match.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE));
 			if (weeksList.size()<week) {
 				List<Match> emptyList = new ArrayList<>();
 				weeksList.add(emptyList);

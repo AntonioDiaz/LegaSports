@@ -14,6 +14,7 @@ public class Match {
 	private int scoreVisitor;
 	private String placeName;
 	private String placeAddress;
+	private int state;
 
 	public Date getDate() {
 		return date;
@@ -69,5 +70,13 @@ public class Match {
 
 	public void setPlaceAddress(String placeAddress) {
 		this.placeAddress = placeAddress;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
 	}
 }

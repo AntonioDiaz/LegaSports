@@ -120,6 +120,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 			cvMatch.put(MatchesEntry.COLUMN_DATE, match.getDate());
 			cvMatch.put(MatchesEntry.COLUMN_ID_SERVER, match.getId());
 			cvMatch.put(MatchesEntry.COLUMN_ID_COMPETITION_SERVER, idCompetitionServer);
+			cvMatch.put(MatchesEntry.COLUMN_STATE, match.getState());
 			cvMatcheList.add(cvMatch);
 		}
 		ContentValues[] matchesArray = cvMatcheList.toArray(new ContentValues[cvMatcheList.size()]);

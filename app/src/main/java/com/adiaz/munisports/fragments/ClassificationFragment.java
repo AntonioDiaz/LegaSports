@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
@@ -26,6 +27,7 @@ public class ClassificationFragment extends Fragment {
 
 	@BindView(R.id.rv_classification) RecyclerView recyclerView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
+	@BindView(R.id.ll_classification) LinearLayout llClassification;
 
 	public ClassificationFragment() {}
 
@@ -52,10 +54,10 @@ public class ClassificationFragment extends Fragment {
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		if (classificationList.isEmpty()) {
-			recyclerView.setVisibility(View.GONE);
+			llClassification.setVisibility(View.GONE);
 			tvEmptyListItem.setVisibility(View.VISIBLE);
 		} else {
-			recyclerView.setVisibility(View.VISIBLE);
+			llClassification.setVisibility(View.VISIBLE);
 			tvEmptyListItem.setVisibility(View.GONE);
 		}
 	}

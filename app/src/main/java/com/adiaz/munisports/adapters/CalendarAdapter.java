@@ -31,6 +31,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 	@Nullable @BindView(R.id.childItem_teamvisitor) TextView tvVisitorTeam;
 	@Nullable @BindView(R.id.childItem_date) TextView date;
 	@Nullable @BindView(R.id.childItem_place) TextView place;
+	@Nullable @BindView(R.id.childItem_result) TextView result;
 	@Nullable @BindView(R.id.heading) TextView textViewHeading;
 
 	public CalendarAdapter(Context mContext, List<List<Match>> weeksList) {
@@ -80,6 +81,19 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			date.setText(df.format(match.getDate()));
 		}
 		place.setText(match.getPlaceName());
+		String strResult = "";
+		switch (match.getState()) {
+			case MuniSportsConstants.STATE_PENDING:
+				strResult = mContext.getString(R.string.match_pending);
+				break;
+			case MuniSportsConstants.STATE_CANCELED:
+				strResult = mContext.getString(R.string.match_cancel);
+				break;
+			case MuniSportsConstants.STATE_PLAYED:
+				strResult = String.format("%d - %d", match.getScoreLocal(), match.getScoreVisitor());
+				break;
+		}
+		result.setText(strResult);
 		return view;
 	}
 

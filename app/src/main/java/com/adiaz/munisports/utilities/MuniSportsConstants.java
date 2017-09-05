@@ -36,4 +36,9 @@ public class MuniSportsConstants {
 
 	public static final Integer MINUTES_NECESSARY_TO_UPDATE = 30;
 	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(MINUTES_NECESSARY_TO_UPDATE);
+
+	public static final int STATE_PENDING = 0;
+	public static final int STATE_PLAYED = 1;
+	public static final int STATE_CANCELED = 2;
+
 }
