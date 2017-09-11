@@ -49,20 +49,16 @@
             android:layout_gravity="end"
             android:layout_weight="9"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-condensed"
             android:lines="1"
             android:maxLines="1"
             android:paddingRight="8dp"
             android:textAlignment="textEnd"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            style="@style/child_expandable_list"
             tools:text="BALOMPEDICA CF"/>
 
         <TextView
             android:id="@+id/tv_local_score"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            style="@style/child_expandable_list"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -81,11 +77,10 @@
 
         <TextView
             android:id="@+id/tv_visitor_score"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            style="@style/child_expandable_list"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:textAlignment="textEnd"
+            android:layout_gravity="right"
             tools:text="18"/>
 
         <TextView
@@ -98,11 +93,7 @@
             android:lines="1"
             android:maxLines="1"
             android:paddingLeft="8dp"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            style="@style/child_expandable_list"
             android:textAlignment="textStart"
             tools:text="ATLEICO DE MADRID"/>
     </LinearLayout>

@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			getSupportActionBar().setIcon(R.drawable.ic_launcher);
 			String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
-			Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
 				if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -162,32 +161,40 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if (itemId == R.id.action_preferences) {
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-		} else  if (itemId == R.id.action_update) {
-			updateCompetitions();
-		} else  if (itemId == R.id.action_changetown) {
-			// TODO: 03/08/2017 ask user confirmation.
-			/* cleaning preferences. */
-			SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
-			editor.remove(MuniSportsConstants.KEY_TOWN_NAME);
-			editor.remove(MuniSportsConstants.KEY_TOWN_ID);
-			editor.remove(MuniSportsConstants.KEY_FAVORITES_TEAMS);
-			editor.remove(MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
-			editor.remove(MuniSportsConstants.KEY_LASTUPDATE);
-			editor.commit();
-			/* cleaning database. */
-			ContentResolver contentResolver = this.getContentResolver();
-			contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
-			contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
-			contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
-			contentResolver.delete(SportCourtsEntry.CONTENT_URI, null, null);
-			contentResolver.delete(FavoritesEntry.CONTENT_URI, null, null);
-			/* stop the FirebaseJob. */
-			MuniSportsSyncUtils.stopJob(this);
-			finish();
-			startActivity(getIntent());
+		switch (itemId) {
+			case R.id.action_preferences:
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.action_update:
+				updateCompetitions();
+				break;
+			case R.id.action_changetown:
+					// TODO: 03/08/2017 ask user confirmation.
+				/* cleaning preferences. */
+				SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
+				editor.remove(MuniSportsConstants.KEY_TOWN_NAME);
+				editor.remove(MuniSportsConstants.KEY_TOWN_ID);
+				editor.remove(MuniSportsConstants.KEY_FAVORITES_TEAMS);
+				editor.remove(MuniSportsConstants.KEY_FAVORITES_COMPETITIONS);
+				editor.remove(MuniSportsConstants.KEY_LASTUPDATE);
+				editor.commit();
+				/* cleaning database. */
+				ContentResolver contentResolver = this.getContentResolver();
+				contentResolver.delete(CompetitionsEntry.CONTENT_URI, null, null);
+				contentResolver.delete(MatchesEntry.CONTENT_URI, null, null);
+				contentResolver.delete(ClassificationEntry.CONTENT_URI, null, null);
+				contentResolver.delete(SportCourtsEntry.CONTENT_URI, null, null);
+				contentResolver.delete(FavoritesEntry.CONTENT_URI, null, null);
+				/* stop the FirebaseJob. */
+				MuniSportsSyncUtils.stopJob(this);
+				finish();
+				startActivity(getIntent());
+				break;
+			case R.id.action_mistake:
+				Intent intentMistake = new Intent(this, MistakeActivity.class);
+				startActivity(intentMistake);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

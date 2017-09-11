@@ -39,13 +39,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adiaz.munisports.activities.SelectCompetitionActivity"/>
         </activity>
-        <activity android:name="com.adiaz.munisports.activities.FavoritesActivity">
-        </activity>
-        <activity android:name="com.adiaz.munisports.activities.FavoriteTeamActivity">
-        </activity>
-        <activity android:name="com.adiaz.munisports.activities.FootballActivity">
-        </activity>
-
+        <activity android:name="com.adiaz.munisports.activities.FavoritesActivity"></activity>
+        <activity android:name="com.adiaz.munisports.activities.FavoriteTeamActivity"></activity>
+        <activity android:name="com.adiaz.munisports.activities.FootballActivity"></activity>
         <activity
             android:name="com.adiaz.munisports.activities.SettingsActivity"
             android:label="@string/action_preferences"
@@ -54,7 +50,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adiaz.munisports.activities.MainActivity" />
         </activity>
-
+        <activity
+            android:name="com.adiaz.munisports.activities.MistakeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.adiaz.munisports.activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adiaz.munisports.activities.MainActivity" />
+        </activity>
         <service android:name="com.adiaz.munisports.sync.MuniSportsSyncIntentService" android:exported="false"></service>
         <service android:name="com.adiaz.munisports.sync.MuniSportsFirebaseJobService" android:exported="false">
             <intent-filter>

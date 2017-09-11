@@ -96,5 +96,15 @@
     <string name="court_example">La Cantera FT2</string>
     <string name="example_result">12 -  3</string>
     <string name="classification_caption">*PJ Partidos Jugados.\n*PG Partidos Ganados.\n*PE Partidos Empatados.\n*PP Partidos Perdidos.\n*PT Puntos.</string>
+    <string name="action_mistake">Notificar error</string>
+    <string name="mistake_subtitle">Si ha detectado un error en los datos puede informar al administrador del sistema enviando el siguente formulario:</string>
+    <string name="mistake_title">Notificación de errores</string>
+    <string name="mistake_select_sport">Deporte</string>
+    <string name="mistake_select_category">Categoría</string>
+    <string name="mistake_select_competition">Competición</string>
+    <string name="mistake_desc">Escriba la descripción del error.</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="accept">Aceptar</string>
+    <string name="mistake_sent">Se ha enviado el error, será revisado por el administrador. Gracias por su colaboración.</string>
 
 </resources>

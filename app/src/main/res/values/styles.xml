@@ -160,4 +160,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="mistake_btn" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+    </style>
 </resources>
