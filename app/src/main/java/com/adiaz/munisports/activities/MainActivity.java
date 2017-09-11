@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 			ButterKnife.bind(this);
 			setSupportActionBar(toolbar);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
-			getSupportActionBar().setIcon(R.drawable.ic_launcher);
+			getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 			String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
