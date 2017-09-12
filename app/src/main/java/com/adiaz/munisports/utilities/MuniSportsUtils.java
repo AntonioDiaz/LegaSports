@@ -74,7 +74,8 @@ public class MuniSportsUtils {
 	public static boolean isShowNotification(Context context) {
 		SharedPreferences preferences = getDefaultSharedPreferences(context);
 		String notificationsKey = context.getString(R.string.pref_notifications_key);
-		return  preferences.getBoolean(notificationsKey, false);
+		boolean notificationsDefault = Boolean.parseBoolean(context.getString(R.string.pref_notifications_default));
+		return  preferences.getBoolean(notificationsKey, notificationsDefault);
 	}
 
 	public static List<String> sportsList(Context context){

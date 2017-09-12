@@ -8,4 +8,5 @@
     <dimen name="toolbar_top_margin">64dp</dimen>
     <dimen name="main_text_size">32sp</dimen>
     <dimen name="heart_size">32dp</dimen>
+    <dimen name="classification_marginTop">8dp</dimen>
 </resources>
