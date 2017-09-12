@@ -35,7 +35,7 @@ public class MuniSportsUtils {
 			int resId = context.getResources().getIdentifier(aString, "string", packageName);
 			strResource = context.getString(resId);
 		} catch (Exception e) {
-			Log.e(TAG, "getStringResourceByName: " + e.getMessage(), e);
+			Log.d(TAG, "resource not found at getStringResourceByName: " + aString);
 		}
 		return strResource;
 	}
