@@ -6,7 +6,7 @@ package com.adiaz.munisports.entities;
 
 public class TeamFavorite {
 	private String name;
-	private String idCompetitionServer;
+	private Long idCompetitionServer;
 	private String competitionName;
 	private String sportTag;
 	private String categoryTag;
@@ -19,11 +19,11 @@ public class TeamFavorite {
 		this.name = name;
 	}
 
-	public String getIdCompetitionServer() {
+	public Long getIdCompetitionServer() {
 		return idCompetitionServer;
 	}
 
-	public void setIdCompetitionServer(String idCompetitionServer) {
+	public void setIdCompetitionServer(Long idCompetitionServer) {
 		this.idCompetitionServer = idCompetitionServer;
 	}
 

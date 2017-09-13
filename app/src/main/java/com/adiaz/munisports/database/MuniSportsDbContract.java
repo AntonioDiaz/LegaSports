@@ -64,7 +64,7 @@ public class MuniSportsDbContract {
 
 		public static Competition initEntity(Cursor c) {
 			Competition competition = new Competition();
-			competition.setServerId(c.getString(CompetitionsEntry.INDEX_ID_SERVER));
+			competition.setServerId(c.getLong(CompetitionsEntry.INDEX_ID_SERVER));
 			competition.setName(c.getString(CompetitionsEntry.INDEX_NAME));
 			competition.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT));
 			competition.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
@@ -77,9 +77,9 @@ public class MuniSportsDbContract {
 
 	public static final	class MatchesEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_MATCHES).build();
-		public static final Uri buildMatchesUriWithCompetitions(String competition) {
+		public static final Uri buildMatchesUriWithCompetitions(Long competition) {
 			return CONTENT_URI.buildUpon()
-					.appendPath(competition)
+					.appendPath(competition.toString())
 					.build();
 		}
 
@@ -124,9 +124,9 @@ public class MuniSportsDbContract {
 
 	public static final	class ClassificationEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_CLASSIFICATION).build();
-		public static final Uri buildClassificationUriWithCompetitions(String competition) {
+		public static final Uri buildClassificationUriWithCompetitions(Long competition) {
 			return CONTENT_URI.buildUpon()
-					.appendPath(competition)
+					.appendPath(competition.toString())
 					.build();
 		}
 

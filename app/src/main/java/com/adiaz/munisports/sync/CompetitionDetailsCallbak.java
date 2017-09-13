@@ -79,7 +79,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		}
 		ContentValues[] classificationArray = cvClassificationList.toArray(new ContentValues[cvClassificationList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
-		Uri uri = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer.toString());
+		Uri uri = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
 		muniSportsContentResolver.delete(uri, null, null);
 		muniSportsContentResolver.bulkInsert(ClassificationEntry.CONTENT_URI, classificationArray);
 	}
@@ -125,7 +125,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		}
 		ContentValues[] matchesArray = cvMatcheList.toArray(new ContentValues[cvMatcheList.size()]);
 		ContentResolver muniSportsContentResolver = mContext.getContentResolver();
-		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer.toString());
+		Uri uri = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
 		muniSportsContentResolver.delete(uri, null, null);
 		muniSportsContentResolver.bulkInsert(MatchesEntry.CONTENT_URI, matchesArray);
 	}

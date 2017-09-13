@@ -49,9 +49,6 @@ public class NotificationUtils {
 	public static PendingIntent contentIntentCompetition(Context context, Competition competition) {
 		Intent intent = new Intent(context, CompetitionActivity.class);
 		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.getServerId());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, competition.getSportName());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, competition.getCategoryName());
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, competition.getName());
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				context, UPDATED_COMPETITION_PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		return pendingIntent;
@@ -60,10 +57,7 @@ public class NotificationUtils {
 	public static PendingIntent contentIntentTeam(Context context, Competition competition, String teamName) {
 		Intent intent = new Intent(context, FavoriteTeamActivity.class);
 		intent.putExtra(MuniSportsConstants.INTENT_TEAM_NAME, teamName);
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, competition.getName());
 		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.getServerId());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, competition.getSportName());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, competition.getCategoryName());
 		PendingIntent pendingIntent = PendingIntent.getActivity (
 				context, UPDATED_TEAM_PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		return pendingIntent;

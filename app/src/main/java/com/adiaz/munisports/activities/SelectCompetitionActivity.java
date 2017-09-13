@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -79,10 +80,8 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 	public void onListItemClick(int clickedItemIndex) {
 		mCursor.moveToPosition(clickedItemIndex);
 		Intent intent = new Intent(this, CompetitionActivity.class);
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, mCursor.getString(CompetitionsEntry.INDEX_ID_SERVER));
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, mCursor.getString(CompetitionsEntry.INDEX_SPORT));
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, mCursor.getString(CompetitionsEntry.INDEX_CATEGORY));
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, mCursor.getString(CompetitionsEntry.INDEX_NAME));
+		Log.d(TAG, "onListItemClick: " + mCursor.getLong(CompetitionsEntry.INDEX_ID_SERVER));
+		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, mCursor.getLong(CompetitionsEntry.INDEX_ID_SERVER));
 		startActivity(intent);
 	}
 

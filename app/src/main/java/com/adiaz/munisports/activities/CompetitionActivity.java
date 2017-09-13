@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Classification;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
@@ -91,10 +92,8 @@ public class CompetitionActivity extends AppCompatActivity
 
 	private boolean isHideToolbarView = false;
 
-	private String sportTitle;
-	// TODO: 18/08/2017 idCompetitionServer should be Long
-	public static String idCompetitionServer;
-	public static Long idCompetitionServerLong;
+	public static Long mIdCompetition;
+	public static Competition mCompetition;
 	public static List<Team> mTeams = new ArrayList<>();
 	public static List<List<Match>> mWeeks = new ArrayList<>();
 	public static List<Classification> mClassificationList = new ArrayList<>();
@@ -108,26 +107,19 @@ public class CompetitionActivity extends AppCompatActivity
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
-
-		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
-		idCompetitionServerLong = new Long (idCompetitionServer);
-
-		String sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
-		String categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
-		String competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
-
-		String sport = MuniSportsUtils.getStringResourceByName(this, sportTag);
-		String category = MuniSportsUtils.getStringResourceByName(this, categoryTag);
-
-		sportTitle = sport + " (" + category + ")";
-
+		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 1L);
+		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
+		String sportTag = mCompetition.getSportName();
+		String categoryTag = mCompetition.getCategoryName();
+		String competitionName = mCompetition.getName();
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(" ");
-
+		String sport = MuniSportsUtils.getStringResourceByName(this, sportTag);
+		String category = MuniSportsUtils.getStringResourceByName(this, categoryTag);
+		String sportTitle = sport + " (" + category + ")";
 		toolbarHeaderView.bindTo(competitionName, sportTitle, 0);
 		floatHeaderView.bindTo(competitionName, sportTitle, 16);
-
 		appBarLayout.addOnOffsetChangedListener(this);
 	}
 
@@ -136,9 +128,9 @@ public class CompetitionActivity extends AppCompatActivity
 		super.onResume();
 		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
-			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), idCompetitionServerLong);
+			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), mIdCompetition);
 			if (needToUpdate) {
-				CompetitionDbUtils.updateCompetition(this, this, idCompetitionServerLong);
+				CompetitionDbUtils.updateCompetition(this, this, mIdCompetition);
 			} else {
 				finishLoad();
 			}
@@ -165,7 +157,7 @@ public class CompetitionActivity extends AppCompatActivity
 		for (int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
 				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
-				if (FavoritesUtils.isFavoriteCompetition(this, idCompetitionServerLong)) {
+				if (FavoritesUtils.isFavoriteCompetition(this, mIdCompetition)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 					menu.getItem(i).setIcon(drawable);
@@ -199,12 +191,12 @@ public class CompetitionActivity extends AppCompatActivity
 			case R.id.action_favorites:
 				AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 				Drawable drawable;
-				Favorite favorite = FavoritesUtils.queryFavoriteCompetition(this, idCompetitionServerLong);
+				Favorite favorite = FavoritesUtils.queryFavoriteCompetition(this, mIdCompetition);
 				if (favorite!=null) {
 					FavoritesUtils.removeFavorites(this, favorite.getId());
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
 				} else {
-					FavoritesUtils.addFavorites(this, idCompetitionServerLong);
+					FavoritesUtils.addFavorites(this, mIdCompetition);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
 				}
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
@@ -223,13 +215,13 @@ public class CompetitionActivity extends AppCompatActivity
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
 		String idTeam = (String) imageView.getTag();
 		Log.d(TAG, "selectFavorite: " + idTeam);
-		Favorite favorite = FavoritesUtils.queryFavoriteTeam(this, idCompetitionServerLong, idTeam);
+		Favorite favorite = FavoritesUtils.queryFavoriteTeam(this, mIdCompetition, idTeam);
 		if (favorite!=null) {
 			imageView.setImageResource(R.drawable.ic_favorite);
 			FavoritesUtils.removeFavorites(this, favorite.getId());
 		} else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
-			FavoritesUtils.addFavorites(this, idCompetitionServerLong, idTeam);
+			FavoritesUtils.addFavorites(this, mIdCompetition, idTeam);
 		}
 	}
 
@@ -249,8 +241,8 @@ public class CompetitionActivity extends AppCompatActivity
 	@Override
 	public void finishLoad() {
 		ContentResolver contentResolver = this.getContentResolver();
-		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(idCompetitionServer);
-		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(idCompetitionServer);
+		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(mIdCompetition);
+		Uri uriClassification = ClassificationEntry.buildClassificationUriWithCompetitions(mIdCompetition);
 		Cursor cursorMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
 		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
 		try {

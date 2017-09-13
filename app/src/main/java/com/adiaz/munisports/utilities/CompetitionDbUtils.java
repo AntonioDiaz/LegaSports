@@ -14,7 +14,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.adiaz.munisports.activities.CompetitionActivity.idCompetitionServer;
 import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEntry;
 
 /**
@@ -60,7 +59,7 @@ public class CompetitionDbUtils {
 				.addConverterFactory(GsonConverterFactory.create())
 				.build();
 		MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-		Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(new Long(idCompetitionServer));
+		Call<CompetitionDetails> listCall = muniSportsRestApi.competitionDetailsQuery(idCompetition);
 		CompetitionDetailsCallbak competitionDetailsCallbak = new CompetitionDetailsCallbak(context, idCompetition, onFinishLoad);
 		listCall.enqueue(competitionDetailsCallbak);
 	}

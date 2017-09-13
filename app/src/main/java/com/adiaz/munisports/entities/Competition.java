@@ -10,7 +10,7 @@ public class Competition {
 	private String sportName;
 	private String categoryName;
 	// TODO: 31/08/2017 serverId should be Long.
-	private String serverId;
+	private Long serverId;
 	private Long lastUpdateServer;
 	private Long lastUpdateApp;
 
@@ -22,11 +22,11 @@ public class Competition {
 		this.name = name;
 	}
 
-	public String getServerId() {
+	public Long getServerId() {
 		return serverId;
 	}
 
-	public void setServerId(String serverId) {
+	public void setServerId(Long serverId) {
 		this.serverId = serverId;
 	}
 

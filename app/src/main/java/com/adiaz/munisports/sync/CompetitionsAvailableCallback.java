@@ -72,7 +72,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		try {
 			while (cursor.moveToNext()) {
 				Competition competition = CompetitionsEntry.initEntity(cursor);
-				mapCompetitions.put(new Long (competition.getServerId()), competition);
+				mapCompetitions.put(competition.getServerId(), competition);
 			}
 		} finally {
 			cursor.close();

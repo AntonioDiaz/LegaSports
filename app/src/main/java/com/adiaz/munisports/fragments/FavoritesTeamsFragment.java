@@ -67,9 +67,6 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 		TeamFavorite teamFavorite = FavoritesActivity.teamsFavorites.get(clickedItemIndex);
 		intent.putExtra(MuniSportsConstants.INTENT_TEAM_NAME, teamFavorite.getName());
 		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, teamFavorite.getIdCompetitionServer());
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, teamFavorite.getCompetitionName());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, teamFavorite.getSportTag());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, teamFavorite.getCategoryTag());
 		startActivity(intent);
 	}
 }

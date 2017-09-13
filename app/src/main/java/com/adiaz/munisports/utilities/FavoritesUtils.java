@@ -119,7 +119,7 @@ public class FavoritesUtils {
 				if (competition!=null) {
 					TeamFavorite teamFavorite = new TeamFavorite();
 					teamFavorite.setName(cursor.getString(MuniSportsDbContract.FavoritesEntry.INDEX_ID_TEAM));
-					teamFavorite.setIdCompetitionServer(Long.toString(idCompetition));
+					teamFavorite.setIdCompetitionServer(idCompetition);
 					teamFavorite.setCompetitionName(competition.getName());
 					teamFavorite.setCategoryTag(competition.getCategoryName());
 					teamFavorite.setSportTag(competition.getSportName());
