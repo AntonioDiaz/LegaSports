@@ -6,6 +6,9 @@ import android.provider.BaseColumns;
 
 import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Favorite;
+import com.adiaz.munisports.entities.Match;
+
+import java.util.Date;
 
 /**
  * Created by toni on 20/04/2017.
@@ -120,6 +123,20 @@ public class MuniSportsDbContract {
 		public static final int INDEX_ID_SERVER = 8;
 		public static final int INDEX_ID_COMPETITION_SERVER = 9;
 		public static final int INDEX_STATE = 10;
+
+		public static Match initEntity(Cursor cursorMatches) {
+			Match match = new Match();
+			Long dateLong = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
+			match.setDate(new Date(dateLong));
+			match.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
+			match.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
+			match.setTeamLocal(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL));
+			match.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
+			match.setWeek(cursorMatches.getInt(MatchesEntry.INDEX_WEEK));
+			match.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE));
+			match.setIdSportCenter(cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER));
+			return match;
+		}
 	}
 
 	public static final	class ClassificationEntry implements BaseColumns {

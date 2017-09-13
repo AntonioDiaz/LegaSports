@@ -1,20 +1,27 @@
 package com.adiaz.munisports.entities;
 
+import android.content.Context;
+
+import com.adiaz.munisports.R;
+import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.MuniSportsCourts;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /** Created by toni on 23/03/2017. */
-
 public class Match {
 
 	private static final String TAG = Match.class.getSimpleName();
 	private Date date;
 	private String teamLocal;
 	private String teamVisitor;
-	private int scoreLocal;
-	private int scoreVisitor;
-	private String placeName;
-	private String placeAddress;
+	private Integer scoreLocal;
+	private Integer scoreVisitor;
+	private int week;
 	private int state;
+	private Long idSportCenter;
 
 	public Date getDate() {
 		return date;
@@ -40,36 +47,20 @@ public class Match {
 		this.teamVisitor = teamVisitor;
 	}
 
-	public int getScoreLocal() {
+	public Integer getScoreLocal() {
 		return scoreLocal;
 	}
 
-	public void setScoreLocal(int scoreLocal) {
+	public void setScoreLocal(Integer scoreLocal) {
 		this.scoreLocal = scoreLocal;
 	}
 
-	public int getScoreVisitor() {
+	public Integer getScoreVisitor() {
 		return scoreVisitor;
 	}
 
-	public void setScoreVisitor(int scoreVisitor) {
+	public void setScoreVisitor(Integer scoreVisitor) {
 		this.scoreVisitor = scoreVisitor;
-	}
-
-	public String getPlaceName() {
-		return placeName;
-	}
-
-	public void setPlaceName(String placeName) {
-		this.placeName = placeName;
-	}
-
-	public String getPlaceAddress() {
-		return placeAddress;
-	}
-
-	public void setPlaceAddress(String placeAddress) {
-		this.placeAddress = placeAddress;
 	}
 
 	public int getState() {
@@ -79,4 +70,58 @@ public class Match {
 	public void setState(int state) {
 		this.state = state;
 	}
+
+	public int getWeek() {
+		return week;
+	}
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+	public Long getIdSportCenter() {
+		return idSportCenter;
+	}
+
+	public void setIdSportCenter(Long idSportCenter) {
+		this.idSportCenter = idSportCenter;
+	}
+
+	public String obtainDateStr(Context context) {
+		String dateStr = context.getString(R.string.undefined_date);
+		if (this.getDate()!=null && this.getDate().getTime()!=0) {
+			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
+			dateStr = dateFormat.format(this.getDate());
+		}
+		return dateStr;
+	}
+
+	public String obtainCenterName(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
+		String strName = context.getString(R.string.undefined_center);
+		if (court!=null) {
+			strName = court.getCenterName();
+		}
+		return strName;
+	}
+
+	public String obtainCenterNameFull(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
+		String strName = context.getString(R.string.undefined_court);
+		if (court!=null) {
+			strName = court.getCourtFullName();
+		}
+		return strName;
+
+	}
+
+	public String obtainCenterAddress(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
+		String strName = "";
+		if (court!=null) {
+			strName = court.getCenterAddress();
+		}
+		return strName;
+	}
+
 }

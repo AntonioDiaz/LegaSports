@@ -33,7 +33,6 @@ import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
-import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
@@ -48,7 +47,6 @@ import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,9 +244,8 @@ public class CompetitionActivity extends AppCompatActivity
 		Cursor cursorMatches = contentResolver.query(uriMatches, MatchesEntry.PROJECTION, null, null, null);
 		Cursor cursorClassification = contentResolver.query(uriClassification, ClassificationEntry.PROJECTION, null, null, null);
 		try {
-			this.courtsMap = MuniSportsUtils.initCourts(this);
-			this.mTeams = initTeams(cursorMatches, this.courtsMap);
-			this.mWeeks = initCalendar(cursorMatches, this.courtsMap);
+			this.mTeams = initTeams(cursorMatches);
+			this.mWeeks = initCalendar(cursorMatches);
 			this.mClassificationList = initClassification(cursorClassification);
 		} finally {
 			cursorMatches.close();
@@ -259,7 +256,8 @@ public class CompetitionActivity extends AppCompatActivity
 		hideLoading();
 	}
 
-	private static List<Team> initTeams(Cursor cursorMatches, Map<Long, Court> courtsMap) {
+	private static List<Team> initTeams(Cursor cursorMatches) {
+		List<Team> teamsList = new ArrayList<>();
 		Integer maxWeek = -1;
 		cursorMatches.moveToPosition(-1);
 		while (cursorMatches.moveToNext()) {
@@ -268,7 +266,7 @@ public class CompetitionActivity extends AppCompatActivity
 				maxWeek = currentWeek;
 			}
 		}
-		Map<String, TeamMatch[]> teamsMatchesMap = new HashMap<>();
+		Map<String, Match[]> teamsMatchesMap = new HashMap<>();
 		cursorMatches.moveToPosition(-1);
 		while (cursorMatches.moveToNext()) {
 			String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
@@ -276,86 +274,47 @@ public class CompetitionActivity extends AppCompatActivity
 			Integer currentWeek = cursorMatches.getInt(MatchesEntry.INDEX_WEEK) - 1;
 			if (!teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				if (!teamsMatchesMap.containsKey(teamLocal)) {
-					teamsMatchesMap.put(teamLocal, new TeamMatch[maxWeek]);
+					teamsMatchesMap.put(teamLocal, new Match[maxWeek]);
 				}
-				TeamMatch teamMatch = initMatchEntity(cursorMatches, true, courtsMap);
-				teamsMatchesMap.get(teamLocal)[currentWeek] = teamMatch;
+				Match match = MatchesEntry.initEntity(cursorMatches);
+				teamsMatchesMap.get(teamLocal)[currentWeek] = match;
 			}
 			if (!teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				if (!teamsMatchesMap.containsKey(teamVisitor)) {
-					teamsMatchesMap.put(teamVisitor, new TeamMatch[maxWeek]);
+					teamsMatchesMap.put(teamVisitor, new Match[maxWeek]);
 				}
-				TeamMatch teamMatch = initMatchEntity(cursorMatches, false, courtsMap);
-				teamsMatchesMap.get(teamVisitor)[currentWeek] = teamMatch;
+				Match match = MatchesEntry.initEntity(cursorMatches);
+				teamsMatchesMap.get(teamVisitor)[currentWeek] = match;
 			}
 		}
-		List<Team> teamsList = new ArrayList<>();
 		List<String> teamsNamesList = new ArrayList<>(teamsMatchesMap.keySet());
 		Collections.sort(teamsNamesList);
 		for (String teamName : teamsNamesList) {
-			TeamMatch[] teamMatchEntities = teamsMatchesMap.get(teamName);
-			Team team = new Team(teamName, teamMatchEntities);
+			Match[] matches = teamsMatchesMap.get(teamName);
+			Team team = new Team(teamName, matches);
 			teamsList.add(team);
 		}
 		return teamsList;
-	}
-
-	private static TeamMatch initMatchEntity(Cursor cursorMatches, boolean isLocal, Map<Long, Court> courtsMap) {
-		TeamMatch teamMatch = new TeamMatch();
-		String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
-		String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
-		Long idSportCenter = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
-		Long dateLong = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
-		Integer scoreLocal = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
-		Integer scoreVisitor = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
-		teamMatch.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
-		teamMatch.setDate(new Date(dateLong));
-		teamMatch.setTeamScore(scoreLocal);
-		teamMatch.setOpponentScore(scoreVisitor);
-		teamMatch.setLocal(isLocal);
-		if (isLocal) {
-			teamMatch.setOpponent(teamVisitor);
-		} else {
-			teamMatch.setOpponent(teamLocal);
-		}
-		return teamMatch;
 	}
 
 	/**
 	 * from cursor of matches sorted by weeknumber, returns a list of list of matches to print out in the fragment.
 	 *
 	 * @param cursorMatches
-	 * @param courtsMap
 	 * @return
 	 */
-	private static List<List<Match>> initCalendar(Cursor cursorMatches, Map<Long, Court> courtsMap) {
+	private static List<List<Match>> initCalendar(Cursor cursorMatches) {
 		List<List<Match>> weeksList = new ArrayList<>();
 		cursorMatches.moveToPosition(-1);
 		while (cursorMatches.moveToNext()) {
 			Integer week = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
-			Match match = new Match();
-			match.setTeamLocal(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL));
-			match.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
-			match.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
-			match.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
-			long idSportCenter = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
-			if (courtsMap.get(idSportCenter)!=null) {
-				match.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
-				match.setPlaceAddress(courtsMap.get(idSportCenter).getCenterAddress());
-			} else {
-				match.setPlaceName(MuniSportsConstants.UNDEFINDED_FIELD);
-				match.setPlaceAddress(MuniSportsConstants.UNDEFINDED_FIELD);
-			}
-			match.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
-			match.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE));
+			Match match = MatchesEntry.initEntity(cursorMatches);
 			if (weeksList.size()<week) {
 				List<Match> emptyList = new ArrayList<>();
 				weeksList.add(emptyList);
-
 			}
 			weeksList.get(week - 1).add(match);
 		}
-
 		return weeksList;
 	}
 
@@ -374,6 +333,5 @@ public class CompetitionActivity extends AppCompatActivity
 		}
 		return list;
 	}
-
 }
 

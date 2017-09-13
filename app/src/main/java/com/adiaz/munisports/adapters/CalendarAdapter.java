@@ -12,8 +12,6 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,13 +73,8 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			}
 			tvVisitorTeam.setText(teamVisitor);
 		}
-		if (match.getDate().getTime()==0) {
-			date.setText(mContext.getString(R.string.undefined_date));
-		} else {
-			DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-			date.setText(df.format(match.getDate()));
-		}
-		place.setText(match.getPlaceName());
+		date.setText(match.obtainDateStr(mContext));
+		place.setText(match.obtainCenterNameFull(mContext));
 		String strResult = "";
 		switch (match.getState()) {
 			case MuniSportsConstants.STATE_PENDING:

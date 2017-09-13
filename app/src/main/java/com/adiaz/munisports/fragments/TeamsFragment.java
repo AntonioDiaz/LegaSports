@@ -3,7 +3,6 @@ package com.adiaz.munisports.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class TeamsFragment extends Fragment {
 
 	@BindView(R.id.elv_teams) NonScrollExpandableListView expandableListView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
-	private TeamsAdapter teamsAdapter;
 
 
 	@Override
@@ -39,7 +37,6 @@ public class TeamsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_teams, container, false);
 		ButterKnife.bind(this, view);
-		Log.d(TAG, "onCreateView: expandableListView " + expandableListView);
 		return view;
 	}
 
@@ -52,5 +49,4 @@ public class TeamsFragment extends Fragment {
 		expandableListView.setEmptyView(tvEmptyListItem);
 		teamsAdapter.notifyDataSetChanged();
 	}
-
 }

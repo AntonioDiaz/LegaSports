@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
-import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
@@ -47,7 +47,7 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public Object getChild(int groupPosition, int childPosition) {
+	public Match getChild(int groupPosition, int childPosition) {
 		Team team = teamsList.get(groupPosition);
 		return team.getMatches()[childPosition];
 	}
@@ -65,42 +65,22 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		}
 		ButterKnife.bind(this, view);
 		tvWeek.setText(Integer.toString(childPosition + 1));
-		TeamMatch teamMatch = (TeamMatch) getChild(groupPosition, childPosition);
-		if (teamMatch != null) {
+		Match match = getChild(groupPosition, childPosition);
+		if (match != null) {
 			/*Check if the time have rest this week. */
-			if (teamMatch.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			if (match.getTeamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)
+					|| match.getTeamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				llMatchInfo.setVisibility(View.GONE);
 				tvUndefined.setVisibility(View.VISIBLE);
 				tvUndefined.setText(mContext.getString(R.string.rest_team));
 			} else {
-				String teamEntity = getGroup(groupPosition);
 				llMatchInfo.setVisibility(View.VISIBLE);
 				tvUndefined.setVisibility(View.GONE);
-				String localStr;
-				String visitorStr;
-				String localScoreStr;
-				String visitorScoreStr;
-				if (teamMatch.isLocal()) {
-					localStr = teamEntity;
-					localScoreStr = teamMatch.getTeamScore() == null ? "_" : teamMatch.getTeamScore().toString();
-					visitorStr = teamMatch.getOpponent();
-					visitorScoreStr = teamMatch.getOpponentScore() == null ? "_" : teamMatch.getOpponentScore().toString();
-/*					tvLocal.setTypeface(null, Typeface.BOLD);
-					tvLocalScore.setTypeface(null, Typeface.BOLD);
-					tvVisitor.setTypeface(null, Typeface.NORMAL);
-					tvVisitorScore.setTypeface(null, Typeface.NORMAL);*/
-				} else {
-					visitorStr = teamEntity;
-					localStr = teamMatch.getOpponent();
-					localScoreStr = teamMatch.getOpponentScore() == null ? "_" : teamMatch.getOpponentScore().toString();
-					visitorScoreStr = teamMatch.getTeamScore() == null ? "_" : teamMatch.getTeamScore().toString();
-/*
-					tvLocal.setTypeface(null, Typeface.NORMAL);
-					tvLocalScore.setTypeface(null, Typeface.NORMAL);
-					tvVisitor.setTypeface(null, Typeface.BOLD);
-					tvVisitorScore.setTypeface(null, Typeface.BOLD);
-*/
-				}
+				String localStr = match.getTeamLocal();
+				String visitorStr = match.getTeamVisitor();
+
+				String localScoreStr = match.getScoreLocal() == null ? "_" : match.getScoreLocal().toString();
+				String visitorScoreStr = match.getTeamVisitor() == null ? "_" : match.getScoreVisitor().toString();
 				tvLocal.setText(localStr);
 				tvLocalScore.setText(localScoreStr);
 				tvVisitor.setText(visitorStr);

@@ -12,12 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
-import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,12 +44,14 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		String jornadaStr = context.getString(R.string.jornada_header, position + 1);
-		TeamMatch teamMatch = team.getMatches()[position];
-		if (teamMatch ==null || teamMatch.getOpponent().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+		Match match = team.getMatches()[position];
+		if (match == null
+				|| match.getTeamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)
+				|| match.getTeamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 			holder.tvJornadaEmpty.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.GONE);
 			holder.clMatchEmpty.setVisibility(View.VISIBLE);
-			if (teamMatch == null) {
+			if (match == null) {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.undefined_week));
 			} else {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.rest_team));
@@ -61,27 +60,15 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvJornada.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.VISIBLE);
 			holder.clMatchEmpty.setVisibility(View.GONE);
-			String dateStr = context.getString(R.string.undefined_date);
-			if (teamMatch.getDate()!=null && teamMatch.getDate().getTime()!=0) {
-				DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-				dateStr = dateFormat.format(teamMatch.getDate());
-			}
-			holder.tvDate.setText(dateStr);
-			holder.tvPlace.setText(teamMatch.getPlaceName());
-			if (teamMatch.isLocal()) {
-				holder.tvTeamLocal.setText(team.getTeamName());
-				holder.tvTeamLocalScore.setText(teamMatch.getTeamScore().toString());
-				holder.tvTeamVisitor.setText(teamMatch.getOpponent());
-				holder.tvTeamVisitorScore.setText(teamMatch.getOpponentScore().toString());
-			} else {
-				holder.tvTeamLocal.setText(teamMatch.getOpponent());
-				holder.tvTeamLocalScore.setText(teamMatch.getOpponentScore().toString());
-				holder.tvTeamVisitor.setText(team.getTeamName());
-				holder.tvTeamVisitorScore.setText(teamMatch.getTeamScore().toString());
-			}
-			holder.ivLocation.setTag(teamMatch);
-			holder.ivCalendar.setTag(teamMatch);
-			holder.ivShare.setTag(teamMatch);
+			holder.tvDate.setText(match.obtainDateStr(context));
+			holder.tvPlace.setText(match.obtainCenterNameFull(context));
+			holder.tvTeamLocal.setText(match.getTeamLocal());
+			holder.tvTeamLocalScore.setText(match.getScoreLocal().toString());
+			holder.tvTeamVisitor.setText(match.getTeamVisitor());
+			holder.tvTeamVisitorScore.setText(match.getScoreVisitor().toString());
+			holder.ivLocation.setTag(match);
+			holder.ivCalendar.setTag(match);
+			holder.ivShare.setTag(match);
 		}
 
 	}
@@ -93,7 +80,6 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
-
 		@BindView(R.id.cl_match_details) ConstraintLayout clMatchDetails;
 		@BindView(R.id.cl_match_empty) ConstraintLayout clMatchEmpty;
 		@BindView(R.id.tv_fav_team_jornada) TextView tvJornada;

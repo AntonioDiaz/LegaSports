@@ -83,7 +83,7 @@ public class CalendarFragment extends Fragment {
 				MenuActionsUtils.addMatchEvent(this.getActivity(), match, CompetitionActivity.mCompetition);
 				break;
 			case R.id.action_view_map:
-				MenuActionsUtils.showMatchLocation(this.getActivity(), match.getPlaceAddress());
+				MenuActionsUtils.showMatchLocation(this.getActivity(), match);
 				break;
 			case R.id.action_share:
 				MenuActionsUtils.shareMatchDetails(this.getActivity(), match, CompetitionActivity.mCompetition);

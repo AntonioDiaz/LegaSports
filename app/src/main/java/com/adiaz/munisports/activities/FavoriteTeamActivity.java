@@ -27,10 +27,9 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
 import com.adiaz.munisports.entities.Competition;
-import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Favorite;
+import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
-import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.FavoritesUtils;
@@ -39,9 +38,6 @@ import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
-
-import java.util.Date;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -166,18 +162,18 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		return true;
 	}
 	public void showLocation(View view) {
-		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		MenuActionsUtils.showMatchLocation(this, teamMatch.getPlaceAddress());
+		Match match = (Match) view.getTag();
+		MenuActionsUtils.showMatchLocation(this, match);
 	}
 
 	public void addEvent(View view) {
-		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		MenuActionsUtils.addMatchEvent(this, mTeamName, teamMatch, mCompetition);
+		Match match = (Match) view.getTag();
+		MenuActionsUtils.addMatchEvent(this, match, mCompetition);
 	}
 
 	public void shareMatchDetails(View view) {
-		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		MenuActionsUtils.shareMatchDetails(this, mTeamName, teamMatch, mCompetition);
+		Match match = (Match)view.getTag();
+		MenuActionsUtils.shareMatchDetails(this, match, mCompetition);
 	}
 
 	@Override
@@ -198,7 +194,6 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		Cursor cursorMatches = context.getContentResolver().query(uri, MatchesEntry.PROJECTION, null, null, null);
 		cursorMatches.moveToPosition(-1);
 		Integer weeksNumber = -1;
-		Map<Long, Court> mapCourts = MuniSportsUtils.initCourts(context);
 		while (cursorMatches.moveToNext()) {
 			Integer currentWeek = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
 			if (currentWeek>weeksNumber) {
@@ -211,32 +206,8 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 			String teamLocal = cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL);
 			String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
 			if (teamName.equals(teamLocal) || teamName.equals(teamVisitor)) {
-				TeamMatch teamMatch = new TeamMatch();
-				Integer week = cursorMatches.getInt(MatchesEntry.INDEX_WEEK);
-				Long longDate = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
-				Integer scoreLocal = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL);
-				Integer scoreVisitor = cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR);
-				if (teamName.equals(teamLocal)) {
-					teamMatch.setLocal(true);
-					teamMatch.setOpponent(teamVisitor);
-				} else {
-					teamMatch.setLocal(false);
-					teamMatch.setOpponent(teamLocal);
-				}
-				Long sportCourtId = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
-				Court court = mapCourts.get(sportCourtId);
-				if (court!=null) {
-					teamMatch.setPlaceName(court.getCourtFullName());
-					teamMatch.setPlaceAddress(court.getCenterAddress());
-				} else {
-					teamMatch.setPlaceName(MuniSportsConstants.UNDEFINDED_FIELD);
-					teamMatch.setPlaceAddress(MuniSportsConstants.UNDEFINDED_FIELD);
-				}
-
-				teamMatch.setDate(new Date(longDate));
-				teamMatch.setTeamScore(scoreLocal);
-				teamMatch.setOpponentScore(scoreVisitor);
-				team.add(week -1, teamMatch);
+				Match match = MatchesEntry.initEntity(cursorMatches);
+				team.add(match.getWeek() - 1, match);
 			}
 		}
 		cursorMatches.close();
