@@ -67,6 +67,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 
 	private String mTeamName;
 	private Long mIdCompetition;
+	private Competition mCompetition;
 	private boolean isHideToolbarView = false;
 
 	@Override
@@ -78,10 +79,10 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mTeamName = getIntent().getStringExtra(MuniSportsConstants.INTENT_TEAM_NAME);
 		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 0L);
-		Competition competition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
-		String subTitle = competition.getName();
-		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, competition.getSportName());
-		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, competition.getCategoryName());
+		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
+		String subTitle = mCompetition.getName();
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.getSportName());
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.getCategoryName());
 		collapsingToolbar.setTitle(" ");
 
 		toolbarHeaderView.bindTo(mTeamName, subTitle, 0);
@@ -171,12 +172,12 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 
 	public void addEvent(View view) {
 		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		MenuActionsUtils.addMatchEvent(this, mTeamName, teamMatch.getOpponent(), teamMatch.getDate(), teamMatch.getPlaceName());
+		MenuActionsUtils.addMatchEvent(this, mTeamName, teamMatch, mCompetition);
 	}
 
 	public void shareMatchDetails(View view) {
 		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		MenuActionsUtils.shareMatchDetails(this, mTeamName, teamMatch.getOpponent(), teamMatch.getDate(), teamMatch.getPlaceName());
+		MenuActionsUtils.shareMatchDetails(this, mTeamName, teamMatch, mCompetition);
 	}
 
 	@Override

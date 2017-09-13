@@ -75,19 +75,18 @@ public class CalendarFragment extends Fragment {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		//ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
 		ExpandableListView.ExpandableListContextMenuInfo menuInfo = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
 		View targetView = menuInfo.targetView;
 		Match match	 = (Match)targetView.getTag();
 		switch (item.getItemId()) {
 			case R.id.action_add_calendar:
-				MenuActionsUtils.addMatchEvent(this.getActivity(), match);
+				MenuActionsUtils.addMatchEvent(this.getActivity(), match, CompetitionActivity.mCompetition);
 				break;
 			case R.id.action_view_map:
 				MenuActionsUtils.showMatchLocation(this.getActivity(), match.getPlaceAddress());
 				break;
 			case R.id.action_share:
-				MenuActionsUtils.shareMatchDetails(this.getActivity(), match);
+				MenuActionsUtils.shareMatchDetails(this.getActivity(), match, CompetitionActivity.mCompetition);
 				break;
 			case R.id.action_notify_error:
 				break;

@@ -52,7 +52,7 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvJornadaEmpty.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.GONE);
 			holder.clMatchEmpty.setVisibility(View.VISIBLE);
-			if (teamMatch ==null) {
+			if (teamMatch == null) {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.undefined_week));
 			} else {
 				holder.tvFavTeamUndefined.setText(context.getString(R.string.rest_team));

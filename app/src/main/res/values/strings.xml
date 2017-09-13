@@ -58,7 +58,7 @@
 
     <string name="calendar_title">%1$s - %2$s</string>
     <string name="calendar_description">Partido de la liga municipal de leganes entre los equipos %1$s y %2$s</string>
-    <string name="share_description">Partido: %1$s - %2$s. Fecha: %3$s. Lugar: %4$s.</string>
+    <string name="match_description">Competición: %1$s (%2$s - %3$s). Partido: %4$s - %5$s. Fecha: %6$s. Lugar: %7$s.</string>
 
     <string name="internet_required">Se necesita conexión a internet</string>
 
