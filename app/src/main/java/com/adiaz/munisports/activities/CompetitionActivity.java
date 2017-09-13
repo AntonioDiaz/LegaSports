@@ -346,8 +346,13 @@ public class CompetitionActivity extends AppCompatActivity
 			match.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
 			match.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
 			long idSportCenter = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
-			match.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
-			match.setPlaceAddress(courtsMap.get(idSportCenter).getCenterAddress());
+			if (courtsMap.get(idSportCenter)!=null) {
+				match.setPlaceName(courtsMap.get(idSportCenter).getCourtFullName());
+				match.setPlaceAddress(courtsMap.get(idSportCenter).getCenterAddress());
+			} else {
+				match.setPlaceName(MuniSportsConstants.UNDEFINDED_FIELD);
+				match.setPlaceAddress(MuniSportsConstants.UNDEFINDED_FIELD);
+			}
 			match.setDate(new Date(cursorMatches.getLong(MatchesEntry.INDEX_DATE)));
 			match.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE));
 			if (weeksList.size()<week) {

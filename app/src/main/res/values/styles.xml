@@ -72,25 +72,25 @@
 
     <style name="text_header">
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body2</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">@dimen/text_header_font_large</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="text_header_small" parent="text_header">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_header_small</item>
     </style>
 
     <style name="text_subheader" parent="text_header">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/text_header_font_small</item>
     </style>
 
     <style name="text_small">
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Small</item>
+        <item name="android:textSize">@dimen/text_small_size</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="text_small_classification" parent="text_small">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/listchild_font_size</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingTop">4dp</item>
@@ -148,8 +148,11 @@
     </style>
 
     <style name="tabLayoutStyle" parent="Base.Widget.Design.TabLayout">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/tablayout_font_size</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="tabLayoutStyle2">
     </style>
 
     <style name="header_expandable_list">
@@ -157,7 +160,7 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingLeft">?android:attr/expandableListPreferredItemPaddingLeft</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/listheader_font_size</item>
         <item name="android:textStyle">bold</item>
     </style>
 

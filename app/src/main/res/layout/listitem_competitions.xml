@@ -16,24 +16,24 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_competition_name"
+                android:id="@+id/tv_category_name"
                 style="@style/main_list_text"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                tools:text="@string/example_competition"
-                app:layout_constraintHorizontal_bias="0.495"/>
+                app:layout_constraintHorizontal_bias="0.495"
+                tools:text="@string/example_category"/>
 
             <TextView
-                android:id="@+id/tv_category_name"
+                android:id="@+id/tv_competition_name"
                 style="@style/main_list_text_small"
                 android:background="@drawable/rounded_corner_accent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_competition_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_category_name"
                 android:layout_marginTop="8dp"
-                tools:text="@string/example_category"/>
+                tools:text="@string/example_competition"/>
 
         </android.support.constraint.ConstraintLayout>
 

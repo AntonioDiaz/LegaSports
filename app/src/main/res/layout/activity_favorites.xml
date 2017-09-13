@@ -7,24 +7,19 @@
     android:layout_height="match_parent"
     tools:context="com.adiaz.munisports.activities.FavoritesActivity">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimaryDark"
+        app:tabTextAppearance="@style/tabLayoutStyle"
+        app:tabTextColor="@color/colorWhite"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_anchor="@+id/appBar"
         app:layout_anchorGravity="bottom"
         app:tabGravity="fill"
-        app:tabMode="fixed"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        app:tabMode="fixed"/>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -67,4 +62,11 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>

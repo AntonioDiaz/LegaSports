@@ -272,8 +272,14 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 				}
 				Long sportCourtId = cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER);
 				Court court = mapCourts.get(sportCourtId);
-				teamMatch.setPlaceName(court.getCourtFullName());
-				teamMatch.setPlaceAddress(court.getCenterAddress());
+				if (court!=null) {
+					teamMatch.setPlaceName(court.getCourtFullName());
+					teamMatch.setPlaceAddress(court.getCenterAddress());
+				} else {
+					teamMatch.setPlaceName(MuniSportsConstants.UNDEFINDED_FIELD);
+					teamMatch.setPlaceAddress(MuniSportsConstants.UNDEFINDED_FIELD);
+				}
+
 				teamMatch.setDate(new Date(longDate));
 				teamMatch.setTeamScore(scoreLocal);
 				teamMatch.setOpponentScore(scoreVisitor);
