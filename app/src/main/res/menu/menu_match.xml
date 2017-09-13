@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_add_calendar"
+        android:title="@string/menu_add_calendar"></item>
+    <item
+        android:id="@+id/action_view_map"
+        android:title="@string/menu_view_map"></item>
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/menu_share_details"></item>
+    <item
+        android:id="@+id/action_notify_error"
+        android:title="@string/menu_notify_error"></item>
+</menu>

@@ -59,6 +59,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			view = layoutInflater.inflate(R.layout.listitem_child_calendar, null);
 		}
 		ButterKnife.bind(this, view);
+		view.setTag(match);
 		String teamLocal = match.getTeamLocal();
 		String teamVisitor = match.getTeamVisitor();
 		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD) && teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
@@ -139,4 +140,6 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
+
 }

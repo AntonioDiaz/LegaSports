@@ -58,7 +58,7 @@
 
     <string name="calendar_title">%1$s - %2$s</string>
     <string name="calendar_description">Partido de la liga municipal de leganes entre los equipos %1$s y %2$s</string>
-    <string name="share_description">Partido: %1$s y %2$s, Fecha: %3$s, Lugar: %4$s</string>
+    <string name="share_description">Partido: %1$s - %2$s. Fecha: %3$s. Lugar: %4$s.</string>
 
     <string name="internet_required">Se necesita conexión a internet</string>
 
@@ -107,5 +107,10 @@
     <string name="cancelar">Cancelar</string>
     <string name="accept">Aceptar</string>
     <string name="mistake_sent">Se ha enviado el error, será revisado por el administrador. Gracias por su colaboración.</string>
+
+    <string name="menu_add_calendar">Añadir evento</string>
+    <string name="menu_view_map">Abrir mapa</string>
+    <string name="menu_share_details">Compartir</string>
+    <string name="menu_notify_error">Notificar error</string>
 
 </resources>

@@ -2,7 +2,6 @@ package com.adiaz.munisports.activities;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
@@ -10,11 +9,9 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -36,14 +33,12 @@ import com.adiaz.munisports.entities.TeamMatch;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.FavoritesUtils;
+import com.adiaz.munisports.utilities.MenuActionsUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -181,50 +176,17 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	}
 	public void showLocation(View view) {
 		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		Uri addressUri = Uri.parse("geo:0,0?q=" + teamMatch.getPlaceAddress());
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(addressUri);
-		if (intent.resolveActivity(getPackageManager()) != null) {
-			startActivity(intent);
-		}
+		MenuActionsUtils.showMatchLocation(this, teamMatch.getPlaceAddress());
 	}
 
 	public void addEvent(View view) {
 		TeamMatch teamMatch = (TeamMatch)view.getTag();
-
-		Calendar beginTime = Calendar.getInstance();
-		beginTime.setTime(teamMatch.getDate());
-		Calendar endTime = Calendar.getInstance();
-		endTime.setTime(teamMatch.getDate());
-
-		endTime.add(Calendar.HOUR, 2);
-
-		String titleStr = getString(R.string.calendar_title, teamName, teamMatch.getOpponent());
-		String descStr = getString(R.string.calendar_description, teamName, teamMatch.getOpponent());
-
-		Intent intent = new Intent(Intent.ACTION_INSERT)
-				.setData(CalendarContract.Events.CONTENT_URI)
-				.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
-				.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
-				.putExtra(CalendarContract.Events.TITLE, titleStr)
-				.putExtra(CalendarContract.Events.DESCRIPTION, descStr)
-				.putExtra(CalendarContract.Events.EVENT_LOCATION, teamMatch.getPlaceName());
-		startActivity(intent);
+		MenuActionsUtils.addMatchEvent(this, teamName, teamMatch.getOpponent(), teamMatch.getDate(), teamMatch.getPlaceName());
 	}
 
 	public void shareMatchDetails(View view) {
-		String mimeType = "text/plain";
 		TeamMatch teamMatch = (TeamMatch)view.getTag();
-		String title = getString(R.string.calendar_title, teamName, teamMatch.getOpponent());
-		DateFormat df = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-		String strDate = df.format(teamMatch.getDate());
-		String subject = getString(R.string.share_description, teamName, teamMatch.getOpponent(), strDate, teamMatch.getPlaceName());
-		ShareCompat.IntentBuilder
-				.from(this)
-				.setChooserTitle(title)
-				.setType(mimeType)
-				.setText(subject)
-				.startChooser();
+		MenuActionsUtils.shareMatchDetails(this, teamName, teamMatch.getOpponent(), teamMatch.getDate(), teamMatch.getPlaceName());
 	}
 
 	@Override

@@ -111,6 +111,7 @@ public class CompetitionActivity extends AppCompatActivity
 
 		idCompetitionServer = getIntent().getStringExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER);
 		idCompetitionServerLong = new Long (idCompetitionServer);
+
 		String sportTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_SPORT_TAG);
 		String categoryTag = getIntent().getStringExtra(MuniSportsConstants.INTENT_CATEGORY_TAG);
 		String competitionName = getIntent().getStringExtra(MuniSportsConstants.INTENT_COMPETITION_NAME);
@@ -135,9 +136,9 @@ public class CompetitionActivity extends AppCompatActivity
 		super.onResume();
 		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
-			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), new Long(idCompetitionServer));
+			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), idCompetitionServerLong);
 			if (needToUpdate) {
-				CompetitionDbUtils.updateCompetition(this, this, new Long(idCompetitionServer));
+				CompetitionDbUtils.updateCompetition(this, this, idCompetitionServerLong);
 			} else {
 				finishLoad();
 			}
