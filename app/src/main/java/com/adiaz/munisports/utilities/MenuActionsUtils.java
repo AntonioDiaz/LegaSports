@@ -58,12 +58,13 @@ public class MenuActionsUtils {
 		SharedPreferences preferences = getDefaultSharedPreferences(activity);
 		String town = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		String mimeType = "text/plain";
-		String title = activity.getString(R.string.calendar_title, localTeam, visitorTeam);
+		String titleStr = activity.getString(R.string.calendar_title, competition.getName(), String.valueOf(match.getWeek()), localTeam, visitorTeam);
 		String subject = activity.getString(R.string.match_description,
-				competitionName, sport, category, localTeam, visitorTeam, dateStr, sportCenter, town);
+				competitionName, sport, category, String.valueOf(match.getWeek()), localTeam, visitorTeam, dateStr, sportCenter, town);
 		ShareCompat.IntentBuilder
 				.from(activity)
-				.setChooserTitle(title)
+				.setChooserTitle(titleStr)
+				.setSubject(titleStr)
 				.setType(mimeType)
 				.setText(subject)
 				.startChooser();
@@ -87,9 +88,9 @@ public class MenuActionsUtils {
 			endTime.setTime(match.getDate());
 			endTime.add(Calendar.HOUR, 2);
 			String strDate = match.obtainDateStr(context);
-			String titleStr = context.getString(R.string.calendar_title, localTeam, visitorTeam);
+			String titleStr = context.getString(R.string.calendar_title, competition.getName(), String.valueOf(match.getWeek()), localTeam, visitorTeam);
 			String descMatch = context.getString(R.string.match_description,
-					competition.getName(), sport, category, localTeam, visitorTeam, strDate, sportCenter, town);
+					competition.getName(), sport, category, String.valueOf(match.getWeek()), localTeam, visitorTeam, strDate, sportCenter, town);
 			Intent intent = new Intent(Intent.ACTION_INSERT)
 					.setData(CalendarContract.Events.CONTENT_URI)
 					.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
