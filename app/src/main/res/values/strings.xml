@@ -49,6 +49,7 @@
     <string name="not_implemented">Not implemented</string>
     <string name="example_team_name">Atletico Madrid</string>
     <string name="example_sport_category">Futbol (Infantil)</string>
+    <string name="example_match">Jornada 5: Legamar A - Atm. Madrid</string>
     <string name="example_competition">Campeonato de Primavera</string>
     <string name="example_category">Benjamín</string>
     <string name="example_sport">Futbol 7</string>
@@ -105,7 +106,7 @@
     <string name="mistake_select_category">Categoría</string>
     <string name="mistake_select_competition">Competición</string>
     <string name="mistake_desc">Escriba la descripción del error.</string>
-    <string name="cancelar">Cancelar</string>
+    <string name="cancel">Cancelar</string>
     <string name="accept">Aceptar</string>
     <string name="mistake_sent">Se ha enviado el error, será revisado por el administrador. Gracias por su colaboración.</string>
 
@@ -115,5 +116,8 @@
     <string name="menu_notify_error">Notificar error</string>
     <string name="no_match_event">No se puede crear el evento hasta que no haya fecha.</string>
     <string name="no_match_address">Todavia no se ha definido el centro deportivo.</string>
-
+    <string name="menu_match_title">Acciones sobre el partido</string>
+    <string name="dialog_title_send_issue">Notificar error</string>
+    <string name="dialog_description">Descripción del error</string>
+    <string name="dialog_match_description">Jornada %1$s: %2$s - %3$s</string>
 </resources>

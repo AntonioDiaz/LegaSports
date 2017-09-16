@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.TeamFavorite;
 import com.adiaz.munisports.fragments.FavoritesCompetitionsFragment;
 import com.adiaz.munisports.fragments.FavoritesTeamsFragment;
@@ -37,7 +37,7 @@ public class FavoritesActivity extends AppCompatActivity {
 	@BindView(R.id.viewpager) ViewPager viewPager;
 	@BindView(R.id.tv_title) TextView tvTitle;
 
-	public static List<Competition> competitionsFavorites;
+	public static List<CompetitionEntity> competitionsFavorites;
 	public static List<TeamFavorite> teamsFavorites;
 
 	@Override

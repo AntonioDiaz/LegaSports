@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 
@@ -65,15 +65,16 @@ public class MuniSportsDbContract {
 		public static final int INDEX_LAST_UPDATE_SERVER = 4;
 		public static final int INDEX_LAST_UPDATE_APP = 5;
 
-		public static Competition initEntity(Cursor c) {
-			Competition competition = new Competition();
-			competition.setServerId(c.getLong(CompetitionsEntry.INDEX_ID_SERVER));
-			competition.setName(c.getString(CompetitionsEntry.INDEX_NAME));
-			competition.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT));
-			competition.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY));
-			competition.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER));
-			competition.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP));
-			return competition;
+		public static CompetitionEntity initEntity(Cursor c) {
+			CompetitionEntity competitionEntity = CompetitionEntity.builder()
+					.setServerId(c.getLong(CompetitionsEntry.INDEX_ID_SERVER))
+					.setName(c.getString(CompetitionsEntry.INDEX_NAME))
+					.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT))
+					.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY))
+					.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER))
+					.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP))
+					.build();
+			return competitionEntity;
 		}
 
 	}
@@ -125,16 +126,18 @@ public class MuniSportsDbContract {
 		public static final int INDEX_STATE = 10;
 
 		public static Match initEntity(Cursor cursorMatches) {
-			Match match = new Match();
 			Long dateLong = cursorMatches.getLong(MatchesEntry.INDEX_DATE);
-			match.setDate(new Date(dateLong));
-			match.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL));
-			match.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR));
-			match.setTeamLocal(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL));
-			match.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR));
-			match.setWeek(cursorMatches.getInt(MatchesEntry.INDEX_WEEK));
-			match.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE));
-			match.setIdSportCenter(cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER));
+			Match match = Match.builder()
+					.setIdMatch(cursorMatches.getLong(MatchesEntry.INDEX_ID_SERVER))
+					.setDate(new Date(dateLong))
+					.setScoreLocal(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_LOCAL))
+					.setScoreVisitor(cursorMatches.getInt(MatchesEntry.INDEX_SCORE_VISITOR))
+					.setTeamLocal(cursorMatches.getString(MatchesEntry.INDEX_TEAM_LOCAL))
+					.setTeamVisitor(cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR))
+					.setWeek(cursorMatches.getInt(MatchesEntry.INDEX_WEEK))
+					.setState(cursorMatches.getInt(MatchesEntry.INDEX_STATE))
+					.setIdSportCenter(cursorMatches.getLong(MatchesEntry.INDEX_ID_SPORTCENTER))
+					.build();
 			return match;
 		}
 	}

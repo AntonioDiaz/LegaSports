@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
+import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.util.List;
@@ -58,8 +59,8 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 		}
 		ButterKnife.bind(this, view);
 		view.setTag(match);
-		String teamLocal = match.getTeamLocal();
-		String teamVisitor = match.getTeamVisitor();
+		String teamLocal = match.teamLocal();
+		String teamVisitor = match.teamVisitor();
 		if (teamLocal.equals(MuniSportsConstants.UNDEFINDED_FIELD) && teamVisitor.equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 			tvLocalTeam.setText(mContext.getString(R.string.undefined_match));
 			tvVisitorTeam.setText("");
@@ -73,10 +74,10 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			}
 			tvVisitorTeam.setText(teamVisitor);
 		}
-		date.setText(match.obtainDateStr(mContext));
-		place.setText(match.obtainCenterNameFull(mContext));
+		date.setText(MatchUtilities.obtainDateStr(mContext, match));
+		place.setText(MatchUtilities.obtainCenterNameFull(mContext, match));
 		String strResult = "";
-		switch (match.getState()) {
+		switch (match.state()) {
 			case MuniSportsConstants.STATE_PENDING:
 				strResult = mContext.getString(R.string.match_pending);
 				break;
@@ -84,7 +85,7 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 				strResult = mContext.getString(R.string.match_cancel);
 				break;
 			case MuniSportsConstants.STATE_PLAYED:
-				strResult = String.format("%d - %d", match.getScoreLocal(), match.getScoreVisitor());
+				strResult = String.format("%d - %d", match.scoreLocal(), match.scoreVisitor());
 				break;
 		}
 		result.setText(strResult);

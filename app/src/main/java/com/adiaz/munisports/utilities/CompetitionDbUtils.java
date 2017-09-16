@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
@@ -22,8 +22,8 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.CompetitionsEnt
 
 public class CompetitionDbUtils {
 
-	public static final Competition queryCompetition (ContentResolver contentResolver, Long idCompetition) {
-		Competition competition = null;
+	public static final CompetitionEntity queryCompetition (ContentResolver contentResolver, Long idCompetition) {
+		CompetitionEntity competition = null;
 		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(idCompetition);
 		Cursor cursor = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
 		try {

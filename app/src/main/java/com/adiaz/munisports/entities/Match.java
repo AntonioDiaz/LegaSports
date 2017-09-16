@@ -1,127 +1,62 @@
 package com.adiaz.munisports.entities;
 
 import android.content.Context;
+import android.os.Parcelable;
 
 import com.adiaz.munisports.R;
+import com.adiaz.munisports.utilities.DateTypeAdapter;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
-import com.adiaz.munisports.utilities.MuniSportsCourts;
+import com.google.auto.value.AutoValue;
+import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/** Created by toni on 23/03/2017. */
-public class Match {
+/**
+ * Created by toni on 16/09/2017.
+ */
 
-	private static final String TAG = Match.class.getSimpleName();
-	private Date date;
-	private String teamLocal;
-	private String teamVisitor;
-	private Integer scoreLocal;
-	private Integer scoreVisitor;
-	private int week;
-	private int state;
-	private Long idSportCenter;
+@AutoValue
+public abstract class Match implements Parcelable {
 
-	public Date getDate() {
-		return date;
+	public static Builder builder() {
+		return new AutoValue_Match.Builder();
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	@AutoValue.Builder
+	public abstract static class Builder {
+		public abstract Builder setIdMatch(Long value);
+		public abstract Builder setDate(Date value);
+		public abstract Builder setTeamLocal(String value);
+		public abstract Builder setTeamVisitor(String value);
+		public abstract Builder setScoreLocal(Integer value);
+		public abstract Builder setScoreVisitor(Integer value);
+		public abstract Builder setWeek(Integer value);
+		public abstract Builder setState(Integer value);
+		public abstract Builder setIdSportCenter(Long value);
+		public abstract Match build();
 	}
 
-	public String getTeamLocal() {
-		return teamLocal;
-	}
 
-	public void setTeamLocal(String teamLocal) {
-		this.teamLocal = teamLocal;
-	}
+	public abstract Long idMatch();
+	@ParcelAdapter(DateTypeAdapter.class) public abstract Date date();
+	public abstract String teamLocal();
+	public abstract String teamVisitor();
+	public abstract Integer scoreLocal();
+	public abstract Integer scoreVisitor();
+	public abstract Integer week();
+	public abstract Integer state();
+	public abstract Long idSportCenter();
 
-	public String getTeamVisitor() {
-		return teamVisitor;
-	}
-
-	public void setTeamVisitor(String teamVisitor) {
-		this.teamVisitor = teamVisitor;
-	}
-
-	public Integer getScoreLocal() {
-		return scoreLocal;
-	}
-
-	public void setScoreLocal(Integer scoreLocal) {
-		this.scoreLocal = scoreLocal;
-	}
-
-	public Integer getScoreVisitor() {
-		return scoreVisitor;
-	}
-
-	public void setScoreVisitor(Integer scoreVisitor) {
-		this.scoreVisitor = scoreVisitor;
-	}
-
-	public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
-	}
-
-	public int getWeek() {
-		return week;
-	}
-
-	public void setWeek(int week) {
-		this.week = week;
-	}
-
-	public Long getIdSportCenter() {
-		return idSportCenter;
-	}
-
-	public void setIdSportCenter(Long idSportCenter) {
-		this.idSportCenter = idSportCenter;
-	}
 
 	public String obtainDateStr(Context context) {
 		String dateStr = context.getString(R.string.undefined_date);
-		if (this.getDate()!=null && this.getDate().getTime()!=0) {
+		if (this.date()!=null && this.date().getTime()!=0) {
 			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
-			dateStr = dateFormat.format(this.getDate());
+			dateStr = dateFormat.format(this.date());
 		}
 		return dateStr;
-	}
-
-	public String obtainCenterName(Context context) {
-		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
-		String strName = context.getString(R.string.undefined_center);
-		if (court!=null) {
-			strName = court.getCenterName();
-		}
-		return strName;
-	}
-
-	public String obtainCenterNameFull(Context context) {
-		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
-		String strName = context.getString(R.string.undefined_court);
-		if (court!=null) {
-			strName = court.getCourtFullName();
-		}
-		return strName;
-
-	}
-
-	public String obtainCenterAddress(Context context) {
-		Court court = MuniSportsCourts.obteinTownCourt(context, this.getIdSportCenter());
-		String strName = "";
-		if (court!=null) {
-			strName = court.getCenterAddress();
-		}
-		return strName;
 	}
 
 }

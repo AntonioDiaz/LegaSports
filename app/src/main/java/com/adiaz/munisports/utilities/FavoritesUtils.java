@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.adiaz.munisports.database.MuniSportsDbContract;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.TeamFavorite;
 
@@ -84,8 +84,8 @@ public class FavoritesUtils {
 		return favorite;
 	}
 
-	public static List<Competition> getCompetitionsFavorites(Context context) {
-		List<Competition> competitionsFavorites = new ArrayList<>();
+	public static List<CompetitionEntity> getCompetitionsFavorites(Context context) {
+		List<CompetitionEntity> competitionsFavorites = new ArrayList<>();
 		Uri uri = MuniSportsDbContract.FavoritesEntry.CONTENT_URI;
 		String selection = MuniSportsDbContract.FavoritesEntry.COLUMN_ID_TEAM + " IS NULL";
 		ContentResolver resolver = context.getContentResolver();
@@ -96,7 +96,7 @@ public class FavoritesUtils {
 				Uri uriCompetition = MuniSportsDbContract.CompetitionsEntry.buildCompetitionUriWithServerId(idCompetition);
 				Cursor cursorCompetition = resolver.query(uriCompetition, MuniSportsDbContract.CompetitionsEntry.PROJECTION, null, null, null);
 				if (cursorCompetition.moveToNext()) {
-					Competition competition = MuniSportsDbContract.CompetitionsEntry.initEntity(cursorCompetition);
+					CompetitionEntity competition = MuniSportsDbContract.CompetitionsEntry.initEntity(cursorCompetition);
 					competitionsFavorites.add(competition);
 				}
 			}
@@ -115,14 +115,14 @@ public class FavoritesUtils {
 		try {
 			while (cursor.moveToNext()) {
 				long idCompetition = cursor.getLong(MuniSportsDbContract.FavoritesEntry.INDEX_ID_COMPETITION);
-				Competition competition = CompetitionDbUtils.queryCompetition(context.getContentResolver(), idCompetition);
+				CompetitionEntity competition = CompetitionDbUtils.queryCompetition(context.getContentResolver(), idCompetition);
 				if (competition!=null) {
 					TeamFavorite teamFavorite = new TeamFavorite();
 					teamFavorite.setName(cursor.getString(MuniSportsDbContract.FavoritesEntry.INDEX_ID_TEAM));
 					teamFavorite.setIdCompetitionServer(idCompetition);
-					teamFavorite.setCompetitionName(competition.getName());
-					teamFavorite.setCategoryTag(competition.getCategoryName());
-					teamFavorite.setSportTag(competition.getSportName());
+					teamFavorite.setCompetitionName(competition.name());
+					teamFavorite.setCategoryTag(competition.categoryName());
+					teamFavorite.setSportTag(competition.sportName());
 					favoritTeams.add(teamFavorite);
 				}
 			}

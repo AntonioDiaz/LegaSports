@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import java.util.List;
@@ -24,14 +24,14 @@ public class FavoritesCompetitionsAdapter extends RecyclerView.Adapter<Favorites
 	private Context context;
 	private ListItemClickListener listItemClickListener;
 
-	private List<Competition> competitionsFavorites;
+	private List<CompetitionEntity> competitionsFavorites;
 
 	public FavoritesCompetitionsAdapter(Context context, ListItemClickListener listItemClickListener) {
 		this.context = context;
 		this.listItemClickListener = listItemClickListener;
 	}
 
-	public void setCompetitionsFavorites(List<Competition> competitionsFavorites) {
+	public void setCompetitionsFavorites(List<CompetitionEntity> competitionsFavorites) {
 		this.competitionsFavorites = competitionsFavorites;
 		notifyDataSetChanged();
 	}
@@ -45,10 +45,10 @@ public class FavoritesCompetitionsAdapter extends RecyclerView.Adapter<Favorites
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		holder.tvTitle.setText(competitionsFavorites.get(position).getName());
-		holder.tvSubTitle01.setText(MuniSportsUtils.getStringResourceByName(context, competitionsFavorites.get(position).getSportName()));
-		holder.tvSubTitle02.setText(MuniSportsUtils.getStringResourceByName(context,competitionsFavorites.get(position).getCategoryName()));
-		holder.cvCompetitions.setTag(competitionsFavorites.get(position).getServerId());
+		holder.tvTitle.setText(competitionsFavorites.get(position).name());
+		holder.tvSubTitle01.setText(MuniSportsUtils.getStringResourceByName(context, competitionsFavorites.get(position).sportName()));
+		holder.tvSubTitle02.setText(MuniSportsUtils.getStringResourceByName(context,competitionsFavorites.get(position).categoryName()));
+		holder.cvCompetitions.setTag(competitionsFavorites.get(position).serverId());
 	}
 
 	@Override

@@ -30,7 +30,8 @@ import butterknife.ButterKnife;
 
 public class CalendarFragment extends Fragment {
 
-	private static final String TAG = CalendarAdapter.class.getSimpleName();
+	//private static final String TAG = CalendarAdapter.class.getSimpleName();
+
 	@BindView(R.id.elv_jornadas) NonScrollExpandableListView nonScrollExpandableListView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
 
@@ -66,10 +67,12 @@ public class CalendarFragment extends Fragment {
 		ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 		int type = ExpandableListView.getPackedPositionType(info.packedPosition);
 		if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+			menu.setHeaderTitle(getString(R.string.menu_match_title));
 			MenuInflater menuInflater = getActivity().getMenuInflater();
 			menuInflater.inflate(R.menu.menu_match, menu);
 		}
 	}
+
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -87,6 +90,12 @@ public class CalendarFragment extends Fragment {
 				MenuActionsUtils.shareMatchDetails(this.getActivity(), match, CompetitionActivity.mCompetition);
 				break;
 			case R.id.action_notify_error:
+				//Match zipotegato = Match.builder().setName("zipotegato").build();
+				//String name = zipotegato.name();
+				//Match.Builder zipotegago = Match.builder().setName("zipotegago").setYear(2109).build();
+
+				SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(match, CompetitionActivity.mCompetition);
+				dialog.show(getFragmentManager(), "dialog");
 				break;
 		}
 		return super.onContextItemSelected(item);

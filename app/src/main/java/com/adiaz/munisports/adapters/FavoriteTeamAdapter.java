@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
+import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import butterknife.BindView;
@@ -46,8 +47,8 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 		String jornadaStr = context.getString(R.string.jornada_header, position + 1);
 		Match match = team.getMatches()[position];
 		if (match == null
-				|| match.getTeamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)
-				|| match.getTeamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+				|| match.teamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)
+				|| match.teamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 			holder.tvJornadaEmpty.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.GONE);
 			holder.clMatchEmpty.setVisibility(View.VISIBLE);
@@ -60,12 +61,12 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvJornada.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.VISIBLE);
 			holder.clMatchEmpty.setVisibility(View.GONE);
-			holder.tvDate.setText(match.obtainDateStr(context));
-			holder.tvPlace.setText(match.obtainCenterNameFull(context));
-			holder.tvTeamLocal.setText(match.getTeamLocal());
-			holder.tvTeamLocalScore.setText(match.getScoreLocal().toString());
-			holder.tvTeamVisitor.setText(match.getTeamVisitor());
-			holder.tvTeamVisitorScore.setText(match.getScoreVisitor().toString());
+			holder.tvDate.setText(MatchUtilities.obtainDateStr(context, match));
+			holder.tvPlace.setText(MatchUtilities.obtainCenterNameFull(context, match));
+			holder.tvTeamLocal.setText(match.teamLocal());
+			holder.tvTeamLocalScore.setText(match.scoreLocal().toString());
+			holder.tvTeamVisitor.setText(match.teamVisitor());
+			holder.tvTeamVisitorScore.setText(match.scoreVisitor().toString());
 			holder.ivLocation.setTag(match);
 			holder.ivCalendar.setTag(match);
 			holder.ivShare.setTag(match);

@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Match;
 
@@ -31,7 +31,7 @@ public class MenuActionsUtils {
 	 * @param match
 	 */
 	public static void showMatchLocation(Context context, Match match) {
-		Court court = MuniSportsCourts.obteinTownCourt(context, match.getIdSportCenter());
+		Court court = MuniSportsCourts.obteinTownCourt(context, match.idSportCenter());
 		if (court==null) {
 			String noDateStr = context.getString(R.string.no_match_address);
 			Toast.makeText(context, noDateStr, Toast.LENGTH_SHORT).show();
@@ -47,20 +47,20 @@ public class MenuActionsUtils {
 		}
 	}
 
-	public static void shareMatchDetails(Activity activity, Match match, Competition competition) {
-		String localTeam = match.getTeamLocal();
-		String visitorTeam = match.getTeamVisitor();
-		String sportCenter = match.obtainCenterName(activity);
-		String competitionName = competition.getName();
-		String sport = MuniSportsUtils.getStringResourceByName(activity, competition.getSportName());
-		String category = MuniSportsUtils.getStringResourceByName(activity, competition.getCategoryName());
-		String dateStr = match.obtainDateStr(activity);
+	public static void shareMatchDetails(Activity activity, Match match, CompetitionEntity competition) {
+		String localTeam = match.teamLocal();
+		String visitorTeam = match.teamVisitor();
+		String sportCenter = MatchUtilities.obtainCenterName(activity, match);
+		String competitionName = competition.name();
+		String sport = MuniSportsUtils.getStringResourceByName(activity, competition.sportName());
+		String category = MuniSportsUtils.getStringResourceByName(activity, competition.categoryName());
+		String dateStr = MatchUtilities.obtainDateStr(activity, match);
 		SharedPreferences preferences = getDefaultSharedPreferences(activity);
 		String town = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		String mimeType = "text/plain";
-		String titleStr = activity.getString(R.string.calendar_title, competition.getName(), String.valueOf(match.getWeek()), localTeam, visitorTeam);
+		String titleStr = activity.getString(R.string.calendar_title, competition.name(), String.valueOf(match.week()), localTeam, visitorTeam);
 		String subject = activity.getString(R.string.match_description,
-				competitionName, sport, category, String.valueOf(match.getWeek()), localTeam, visitorTeam, dateStr, sportCenter, town);
+				competitionName, sport, category, String.valueOf(match.week()), localTeam, visitorTeam, dateStr, sportCenter, town);
 		ShareCompat.IntentBuilder
 				.from(activity)
 				.setChooserTitle(titleStr)
@@ -70,27 +70,27 @@ public class MenuActionsUtils {
 				.startChooser();
 	}
 
-	public static void addMatchEvent(Context context, Match match, Competition competition) {
-		if (match.getDate()==null || match.getDate().getTime()==0) {
+	public static void addMatchEvent(Context context, Match match, CompetitionEntity competition) {
+		if (match.date()==null || match.date().getTime()==0) {
 			String noDateStr = context.getString(R.string.no_match_event);
 			Toast.makeText(context, noDateStr, Toast.LENGTH_SHORT).show();
 		} else {
-			String localTeam = match.getTeamLocal();
-			String visitorTeam = match.getTeamVisitor();
-			String sportCenter = match.obtainCenterName(context);
-			String sport = MuniSportsUtils.getStringResourceByName(context, competition.getSportName());
-			String category = MuniSportsUtils.getStringResourceByName(context, competition.getCategoryName());
+			String localTeam = match.teamLocal();
+			String visitorTeam = match.teamVisitor();
+			String sportCenter = MatchUtilities.obtainCenterName(context, match);
+			String sport = MuniSportsUtils.getStringResourceByName(context, competition.sportName());
+			String category = MuniSportsUtils.getStringResourceByName(context, competition.categoryName());
 			SharedPreferences preferences = getDefaultSharedPreferences(context);
 			String town = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 			Calendar beginTime = Calendar.getInstance();
-			beginTime.setTime(match.getDate());
+			beginTime.setTime(match.date());
 			Calendar endTime = Calendar.getInstance();
-			endTime.setTime(match.getDate());
+			endTime.setTime(match.date());
 			endTime.add(Calendar.HOUR, 2);
-			String strDate = match.obtainDateStr(context);
-			String titleStr = context.getString(R.string.calendar_title, competition.getName(), String.valueOf(match.getWeek()), localTeam, visitorTeam);
+			String strDate = MatchUtilities.obtainDateStr(context, match);
+			String titleStr = context.getString(R.string.calendar_title, competition.name(), String.valueOf(match.week()), localTeam, visitorTeam);
 			String descMatch = context.getString(R.string.match_description,
-					competition.getName(), sport, category, String.valueOf(match.getWeek()), localTeam, visitorTeam, strDate, sportCenter, town);
+					competition.name(), sport, category, String.valueOf(match.week()), localTeam, visitorTeam, strDate, sportCenter, town);
 			Intent intent = new Intent(Intent.ACTION_INSERT)
 					.setData(CalendarContract.Events.CONTENT_URI)
 					.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())

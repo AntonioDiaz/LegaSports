@@ -25,10 +25,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Classification;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
@@ -91,7 +92,7 @@ public class CompetitionActivity extends AppCompatActivity
 	private boolean isHideToolbarView = false;
 
 	public static Long mIdCompetition;
-	public static Competition mCompetition;
+	public static CompetitionEntity mCompetition;
 	public static List<Team> mTeams = new ArrayList<>();
 	public static List<List<Match>> mWeeks = new ArrayList<>();
 	public static List<Classification> mClassificationList = new ArrayList<>();
@@ -107,9 +108,9 @@ public class CompetitionActivity extends AppCompatActivity
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 1L);
 		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
-		String sportTag = mCompetition.getSportName();
-		String categoryTag = mCompetition.getCategoryName();
-		String competitionName = mCompetition.getName();
+		String sportTag = mCompetition.sportName();
+		String categoryTag = mCompetition.categoryName();
+		String competitionName = mCompetition.name();
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		collapsingToolbar.setTitle(" ");
@@ -154,7 +155,6 @@ public class CompetitionActivity extends AppCompatActivity
 		getMenuInflater().inflate(R.menu.menu_competition, menu);
 		for (int i = 0; i < menu.size(); i++) {
 			if (menu.getItem(i).getItemId() == R.id.action_favorites) {
-				String key = MuniSportsConstants.KEY_FAVORITES_COMPETITIONS;
 				if (FavoritesUtils.isFavoriteCompetition(this, mIdCompetition)) {
 					AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 					Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
@@ -333,5 +333,10 @@ public class CompetitionActivity extends AppCompatActivity
 		}
 		return list;
 	}
+
+	public void sendNotification(Long idMatch) {
+		Toast.makeText(this, "hola " + idMatch, Toast.LENGTH_SHORT).show();
+	}
+
 }
 

@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
-import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.CompetitionEntity;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
@@ -63,7 +63,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 
 	private String mTeamName;
 	private Long mIdCompetition;
-	private Competition mCompetition;
+	private CompetitionEntity mCompetition;
 	private boolean isHideToolbarView = false;
 
 	@Override
@@ -76,9 +76,9 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		mTeamName = getIntent().getStringExtra(MuniSportsConstants.INTENT_TEAM_NAME);
 		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 0L);
 		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
-		String subTitle = mCompetition.getName();
-		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.getSportName());
-		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.getCategoryName());
+		String subTitle = mCompetition.name();
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.sportName());
+		subTitle += " - " + MuniSportsUtils.getStringResourceByName(this, mCompetition.categoryName());
 		collapsingToolbar.setTitle(" ");
 
 		toolbarHeaderView.bindTo(mTeamName, subTitle, 0);
@@ -207,7 +207,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 			String teamVisitor = cursorMatches.getString(MatchesEntry.INDEX_TEAM_VISITOR);
 			if (teamName.equals(teamLocal) || teamName.equals(teamVisitor)) {
 				Match match = MatchesEntry.initEntity(cursorMatches);
-				team.add(match.getWeek() - 1, match);
+				team.add(match.week() - 1, match);
 			}
 		}
 		cursorMatches.close();

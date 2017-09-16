@@ -68,19 +68,19 @@ public class TeamsAdapter extends BaseExpandableListAdapter {
 		Match match = getChild(groupPosition, childPosition);
 		if (match != null) {
 			/*Check if the time have rest this week. */
-			if (match.getTeamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)
-					|| match.getTeamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
+			if (match.teamLocal().equals(MuniSportsConstants.UNDEFINDED_FIELD)
+					|| match.teamVisitor().equals(MuniSportsConstants.UNDEFINDED_FIELD)) {
 				llMatchInfo.setVisibility(View.GONE);
 				tvUndefined.setVisibility(View.VISIBLE);
 				tvUndefined.setText(mContext.getString(R.string.rest_team));
 			} else {
 				llMatchInfo.setVisibility(View.VISIBLE);
 				tvUndefined.setVisibility(View.GONE);
-				String localStr = match.getTeamLocal();
-				String visitorStr = match.getTeamVisitor();
+				String localStr = match.teamLocal();
+				String visitorStr = match.teamVisitor();
 
-				String localScoreStr = match.getScoreLocal() == null ? "_" : match.getScoreLocal().toString();
-				String visitorScoreStr = match.getTeamVisitor() == null ? "_" : match.getScoreVisitor().toString();
+				String localScoreStr = match.scoreLocal() == null ? "_" : match.scoreLocal().toString();
+				String visitorScoreStr = match.scoreVisitor() == null ? "_" : match.scoreVisitor().toString();
 				tvLocal.setText(localStr);
 				tvLocalScore.setText(localScoreStr);
 				tvVisitor.setText(visitorStr);
