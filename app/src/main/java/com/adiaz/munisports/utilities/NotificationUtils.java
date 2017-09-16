@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.activities.FavoriteTeamActivity;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 
 /**
  * Created by toni on 31/08/2017.
@@ -25,7 +25,7 @@ public class NotificationUtils {
 	private static final int UPDATED_COMPETITION_PENDING_INTENT_ID = 3417;
 	private static final int UPDATED_TEAM_PENDING_INTENT_ID = 3418;
 
-	public static void remindUpdatedCompetition(Context context, CompetitionEntity competition) {
+	public static void remindUpdatedCompetition(Context context, Competition competition) {
 		String category = MuniSportsUtils.getStringResourceByName(context, competition.categoryName());
 		String sport = MuniSportsUtils.getStringResourceByName(context, competition.sportName());
 		String notificationTitle = context.getString(R.string.update_competition_notification_title, competition.name());
@@ -46,7 +46,7 @@ public class NotificationUtils {
 		notificationManager.notify(UPDATED_COMPETITION_NOTIFICATION_ID, notificationBuilder.build());
 	}
 
-	public static PendingIntent contentIntentCompetition(Context context, CompetitionEntity competition) {
+	public static PendingIntent contentIntentCompetition(Context context, Competition competition) {
 		Intent intent = new Intent(context, CompetitionActivity.class);
 		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.serverId());
 		PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -54,7 +54,7 @@ public class NotificationUtils {
 		return pendingIntent;
 	}
 
-	public static PendingIntent contentIntentTeam(Context context, CompetitionEntity competition, String teamName) {
+	public static PendingIntent contentIntentTeam(Context context, Competition competition, String teamName) {
 		Intent intent = new Intent(context, FavoriteTeamActivity.class);
 		intent.putExtra(MuniSportsConstants.INTENT_TEAM_NAME, teamName);
 		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.serverId());
@@ -63,7 +63,7 @@ public class NotificationUtils {
 		return pendingIntent;
 	}
 
-	public static void remindUpdatedTeam(Context context, CompetitionEntity competition, String teamName) {
+	public static void remindUpdatedTeam(Context context, Competition competition, String teamName) {
 		String category = MuniSportsUtils.getStringResourceByName(context, competition.categoryName());
 		String sport = MuniSportsUtils.getStringResourceByName(context, competition.sportName());
 		String notificationTitle = context.getString(R.string.update_team_notification_title, teamName);

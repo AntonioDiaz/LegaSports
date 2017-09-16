@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Match;
 
@@ -47,7 +47,7 @@ public class MenuActionsUtils {
 		}
 	}
 
-	public static void shareMatchDetails(Activity activity, Match match, CompetitionEntity competition) {
+	public static void shareMatchDetails(Activity activity, Match match, Competition competition) {
 		String localTeam = match.teamLocal();
 		String visitorTeam = match.teamVisitor();
 		String sportCenter = MatchUtilities.obtainCenterName(activity, match);
@@ -70,7 +70,7 @@ public class MenuActionsUtils {
 				.startChooser();
 	}
 
-	public static void addMatchEvent(Context context, Match match, CompetitionEntity competition) {
+	public static void addMatchEvent(Context context, Match match, Competition competition) {
 		if (match.date()==null || match.date().getTime()==0) {
 			String noDateStr = context.getString(R.string.no_match_event);
 			Toast.makeText(context, noDateStr, Toast.LENGTH_SHORT).show();

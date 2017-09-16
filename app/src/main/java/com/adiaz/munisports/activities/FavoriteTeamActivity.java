@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.FavoriteTeamAdapter;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
@@ -63,7 +63,7 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 
 	private String mTeamName;
 	private Long mIdCompetition;
-	private CompetitionEntity mCompetition;
+	private Competition mCompetition;
 	private boolean isHideToolbarView = false;
 
 	@Override

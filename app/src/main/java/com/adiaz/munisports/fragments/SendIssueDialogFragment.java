@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
@@ -36,7 +36,7 @@ public class SendIssueDialogFragment extends DialogFragment {
 	TextView tvMatch;
 
 
-	static SendIssueDialogFragment newInstance(Match match, CompetitionEntity competition) {
+	static SendIssueDialogFragment newInstance(Match match, Competition competition) {
 		SendIssueDialogFragment f = new SendIssueDialogFragment();
 		Bundle args = new Bundle();
 		args.putParcelable("match", match);
@@ -49,7 +49,7 @@ public class SendIssueDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final Match match = getArguments().getParcelable("match");
-		final CompetitionEntity competition = getArguments().getParcelable("competition");
+		final Competition competition = getArguments().getParcelable("competition");
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater layoutInflater = getActivity().getLayoutInflater();

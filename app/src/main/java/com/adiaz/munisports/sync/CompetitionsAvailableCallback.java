@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.competition.TeamsDeref;
@@ -67,11 +67,11 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 	 */
 	private void loadCompetitions(List<CompetitionRestEntity> competitionsList) {
 		ContentResolver contentResolver = mContext.getContentResolver();
-		Map<Long, CompetitionEntity> mapCompetitions = new HashMap<>();
+		Map<Long, Competition> mapCompetitions = new HashMap<>();
 		Cursor cursor = contentResolver.query(CompetitionsEntry.CONTENT_URI, CompetitionsEntry.PROJECTION, null, null, null);
 		try {
 			while (cursor.moveToNext()) {
-				CompetitionEntity competition = CompetitionsEntry.initEntity(cursor);
+				Competition competition = CompetitionsEntry.initEntity(cursor);
 				mapCompetitions.put(competition.serverId(), competition);
 			}
 		} finally {
@@ -99,7 +99,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			for (TeamsDeref teamsDeref : teamsAffected) {
 				Favorite favorite = FavoritesUtils.queryFavoriteTeam(mContext, idCompetition, teamsDeref.getName());
 				if (favorite!=null && favorite.getLastNotification()<competitionsEntity.getLastPublished()) {
-					CompetitionEntity competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), idCompetition);
+					Competition competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), idCompetition);
 					if (competition!=null) {
 						showNotificationTeam(competition, favorite);
 					}
@@ -113,7 +113,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		contentResolver.bulkInsert(CompetitionsEntry.CONTENT_URI, competitions);
 		List<Favorite> competitionsFavorites = FavoritesUtils.queryFavoritesCompetitions(mContext);
 		for (Favorite fav : competitionsFavorites) {
-			CompetitionEntity competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), fav.getIdCompetition());
+			Competition competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), fav.getIdCompetition());
 			if (fav.getLastNotification() < competition.lastUpdateApp()) {
 				showNotificationCompetition(competition, fav);
 			}
@@ -124,14 +124,14 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		editor.commit();
 	}
 
-	private void showNotificationTeam(CompetitionEntity competition, Favorite favorite) {
+	private void showNotificationTeam(Competition competition, Favorite favorite) {
 		if (MuniSportsUtils.isShowNotification(mContext)) {
 			NotificationUtils.remindUpdatedTeam(mContext, competition, favorite.getTeamName());
 		}
 		FavoritesUtils.updateLastNotification(mContext.getContentResolver(), favorite.getId(), competition.lastUpdateServer());
 	}
 
-	private void showNotificationCompetition(CompetitionEntity competition, Favorite favorite) {
+	private void showNotificationCompetition(Competition competition, Favorite favorite) {
 		if (MuniSportsUtils.isShowNotification(mContext)) {
 			NotificationUtils.remindUpdatedCompetition(mContext, competition);
 		}

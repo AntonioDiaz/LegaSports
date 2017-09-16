@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 
@@ -65,8 +65,8 @@ public class MuniSportsDbContract {
 		public static final int INDEX_LAST_UPDATE_SERVER = 4;
 		public static final int INDEX_LAST_UPDATE_APP = 5;
 
-		public static CompetitionEntity initEntity(Cursor c) {
-			CompetitionEntity competitionEntity = CompetitionEntity.builder()
+		public static Competition initEntity(Cursor c) {
+			Competition competition = Competition.builder()
 					.setServerId(c.getLong(CompetitionsEntry.INDEX_ID_SERVER))
 					.setName(c.getString(CompetitionsEntry.INDEX_NAME))
 					.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT))
@@ -74,7 +74,7 @@ public class MuniSportsDbContract {
 					.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER))
 					.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP))
 					.build();
-			return competitionEntity;
+			return competition;
 		}
 
 	}

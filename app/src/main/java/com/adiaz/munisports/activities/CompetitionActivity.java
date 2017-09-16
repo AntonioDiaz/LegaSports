@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Classification;
-import com.adiaz.munisports.entities.CompetitionEntity;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Court;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
@@ -92,7 +92,7 @@ public class CompetitionActivity extends AppCompatActivity
 	private boolean isHideToolbarView = false;
 
 	public static Long mIdCompetition;
-	public static CompetitionEntity mCompetition;
+	public static Competition mCompetition;
 	public static List<Team> mTeams = new ArrayList<>();
 	public static List<List<Match>> mWeeks = new ArrayList<>();
 	public static List<Classification> mClassificationList = new ArrayList<>();

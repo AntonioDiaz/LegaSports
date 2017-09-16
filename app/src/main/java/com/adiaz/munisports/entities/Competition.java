@@ -9,10 +9,10 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
-public abstract class CompetitionEntity implements Parcelable {
+public abstract class Competition implements Parcelable {
 
 	public static Builder builder() {
-		return new AutoValue_CompetitionEntity.Builder();
+		return new AutoValue_Competition.Builder();
 	}
 
 	@AutoValue.Builder
@@ -23,7 +23,7 @@ public abstract class CompetitionEntity implements Parcelable {
 		public abstract Builder setServerId(Long value);
 		public abstract Builder setLastUpdateServer(Long value);
 		public abstract Builder setLastUpdateApp(Long value);
-		public abstract CompetitionEntity build();
+		public abstract Competition build();
 	}
 
 	public abstract String name();
