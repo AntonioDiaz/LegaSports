@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
-import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import java.util.List;
@@ -74,8 +73,8 @@ public class CalendarAdapter extends BaseExpandableListAdapter {
 			}
 			tvVisitorTeam.setText(teamVisitor);
 		}
-		date.setText(MatchUtilities.obtainDateStr(mContext, match));
-		place.setText(MatchUtilities.obtainCenterNameFull(mContext, match));
+		date.setText(match.obtainDateStr(mContext));
+		place.setText(match.obtainCenterNameFull(mContext));
 		String strResult = "";
 		switch (match.state()) {
 			case MuniSportsConstants.STATE_PENDING:

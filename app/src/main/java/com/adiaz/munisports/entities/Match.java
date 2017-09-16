@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.utilities.DateTypeAdapter;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.MuniSportsCourts;
 import com.google.auto.value.AutoValue;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
@@ -57,6 +58,39 @@ public abstract class Match implements Parcelable {
 			dateStr = dateFormat.format(this.date());
 		}
 		return dateStr;
+	}
+
+	public String obtainCenterName(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.idSportCenter());
+		String strName = context.getString(R.string.undefined_center);
+		if (court!=null) {
+			strName = court.getCenterName();
+		}
+		return strName;
+	}
+
+	public String obtainCenterNameFull(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.idSportCenter());
+		String strName = context.getString(R.string.undefined_court);
+		if (court!=null) {
+			strName = court.getCourtFullName();
+		}
+		return strName;
+	}
+
+	public String obtainCenterAddress(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.idSportCenter());
+		String strName = "";
+		if (court!=null) {
+			strName = court.getCenterAddress();
+		}
+		return strName;
+	}
+
+	public String obtainMatchDescription(Context context) {
+		String teamLocal = this.teamLocal() != null ? this.teamLocal() : "_";
+		String teamVisitor = this.teamVisitor() != null ? this.teamVisitor() : "_";
+		return context.getString(R.string.dialog_match_description, this.week().toString(), teamLocal, teamVisitor);
 	}
 
 }

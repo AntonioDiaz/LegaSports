@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
-import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 
 import butterknife.BindView;
@@ -61,8 +60,8 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvJornada.setText(jornadaStr);
 			holder.clMatchDetails.setVisibility(View.VISIBLE);
 			holder.clMatchEmpty.setVisibility(View.GONE);
-			holder.tvDate.setText(MatchUtilities.obtainDateStr(context, match));
-			holder.tvPlace.setText(MatchUtilities.obtainCenterNameFull(context, match));
+			holder.tvDate.setText(match.obtainDateStr(context));
+			holder.tvPlace.setText(match.obtainCenterNameFull(context));
 			holder.tvTeamLocal.setText(match.teamLocal());
 			holder.tvTeamLocalScore.setText(match.scoreLocal().toString());
 			holder.tvTeamVisitor.setText(match.teamVisitor());

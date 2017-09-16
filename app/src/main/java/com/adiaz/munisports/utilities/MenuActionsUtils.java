@@ -50,11 +50,11 @@ public class MenuActionsUtils {
 	public static void shareMatchDetails(Activity activity, Match match, Competition competition) {
 		String localTeam = match.teamLocal();
 		String visitorTeam = match.teamVisitor();
-		String sportCenter = MatchUtilities.obtainCenterName(activity, match);
+		String sportCenter = match.obtainCenterName(activity);
 		String competitionName = competition.name();
 		String sport = MuniSportsUtils.getStringResourceByName(activity, competition.sportName());
 		String category = MuniSportsUtils.getStringResourceByName(activity, competition.categoryName());
-		String dateStr = MatchUtilities.obtainDateStr(activity, match);
+		String dateStr = match.obtainDateStr(activity);
 		SharedPreferences preferences = getDefaultSharedPreferences(activity);
 		String town = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
 		String mimeType = "text/plain";
@@ -77,7 +77,7 @@ public class MenuActionsUtils {
 		} else {
 			String localTeam = match.teamLocal();
 			String visitorTeam = match.teamVisitor();
-			String sportCenter = MatchUtilities.obtainCenterName(context, match);
+			String sportCenter = match.obtainCenterName(context);
 			String sport = MuniSportsUtils.getStringResourceByName(context, competition.sportName());
 			String category = MuniSportsUtils.getStringResourceByName(context, competition.categoryName());
 			SharedPreferences preferences = getDefaultSharedPreferences(context);
@@ -87,7 +87,7 @@ public class MenuActionsUtils {
 			Calendar endTime = Calendar.getInstance();
 			endTime.setTime(match.date());
 			endTime.add(Calendar.HOUR, 2);
-			String strDate = MatchUtilities.obtainDateStr(context, match);
+			String strDate = match.obtainDateStr(context);
 			String titleStr = context.getString(R.string.calendar_title, competition.name(), String.valueOf(match.week()), localTeam, visitorTeam);
 			String descMatch = context.getString(R.string.match_description,
 					competition.name(), sport, category, String.valueOf(match.week()), localTeam, visitorTeam, strDate, sportCenter, town);

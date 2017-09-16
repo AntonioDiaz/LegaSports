@@ -14,7 +14,6 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.activities.CompetitionActivity;
 import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Match;
-import com.adiaz.munisports.utilities.MatchUtilities;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import butterknife.BindView;
@@ -59,7 +58,7 @@ public class SendIssueDialogFragment extends DialogFragment {
 		tvCompetition.setText(competition.name());
 		String strSport = MuniSportsUtils.getStringResourceByName(this.getActivity(), competition.sportName());
 		tvCategory.setText(strSport + " (" + competition.categoryName() + ")");
-		tvMatch.setText(MatchUtilities.obtainMatchDescription(this.getActivity(), match));
+		tvMatch.setText(match.obtainMatchDescription(this.getActivity()));
 		builder.setTitle(R.string.dialog_title_send_issue);
 		builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
