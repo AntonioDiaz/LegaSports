@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/*Get town from preferences .*/
+		getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 		String town = PreferencesUtils.queryPreferenceTown(this);
 		if (TextUtils.isEmpty(town)) {
 			setContentView(R.layout.activity_splash);
@@ -259,12 +261,14 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		Log.d(TAG, "onSharedPreferenceChanged: should update key " + key);
 		if (key.equals(MuniSportsConstants.KEY_LASTUPDATE) && sharedPreferences.contains(key)) {
 			updateLastUpdateMenuItem(this.mMenu);
 		}
 	}
 
 	private void updateLastUpdateMenuItem(Menu menu) {
+		Log.d(TAG, "updateLastUpdateMenuItem: " + menu);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		if (menu != null) {
 			String title;

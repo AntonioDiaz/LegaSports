@@ -10,13 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.adapters.CompetitionsAdapter;
 import com.adiaz.munisports.database.MuniSportsDbContract;
+import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 
@@ -80,8 +80,8 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 	public void onListItemClick(int clickedItemIndex) {
 		mCursor.moveToPosition(clickedItemIndex);
 		Intent intent = new Intent(this, CompetitionActivity.class);
-		Log.d(TAG, "onListItemClick: " + mCursor.getLong(CompetitionsEntry.INDEX_ID_SERVER));
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, mCursor.getLong(CompetitionsEntry.INDEX_ID_SERVER));
+		Competition competition = CompetitionsEntry.initEntity(mCursor);
+		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION, competition);
 		startActivity(intent);
 	}
 

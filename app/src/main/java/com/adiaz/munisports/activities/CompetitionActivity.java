@@ -104,8 +104,8 @@ public class CompetitionActivity extends AppCompatActivity
 		ButterKnife.bind(this);
 		String townSelect = PreferencesUtils.queryPreferenceTown(this);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
-		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 1L);
-		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
+		mCompetition = getIntent().getParcelableExtra(MuniSportsConstants.INTENT_COMPETITION);
+		mIdCompetition = mCompetition.serverId();
 		String sportTag = mCompetition.sportName();
 		String categoryTag = mCompetition.categoryName();
 		String competitionName = mCompetition.name();

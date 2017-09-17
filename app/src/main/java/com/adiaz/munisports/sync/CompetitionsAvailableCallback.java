@@ -122,6 +122,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putLong(MuniSportsConstants.KEY_LASTUPDATE, new Date().getTime());
 		editor.commit();
+		Log.d(TAG, "loadCompetitions: lastupdate updated...." + preferences.getLong(MuniSportsConstants.KEY_LASTUPDATE, -1));
 	}
 
 	private void showNotificationTeam(Competition competition, Favorite favorite) {

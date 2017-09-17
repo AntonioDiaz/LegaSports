@@ -23,6 +23,7 @@ public class MuniSportsConstants {
 	public static final String INTENT_SPORT_TAG = "intent_sport_tag";
 	public static final String INTENT_CATEGORY_TAG = "intent_category_tag";
 	public static final String INTENT_ID_COMPETITION_SERVER = "extra_competition_chosen";
+	public static final String INTENT_COMPETITION = "intent_competition";
 	public static final String INTENT_COMPETITION_NAME = "intent_competition_name";
 	public static final String BUNDLE_ID_COMPETITION_SERVER = "bundle_id_competition_server";
 	public static final String INTENT_TEAM_NAME = "intent_team_name";

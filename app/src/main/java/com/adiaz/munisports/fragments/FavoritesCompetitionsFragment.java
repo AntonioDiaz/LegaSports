@@ -67,10 +67,7 @@ public class FavoritesCompetitionsFragment extends Fragment implements Favorites
 	public void onListItemClick(int clickedItemIndex) {
 		Intent intent = new Intent(getActivity(), CompetitionActivity.class);
 		Competition competition = FavoritesActivity.competitionsFavorites.get(clickedItemIndex);
-		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION_NAME, competition.name());
-		intent.putExtra(MuniSportsConstants.INTENT_SPORT_TAG, competition.sportName());
-		intent.putExtra(MuniSportsConstants.INTENT_CATEGORY_TAG, competition.categoryName());
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.serverId());
+		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION, competition);
 		startActivity(intent);
 	}
 }
