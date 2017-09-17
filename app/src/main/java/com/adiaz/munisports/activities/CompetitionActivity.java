@@ -2,7 +2,6 @@ package com.adiaz.munisports.activities;
 
 
 import android.content.ContentResolver;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -43,6 +42,7 @@ import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
+import com.adiaz.munisports.utilities.PreferencesUtils;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
@@ -55,7 +55,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
 import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
@@ -103,8 +102,7 @@ public class CompetitionActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_competition);
 		ButterKnife.bind(this);
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+		String townSelect = PreferencesUtils.queryPreferenceTown(this);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 		mIdCompetition = getIntent().getLongExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, 1L);
 		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);

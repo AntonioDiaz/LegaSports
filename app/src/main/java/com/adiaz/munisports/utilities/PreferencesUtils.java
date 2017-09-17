@@ -27,4 +27,18 @@ public class PreferencesUtils {
 		}
 		return clientId;
 	}
+
+	public static String queryPreferenceTown(Context context) {
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(context);
+		return sharedPreferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+	}
+
+	public static Long queryPreferenceTownId(Context context) {
+		Long idTown = null;
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(context);
+		if (sharedPreferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
+			idTown = sharedPreferences.getLong(MuniSportsConstants.KEY_TOWN_ID, 0L);
+		}
+		return idTown;
+	}
 }

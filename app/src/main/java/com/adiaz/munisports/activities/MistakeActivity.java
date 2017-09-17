@@ -1,6 +1,5 @@
 package com.adiaz.munisports.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adiaz.munisports.R;
-import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
+import com.adiaz.munisports.utilities.PreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * Created by toni on 06/09/2017.
@@ -49,8 +46,7 @@ public class MistakeActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
+		String townSelect = PreferencesUtils.queryPreferenceTown(this);
 		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 
 		ArrayAdapter<String> adapterSports = new ArrayAdapter<String>(this, R.layout.spinner_item, MuniSportsUtils.sportsList(this));

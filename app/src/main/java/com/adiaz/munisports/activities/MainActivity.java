@@ -10,7 +10,7 @@ import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,7 @@ import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
+import com.adiaz.munisports.utilities.PreferencesUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -88,9 +89,8 @@ public class MainActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/*Get town from preferences .*/
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		preferences.registerOnSharedPreferenceChangeListener(this);
-		if (!preferences.contains(MuniSportsConstants.KEY_TOWN_NAME)) {
+		String town = PreferencesUtils.queryPreferenceTown(this);
+		if (TextUtils.isEmpty(town)) {
 			setContentView(R.layout.activity_splash);
 			ButterKnife.bind(this);
 			if (NetworkUtilities.isNetworkAvailable(this)) {
@@ -112,9 +112,8 @@ public class MainActivity extends AppCompatActivity
 			setSupportActionBar(toolbar);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-			String townSelect = preferences.getString(MuniSportsConstants.KEY_TOWN_NAME, null);
-			tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
-			if (!preferences.contains(MuniSportsConstants.KEY_LASTUPDATE)) {
+			tvTitle.setText(town + " - " + getString(R.string.app_name));
+			if (!getDefaultSharedPreferences(this).contains(MuniSportsConstants.KEY_LASTUPDATE)) {
 				if (NetworkUtilities.isNetworkAvailable(this)) {
 					updateCompetitions();
 				} else {
@@ -129,8 +128,7 @@ public class MainActivity extends AppCompatActivity
 
 	private void updateCompetitions() {
 		startLoadingCompetitions();
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		Long idTownSelect = preferences.getLong(MuniSportsConstants.KEY_TOWN_ID, -1L);
+		Long idTownSelect = PreferencesUtils.queryPreferenceTownId(this);
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(MuniSportsConstants.BASE_URL)
 				.addConverterFactory(GsonConverterFactory.create())
@@ -222,12 +220,8 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		Log.d(TAG, "onResume:  " + preferences.contains(MuniSportsConstants.KEY_TOWN_ID));
-		if (preferences.contains(MuniSportsConstants.KEY_TOWN_ID)) {
-			if (NetworkUtilities.isNetworkAvailable(this)) {
-				MuniSportsSyncUtils.initialize(this);
-			}
+		if (PreferencesUtils.queryPreferenceTownId(this)!=null && NetworkUtilities.isNetworkAvailable(this)) {
+			MuniSportsSyncUtils.initialize(this);
 		}
 	}
 
