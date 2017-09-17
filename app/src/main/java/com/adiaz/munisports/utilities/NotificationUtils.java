@@ -48,7 +48,7 @@ public class NotificationUtils {
 
 	public static PendingIntent contentIntentCompetition(Context context, Competition competition) {
 		Intent intent = new Intent(context, CompetitionActivity.class);
-		intent.putExtra(MuniSportsConstants.INTENT_ID_COMPETITION_SERVER, competition.serverId());
+		intent.putExtra(MuniSportsConstants.INTENT_COMPETITION, competition);
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				context, UPDATED_COMPETITION_PENDING_INTENT_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		return pendingIntent;
