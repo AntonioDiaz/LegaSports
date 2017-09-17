@@ -1,14 +1,17 @@
 package com.adiaz.munisports.sync.retrofit;
 
+import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
+import com.adiaz.munisports.sync.retrofit.entities.issue.Issue;
 import com.adiaz.munisports.sync.retrofit.entities.match.MatchRestEntity;
 import com.adiaz.munisports.sync.retrofit.entities.town.TownRestEntity;
-import com.adiaz.munisports.sync.retrofit.entities.competition.CompetitionRestEntity;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -33,4 +36,6 @@ public interface MuniSportsRestApi {
 	@GET("/server/competitiondetails/{idCompetition}")
 	Call<CompetitionDetails> competitionDetailsQuery(@Path("idCompetition")Long idCompetition);
 
+	@POST ("/server/issues")
+	Call<Long> addIssue(@Body Issue issue);
 }

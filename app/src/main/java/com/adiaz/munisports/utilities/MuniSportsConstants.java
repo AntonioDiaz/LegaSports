@@ -15,7 +15,7 @@ public class MuniSportsConstants {
 	public static final String TAB = "    ";
 	public static final String DEFAULT_SPORT = "default sport";
 
-	public static final String BASE_URL = "http://munisports-web.appspot.com/";
+	public static final String BASE_URL = "https://munisports-web.appspot.com/";
 
 	//	public static final String EXTRA_COMPETITION_ID_SERVER = "extra_competition_id_server";
 
@@ -30,15 +30,16 @@ public class MuniSportsConstants {
 	public static final String KEY_TOWN_ID = "KEY_TOWN_ID";
 	public static final String KEY_LASTUPDATE = "KEY_LASTUPDATE";
 	public static final String KEY_FAVORITES_TEAMS = "KEY_FAVORITES_TEAMS";
+	public static final String KEY_UUID = "KEY_UUID";
+
 	public static final String KEY_FAVORITES_COMPETITIONS = "KEY_FAVORITES_COMPETITIONS";
 
 	public static final String UNDEFINDED_FIELD = " - ";
-
 	public static final Integer MINUTES_NECESSARY_TO_UPDATE = 30;
-	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(MINUTES_NECESSARY_TO_UPDATE);
 
+	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(MINUTES_NECESSARY_TO_UPDATE);
 	public static final int STATE_PENDING = 0;
 	public static final int STATE_PLAYED = 1;
-	public static final int STATE_CANCELED = 2;
 
+	public static final int STATE_CANCELED = 2;
 }
