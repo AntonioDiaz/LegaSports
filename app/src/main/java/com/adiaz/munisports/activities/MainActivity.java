@@ -189,11 +189,7 @@ public class MainActivity extends AppCompatActivity
 				finish();
 				startActivity(getIntent());
 				break;
-			case R.id.action_mistake:
-				Intent intentMistake = new Intent(this, MistakeActivity.class);
-				startActivity(intentMistake);
-				break;
-		}
+			}
 		return super.onOptionsItemSelected(item);
 	}
 
