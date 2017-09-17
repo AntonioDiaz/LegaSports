@@ -11,9 +11,18 @@ import android.view.View;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.database.MuniSportsDbContract;
+import com.adiaz.munisports.entities.Competition;
+import com.adiaz.munisports.entities.Match;
+import com.adiaz.munisports.sync.retrofit.AddIssueCallback;
+import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
+import com.adiaz.munisports.sync.retrofit.entities.issue.Issue;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences;
 /* Created by toni on 28/03/2017. */
@@ -91,6 +100,21 @@ public class MuniSportsUtils {
 		}
 		cursor.close();
 		return competitions;
+	}
+
+	public static void sendIssue(Context context, Competition competition, Match match, String description) {
+		Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl(MuniSportsConstants.BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+		MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
+		Issue issue = new Issue();
+		issue.setClientId(PreferencesUtils.queryUUID(context));
+		issue.setCompetitionId(competition.serverId());
+		issue.setMatchId(match.idMatch());
+		issue.setDescription(description);
+		Call<Long> call = muniSportsRestApi.addIssue(issue);
+		call.enqueue(new AddIssueCallback(context));
 	}
 }
 

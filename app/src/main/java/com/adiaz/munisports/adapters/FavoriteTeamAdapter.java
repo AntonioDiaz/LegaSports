@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.adiaz.munisports.R;
@@ -66,9 +66,10 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvTeamLocalScore.setText(match.scoreLocal().toString());
 			holder.tvTeamVisitor.setText(match.teamVisitor());
 			holder.tvTeamVisitorScore.setText(match.scoreVisitor().toString());
-			holder.ivLocation.setTag(match);
-			holder.ivCalendar.setTag(match);
-			holder.ivShare.setTag(match);
+			holder.ibLocation.setTag(match);
+			holder.ibCalendar.setTag(match);
+			holder.ibShare.setTag(match);
+			holder.ibIssue.setTag(match);
 		}
 
 	}
@@ -90,9 +91,10 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 		@BindView(R.id.tv_fav_team_visitor) TextView tvTeamVisitor;
 		@BindView(R.id.tv_fav_team_local_score) TextView tvTeamLocalScore;
 		@BindView(R.id.tv_fav_team_visitor_score) TextView tvTeamVisitorScore;
-		@BindView(R.id.iv_fav_team_visitor_calendar) ImageView ivCalendar;
-		@BindView(R.id.iv_fav_team_location) ImageView ivLocation;
-		@BindView(R.id.iv_fav_team_visitor_share) ImageView ivShare;
+		@BindView(R.id.ib_calendar) ImageButton ibCalendar;
+		@BindView(R.id.ib_location)	ImageButton ibLocation;
+		@BindView(R.id.ib_share) ImageButton ibShare;
+		@BindView(R.id.ib_issue) ImageButton ibIssue;
 		@BindView(R.id.tv_fav_team_undefined) TextView tvFavTeamUndefined;
 		public ViewHolder(View view) {
 			super(view);

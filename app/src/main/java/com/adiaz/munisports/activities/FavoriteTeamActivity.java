@@ -30,6 +30,7 @@ import com.adiaz.munisports.entities.Competition;
 import com.adiaz.munisports.entities.Favorite;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
+import com.adiaz.munisports.fragments.SendIssueDialogFragment;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.FavoritesUtils;
@@ -47,7 +48,11 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 
-public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
+public class FavoriteTeamActivity extends AppCompatActivity
+		implements
+				AppBarLayout.OnOffsetChangedListener,
+				CompetitionDetailsCallbak.OnFinishLoad,
+		SendIssueDialogFragment.OnSendIssue {
 
 	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
 	@BindView(R.id.toolbar) Toolbar toolbar;
@@ -176,6 +181,13 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 		MenuActionsUtils.shareMatchDetails(this, match, mCompetition);
 	}
 
+	public void sendIssue(View view) {
+		Match match = (Match)view.getTag();
+		SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(match, mCompetition);
+		dialog.show(getSupportFragmentManager(), "dialog");
+
+	}
+
 	@Override
 	public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
 		int maxScroll = appBarLayout.getTotalScrollRange();
@@ -222,5 +234,10 @@ public class FavoriteTeamActivity extends AppCompatActivity implements AppBarLay
 	private void showLoading() {
 		llProgressTeam.setVisibility(View.VISIBLE);
 		recyclerView.setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void doSendIssue(Competition competition, Match match, String description) {
+		MuniSportsUtils.sendIssue(this, competition, match, description);
 	}
 }

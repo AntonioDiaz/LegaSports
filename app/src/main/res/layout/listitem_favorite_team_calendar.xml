@@ -21,7 +21,7 @@
             android:id="@+id/cl_match_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginBottom="8dp"
             >
             <TextView
@@ -62,7 +62,7 @@
             android:id="@+id/cl_match_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <TextView
@@ -214,10 +214,10 @@
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_local_score"/>
 
             <ImageButton
-                android:id="@+id/iv_fav_team_location"
+                android:id="@+id/ib_issue"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                app:srcCompat="@drawable/ic_directions_black_24dp"
+                app:srcCompat="@drawable/ic_warning_black_24dp"
                 tools:layout_editor_absoluteY="105dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="8dp"
@@ -227,11 +227,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="?android:attr/selectableItemBackground"
-                android:onClick="showLocation"/>
+                android:onClick="sendIssue"/>
+
+            <ImageButton
+                android:id="@+id/ib_location"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:cropToPadding="false"
+                android:onClick="showLocation"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/ib_issue"
+                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
+                app:srcCompat="@drawable/ic_directions_black_24dp"
+                app:layout_constraintVertical_bias="0.0"/>
 
 
             <ImageButton
-                android:id="@+id/iv_fav_team_visitor_calendar"
+                android:id="@+id/ib_calendar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginBottom="8dp"
@@ -242,13 +259,13 @@
                 android:onClick="addEvent"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/iv_fav_team_location"
+                app:layout_constraintRight_toLeftOf="@+id/ib_location"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
                 app:srcCompat="@drawable/ic_event_black_24dp"
                 app:layout_constraintVertical_bias="0.0"/>
 
             <ImageButton
-                android:id="@+id/iv_fav_team_visitor_share"
+                android:id="@+id/ib_share"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginBottom="8dp"
@@ -259,10 +276,11 @@
                 android:onClick="shareMatchDetails"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/iv_fav_team_visitor_calendar"
+                app:layout_constraintRight_toLeftOf="@+id/ib_calendar"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
                 app:srcCompat="@drawable/ic_share_black_24dp"
                 app:layout_constraintVertical_bias="0.0"/>
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

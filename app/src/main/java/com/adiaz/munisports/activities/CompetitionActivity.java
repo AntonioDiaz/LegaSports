@@ -35,17 +35,14 @@ import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.fragments.CalendarFragment;
 import com.adiaz.munisports.fragments.ClassificationFragment;
+import com.adiaz.munisports.fragments.SendIssueDialogFragment;
 import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
-import com.adiaz.munisports.sync.retrofit.AddIssueCallback;
-import com.adiaz.munisports.sync.retrofit.MuniSportsRestApi;
-import com.adiaz.munisports.sync.retrofit.entities.issue.Issue;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.FavoritesUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
-import com.adiaz.munisports.utilities.PreferencesUtils;
 import com.adiaz.munisports.utilities.ViewPagerAdapter;
 import com.adiaz.munisports.utilities.harcoPro.HeaderView;
 
@@ -57,9 +54,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.adiaz.munisports.database.MuniSportsDbContract.ClassificationEntry;
@@ -67,7 +61,7 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.MatchesEntry;
 
 
 public class CompetitionActivity extends AppCompatActivity
-		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad {
+		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad, SendIssueDialogFragment.OnSendIssue {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 	public static final String BUNDLE_KEY_ID_COMPETITION = "BUNDLE_KEY_ID_COMPETITION";
@@ -339,20 +333,9 @@ public class CompetitionActivity extends AppCompatActivity
 		}
 		return list;
 	}
-
-	public void sendNotification(Competition competition, Match match, String description) {
-		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl(MuniSportsConstants.BASE_URL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.build();
-		MuniSportsRestApi muniSportsRestApi = retrofit.create(MuniSportsRestApi.class);
-		Issue issue = new Issue();
-		issue.setClientId(PreferencesUtils.queryUUID(this));
-		issue.setCompetitionId(competition.serverId());
-		issue.setMatchId(match.idMatch());
-		issue.setDescription(description);
-		Call<Long> call = muniSportsRestApi.addIssue(issue);
-		call.enqueue(new AddIssueCallback(this));
+	@Override
+	public void doSendIssue(Competition competition, Match match, String description) {
+		MuniSportsUtils.sendIssue(this, competition, match, description);
 	}
 }
 
