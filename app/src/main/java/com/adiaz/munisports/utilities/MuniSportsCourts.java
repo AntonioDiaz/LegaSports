@@ -17,6 +17,7 @@ import static com.adiaz.munisports.database.MuniSportsDbContract.SportCourtsEntr
 
 public class MuniSportsCourts {
 
+	private static final String TAG = MuniSportsCourts.class.getSimpleName();
 	private static Map<Long, Court> courts;
 
 	public static void refreshCourts(Context context) {

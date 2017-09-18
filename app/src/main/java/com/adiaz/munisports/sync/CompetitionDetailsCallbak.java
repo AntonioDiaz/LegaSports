@@ -12,9 +12,9 @@ import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Competitio
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.Match;
 import com.adiaz.munisports.sync.retrofit.entities.competitiondetails.SportCenterCourt;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.MuniSportsCourts;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +46,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 
 	@Override
 	public void onResponse(Call<CompetitionDetails> call, Response<CompetitionDetails> response) {
+		Log.d(TAG, "onResponse: response ..." + response.body().toString());
 		/* Update matches and classification.  */
 		List<Match> matches = response.body().getMatches();
 		loadMatches(matches, this.idCompetitionServer, this.mContext);
@@ -53,7 +54,6 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		loadClassification(classification, this.idCompetitionServer, this.mContext);
 		loadSportCourts(matches, this.mContext);
 		/* Updating local server update date. */
-		long timeInMillis = Calendar.getInstance().getTimeInMillis();
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, response.body().getLastPublished());
 		String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
@@ -102,6 +102,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		ContentValues[] cvArray = cvSportCourtsList.toArray(new ContentValues[cvSportCourtsList.size()]);
 		ContentResolver contentResolver = mContext.getContentResolver();
 		contentResolver.bulkInsert(MuniSportsDbContract.SportCourtsEntry.CONTENT_URI, cvArray);
+		MuniSportsCourts.refreshCourts(mContext);
 	}
 
 	private void loadMatches(List<Match> matchList, Long idCompetitionServer, Context mContext) {
