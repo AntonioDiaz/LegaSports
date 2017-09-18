@@ -4,10 +4,14 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.adiaz.munisports.R;
 import com.adiaz.munisports.database.MuniSportsDbContract;
@@ -115,6 +119,22 @@ public class MuniSportsUtils {
 		issue.setDescription(description);
 		Call<Long> call = muniSportsRestApi.addIssue(issue);
 		call.enqueue(new AddIssueCallback(context));
+	}
+
+	public static void disableImageButton(ImageButton imageButton) {
+		imageButton.setClickable(false);
+		imageButton.setEnabled(false);
+		Drawable drawableDisabled = MuniSportsUtils.convertDrawableToGrayScale(imageButton.getDrawable());
+		imageButton.setImageDrawable(drawableDisabled);
+	}
+
+	public static Drawable convertDrawableToGrayScale(Drawable drawable) {
+		if (drawable == null) {
+			return null;
+		}
+		Drawable res = drawable.mutate();
+		res.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+		return res;
 	}
 }
 

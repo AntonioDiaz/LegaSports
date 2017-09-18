@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 /* Created by toni on 21/03/2017. */
 
 public class CalendarFragment extends Fragment {
+	private static final String TAG = CalendarFragment.class.getSimpleName();
 
 	//private static final String TAG = CalendarAdapter.class.getSimpleName();
 
@@ -67,12 +68,14 @@ public class CalendarFragment extends Fragment {
 		ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 		int type = ExpandableListView.getPackedPositionType(info.packedPosition);
 		if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+			Match match	 = (Match)info.targetView.getTag();
 			menu.setHeaderTitle(getString(R.string.menu_match_title));
 			MenuInflater menuInflater = getActivity().getMenuInflater();
 			menuInflater.inflate(R.menu.menu_match, menu);
+			menu.findItem(R.id.action_view_map).setEnabled(match.isCourtDefinded(getContext()));
+			menu.findItem(R.id.action_add_calendar).setEnabled(match.isDateDefined());
 		}
 	}
-
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {

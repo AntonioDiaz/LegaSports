@@ -50,10 +50,18 @@ public abstract class Match implements Parcelable {
 	public abstract Integer state();
 	public abstract Long idSportCenter();
 
+	public boolean isDateDefined() {
+		return (this.date()!=null && this.date().getTime()!=0);
+	}
+
+	public boolean isCourtDefinded(Context context) {
+		Court court = MuniSportsCourts.obteinTownCourt(context, this.idSportCenter());
+		return court!=null;
+	}
 
 	public String obtainDateStr(Context context) {
 		String dateStr = context.getString(R.string.undefined_date);
-		if (this.date()!=null && this.date().getTime()!=0) {
+		if (this.isDateDefined()) {
 			DateFormat dateFormat = new SimpleDateFormat(MuniSportsConstants.DATE_FORMAT);
 			dateStr = dateFormat.format(this.date());
 		}

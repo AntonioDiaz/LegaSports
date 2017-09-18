@@ -15,6 +15,7 @@ import com.adiaz.munisports.R;
 import com.adiaz.munisports.entities.Match;
 import com.adiaz.munisports.entities.Team;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
+import com.adiaz.munisports.utilities.MuniSportsUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +71,12 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.ibCalendar.setTag(match);
 			holder.ibShare.setTag(match);
 			holder.ibIssue.setTag(match);
+			if (!match.isDateDefined()) {
+				MuniSportsUtils.disableImageButton(holder.ibCalendar);
+			}
+			if (!match.isCourtDefinded(context)) {
+				MuniSportsUtils.disableImageButton(holder.ibLocation);
+			}
 		}
 
 	}
