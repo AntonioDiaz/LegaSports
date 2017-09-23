@@ -53,12 +53,14 @@
             android:maxLines="1"
             android:paddingRight="8dp"
             android:textAlignment="textEnd"
-            style="@style/child_expandable_list"
+            style="@style/child_detail_expandable_list"
+            android:textStyle="bold"
             tools:text="BALOMPEDICA CF"/>
 
         <TextView
             android:id="@+id/tv_local_score"
-            style="@style/child_expandable_list"
+            style="@style/child_detail_expandable_list"
+            android:textStyle="bold"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -77,7 +79,8 @@
 
         <TextView
             android:id="@+id/tv_visitor_score"
-            style="@style/child_expandable_list"
+            style="@style/child_detail_expandable_list"
+            android:textStyle="bold"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -93,7 +96,8 @@
             android:lines="1"
             android:maxLines="1"
             android:paddingLeft="8dp"
-            style="@style/child_expandable_list"
+            style="@style/child_detail_expandable_list"
+            android:textStyle="bold"
             android:textAlignment="textStart"
             tools:text="ATLEICO DE MADRID"/>
     </LinearLayout>
