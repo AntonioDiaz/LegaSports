@@ -10,7 +10,11 @@
     android:paddingBottom="0dp"
     android:paddingLeft="@dimen/calendar_item_padding_left"
     android:paddingRight="@dimen/calendar_item_padding_right"
-    android:paddingTop="0dp">
+    android:paddingTop="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
+    android:onClick="openMenu">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

@@ -18,7 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ import com.adiaz.munisports.fragments.TeamsFragment;
 import com.adiaz.munisports.sync.CompetitionDetailsCallbak;
 import com.adiaz.munisports.utilities.CompetitionDbUtils;
 import com.adiaz.munisports.utilities.FavoritesUtils;
+import com.adiaz.munisports.utilities.MenuActionsUtils;
 import com.adiaz.munisports.utilities.MuniSportsConstants;
 import com.adiaz.munisports.utilities.MuniSportsUtils;
 import com.adiaz.munisports.utilities.NetworkUtilities;
@@ -96,6 +99,7 @@ public class CompetitionActivity extends AppCompatActivity
 	public static List<List<Match>> mWeeks = new ArrayList<>();
 	public static List<Classification> mClassificationList = new ArrayList<>();
 	private Map<Long, Court> courtsMap = new HashMap<>();
+	private Match mMatch;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -334,6 +338,51 @@ public class CompetitionActivity extends AppCompatActivity
 	@Override
 	public void doSendIssue(Competition competition, Match match, String description) {
 		MuniSportsUtils.sendIssue(this, competition, match, description);
+	}
+
+
+	public void openMenu(View view) {
+		registerForContextMenu(view);
+		openContextMenu(view);
+	}
+
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		Match match = (Match)v.getTag();
+		if (match !=null) {
+			mMatch = match;
+			menu.setHeaderTitle(getString(R.string.menu_match_title));
+			MenuInflater menuInflater = this.getMenuInflater();
+			menuInflater.inflate(R.menu.menu_match, menu);
+			menu.findItem(R.id.action_view_map).setEnabled(mMatch.isCourtDefinded(this));
+			menu.findItem(R.id.action_add_calendar).setEnabled(mMatch.isDateDefined());
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_add_calendar:
+				MenuActionsUtils.addMatchEvent(this, mMatch, CompetitionActivity.mCompetition);
+				break;
+			case R.id.action_view_map:
+				MenuActionsUtils.showMatchLocation(this, mMatch);
+				break;
+			case R.id.action_share:
+				MenuActionsUtils.shareMatchDetails(this, mMatch, CompetitionActivity.mCompetition);
+				break;
+			case R.id.action_notify_error:
+				//Match zipotegato = Match.builder().setName("zipotegato").build();
+				//String name = zipotegato.name();
+				//Match.Builder zipotegago = Match.builder().setName("zipotegago").setYear(2109).build();
+
+				SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(mMatch, CompetitionActivity.mCompetition);
+				dialog.show(getSupportFragmentManager(), "dialog");
+				break;
+		}
+		return super.onContextItemSelected(item);
 	}
 }
 
