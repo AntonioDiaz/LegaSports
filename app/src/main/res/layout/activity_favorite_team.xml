@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_activity_team"
-    tools:context="com.adiaz.munisports.activities.FavoriteTeamActivity">
+    tools:context="com.adiaz.localsports.activities.FavoriteTeamActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -109,6 +109,6 @@
         layout="@layout/header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.adiaz.munisports.utilities.harcoPro.ViewBehavior"/>
+        app:layout_behavior="com.adiaz.localsports.utilities.harcoPro.ViewBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

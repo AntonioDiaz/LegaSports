@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <com.adiaz.munisports.utilities.NonScrollExpandableListView
+        <com.adiaz.localsports.utilities.NonScrollExpandableListView
             android:id="@+id/elv_teams"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

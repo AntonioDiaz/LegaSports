@@ -104,7 +104,7 @@
         layout="@layout/header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.adiaz.munisports.utilities.harcoPro.ViewBehavior"/>
+        app:layout_behavior="com.adiaz.localsports.utilities.harcoPro.ViewBehavior"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

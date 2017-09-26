@@ -7,22 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.adiaz.munisports.activities.MainActivity">
+    tools:context="com.adiaz.localsports.activities.MainActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="262dp"
-        android:layout_height="63dp"
-        app:srcCompat="@drawable/logo"
-        android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="48dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo"/>
 
     <TextView
         android:id="@+id/tv_subtitle"
