@@ -114,7 +114,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		List<Favorite> competitionsFavorites = FavoritesUtils.queryFavoritesCompetitions(mContext);
 		for (Favorite fav : competitionsFavorites) {
 			Competition competition = CompetitionDbUtils.queryCompetition(mContext.getContentResolver(), fav.getIdCompetition());
-			if (fav.getLastNotification() < competition.lastUpdateApp()) {
+			if (competition!=null &&  fav.getLastNotification() < competition.lastUpdateApp()) {
 				showNotificationCompetition(competition, fav);
 			}
 		}
