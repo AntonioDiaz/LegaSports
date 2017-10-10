@@ -110,7 +110,7 @@
     <string name="accept">Aceptar</string>
     <string name="mistake_sent">Se ha enviado el error, será revisado por el administrador. Gracias por su colaboración.</string>
 
-    <string name="menu_add_calendar">Añadir evento</string>
+    <string name="menu_add_calendar">Añadir evento al calendario</string>
     <string name="menu_view_map">Abrir mapa</string>
     <string name="menu_share_details">Compartir</string>
     <string name="menu_notify_error">Notificar error</string>
