@@ -179,20 +179,6 @@
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_visitor_score"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor"
                 android:id="@+id/imageView3"></ImageView>
-<!--
-
-
-
-            <view
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_fav_team_visitor"
-                app:layout_constraintRight_toRightOf="@+id/tv_fav_team_visitor_score"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor"
-                ></view>
-
--->
             <TextView
                 android:id="@+id/tv_fav_team_local_score"
                 android:layout_width="0dp"
@@ -291,6 +277,20 @@
                 app:srcCompat="@drawable/ic_share_black_24dp"
                 app:layout_constraintVertical_bias="0.0"
                 android:layout_marginEnd="17dp"/>
+
+            <TextView
+                android:id="@+id/tv_match_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_small"
+                android:text=""
+                android:layout_marginLeft="0dp"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_fav_team_visitor"
+                app:layout_constraintBottom_toBottomOf="@+id/ib_share"
+                android:layout_marginBottom="-1dp"
+                tools:text="@string/example_match_state"
+                app:layout_constraintTop_toTopOf="@+id/ib_share"
+                android:layout_marginTop="0dp"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

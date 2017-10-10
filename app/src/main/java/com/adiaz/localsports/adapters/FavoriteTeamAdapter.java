@@ -64,9 +64,15 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 			holder.tvDate.setText(match.obtainDateStr(context));
 			holder.tvPlace.setText(match.obtainCenterNameFull(context));
 			holder.tvTeamLocal.setText(match.teamLocal());
-			holder.tvTeamLocalScore.setText(match.scoreLocal().toString());
+			if (match.state()== LocalSportsConstants.STATE_PLAYED) {
+				holder.tvTeamLocalScore.setText(match.scoreLocal().toString());
+				holder.tvTeamVisitorScore.setText(match.scoreVisitor().toString());
+			} else {
+				holder.tvMatchState.setText(LocalSportsUtils.matchStateName(context, match.state()));
+				holder.tvTeamLocalScore.setText(LocalSportsConstants.UNDEFINDED_FIELD);
+				holder.tvTeamVisitorScore.setText(LocalSportsConstants.UNDEFINDED_FIELD);
+			}
 			holder.tvTeamVisitor.setText(match.teamVisitor());
-			holder.tvTeamVisitorScore.setText(match.scoreVisitor().toString());
 			holder.ibLocation.setTag(match);
 			holder.ibCalendar.setTag(match);
 			holder.ibShare.setTag(match);
@@ -98,6 +104,7 @@ public class FavoriteTeamAdapter extends RecyclerView.Adapter<FavoriteTeamAdapte
 		@BindView(R.id.tv_fav_team_visitor) TextView tvTeamVisitor;
 		@BindView(R.id.tv_fav_team_local_score) TextView tvTeamLocalScore;
 		@BindView(R.id.tv_fav_team_visitor_score) TextView tvTeamVisitorScore;
+		@BindView(R.id.tv_match_state) TextView tvMatchState;
 		@BindView(R.id.ib_calendar) ImageButton ibCalendar;
 		@BindView(R.id.ib_location)	ImageButton ibLocation;
 		@BindView(R.id.ib_share) ImageButton ibShare;
