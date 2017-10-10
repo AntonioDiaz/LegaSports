@@ -15,7 +15,7 @@ public class LocalSportsConstants {
 	public static final String TAB = "    ";
 	public static final String DEFAULT_SPORT = "default sport";
 
-	public static final String BASE_URL = "https://munisports-web.appspot.com/";
+	public static final String BASE_URL = "https://localsports-web.appspot.com/";
 
 	public static final String INTENT_SPORT_TAG = "intent_sport_tag";
 	public static final String INTENT_ID_COMPETITION_SERVER = "extra_competition_chosen";
