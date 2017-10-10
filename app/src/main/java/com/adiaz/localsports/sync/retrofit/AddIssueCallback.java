@@ -1,7 +1,6 @@
 package com.adiaz.localsports.sync.retrofit;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.adiaz.localsports.R;
@@ -25,8 +24,6 @@ public class AddIssueCallback implements Callback<Long> {
 
 	@Override
 	public void onResponse(Call<Long> call, Response<Long> response) {
-		Log.d(TAG, "onResponse: code" + response.code());
-		Log.d(TAG, "onResponse: body" + response.body());
 		String msgToast = context.getString(R.string.dialog_issue_error_http, String.valueOf(response.code()));
 		if (response.code()==200) {
 			msgToast = context.getString(R.string.dialog_issue_added);
