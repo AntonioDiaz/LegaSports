@@ -11,6 +11,10 @@
     </style>
 
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <style name="ActionBar.Solid.LocalSports.NoTitle"
            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome|showTitle</item>

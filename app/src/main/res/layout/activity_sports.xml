@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_activity_sports"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:id="@+id/ll_progress_competitions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:id="@+id/pb_towns"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/loading_competitions"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.GridLayout
+            android:id="@+id/gl_sports"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:columnCount="2"
+            app:rowCount="3"
+            android:visibility="visible">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openSportFootball"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/football"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_ball_football"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/football"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openSport"
+                android:tag="@string/basketball_tag"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/BALONCESTO"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_ball_basketball"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/BALONCESTO"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openSport"
+                android:tag="@string/volleyball_tag"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/VOLEIBOL"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_ball_volleyball"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/VOLEIBOL"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openSport"
+                android:tag="@string/handball_tag"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/BALONMANO"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_ball_handball"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/BALONMANO"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openSport"
+                android:tag="@string/unihockey_tag"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/UNIHOCKEY"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_hockey"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/UNIHOCKEY"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="openFavorites"
+                android:orientation="vertical"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:contentDescription="@string/favorites"
+                    android:layout_margin="8dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_favorite_fill"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text= "@string/favorites"
+                    style="@style/main_sports"/>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.GridLayout>
+
+
+    </FrameLayout>
+
+
+</RelativeLayout>
