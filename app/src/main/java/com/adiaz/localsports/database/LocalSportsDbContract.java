@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.adiaz.localsports.entities.Classification;
 import com.adiaz.localsports.entities.Competition;
 import com.adiaz.localsports.entities.Favorite;
 import com.adiaz.localsports.entities.Match;
@@ -159,6 +160,7 @@ public class LocalSportsDbContract {
 		public static final String COLUMN_MATCHES_DRAWN = "matches_drawn";
 		public static final String COLUMN_MATCHES_LOST = "matches_lost";
 		public static final String COLUMN_ID_COMPETITION_SERVER = "id_competition_server";
+		public static final String COLUMN_SANCTIONS = "sanctions";
 
 
 		public static final String[] PROJECTION = {
@@ -169,7 +171,8 @@ public class LocalSportsDbContract {
 				COLUMN_MATCHES_WON,
 				COLUMN_MATCHES_DRAWN,
 				COLUMN_MATCHES_LOST,
-				COLUMN_ID_COMPETITION_SERVER
+				COLUMN_ID_COMPETITION_SERVER,
+				COLUMN_SANCTIONS
 		};
 
 		public static final int INDEX_POSITION = 0;
@@ -180,6 +183,20 @@ public class LocalSportsDbContract {
 		public static final int INDEX_MACHES_DRAWN = 5;
 		public static final int INDEX_MACHES_LOST = 6;
 		public static final int INDEX_ID_COMPETITION_SERVER = 7;
+		public static final int INDEX_SANCTIONS = 8;
+
+		public static Classification initEntity(Cursor cursor) {
+			Classification classification = new Classification();
+			classification.setPosition(cursor.getInt(INDEX_POSITION));
+			classification.setTeam(cursor.getString(INDEX_TEAM));
+			classification.setPoints(cursor.getInt(INDEX_POINTS));
+			classification.setMatchesPlayed(cursor.getInt(INDEX_MACHES_PLAYED));
+			classification.setMatchesWon(cursor.getInt(INDEX_MACHES_WON));
+			classification.setMatchesDrawn(cursor.getInt(INDEX_MACHES_DRAWN));
+			classification.setMatchesLost(cursor.getInt(INDEX_MACHES_LOST));
+			classification.setSanctions(cursor.getInt(INDEX_SANCTIONS));
+			return classification;
+		}
 	}
 
 	public static final	class SportCourtsEntry implements BaseColumns {

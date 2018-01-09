@@ -67,7 +67,7 @@
             android:layout_height="match_parent"
             app:columnCount="2"
             app:rowCount="3"
-            android:visibility="invisible">
+            android:visibility="visible">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"

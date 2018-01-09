@@ -16,7 +16,7 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "localsports.db";
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
 
 	public LocalSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,7 +65,8 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 						ClassificationEntry.COLUMN_MATCHES_WON + " INTEGER, " +
 						ClassificationEntry.COLUMN_MATCHES_DRAWN + " INTEGER, " +
 						ClassificationEntry.COLUMN_MATCHES_LOST + " INTEGER, " +
-						ClassificationEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL "+
+						ClassificationEntry.COLUMN_ID_COMPETITION_SERVER + " TEXT NOT NULL, "+
+						ClassificationEntry.COLUMN_SANCTIONS + " INTEGER "+
 						")";
 
 		String SQL_CREATE_TABLE_SPORTCOURTS =

@@ -46,7 +46,6 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 
 	@Override
 	public void onResponse(Call<CompetitionDetails> call, Response<CompetitionDetails> response) {
-		Log.d(TAG, "onResponse: response ..." + response.body().toString());
 		/* Update matches and classification.  */
 		List<Match> matches = response.body().getMatches();
 		loadMatches(matches, this.idCompetitionServer, this.mContext);
@@ -75,6 +74,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 			cvClassification.put(ClassificationEntry.COLUMN_MATCHES_DRAWN, classification.getMatchesDrawn());
 			cvClassification.put(ClassificationEntry.COLUMN_MATCHES_LOST, classification.getMatchesLost());
 			cvClassification.put(ClassificationEntry.COLUMN_ID_COMPETITION_SERVER, idCompetitionServer);
+			cvClassification.put(ClassificationEntry.COLUMN_SANCTIONS, classification.getSanctions());
 			cvClassificationList.add(cvClassification);
 		}
 		ContentValues[] classificationArray = cvClassificationList.toArray(new ContentValues[cvClassificationList.size()]);

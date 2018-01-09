@@ -30,6 +30,9 @@ public class Classification {
     @SerializedName("matchesLost")
     @Expose
     private Long matchesLost;
+    @SerializedName("sanctions")
+    @Expose
+    private Long sanctions;
 
     public Long getId() {
         return id;
@@ -95,4 +98,11 @@ public class Classification {
         this.matchesLost = matchesLost;
     }
 
+    public Long getSanctions() {
+        return sanctions;
+    }
+
+    public void setSanctions(Long sanctions) {
+        this.sanctions = sanctions;
+    }
 }

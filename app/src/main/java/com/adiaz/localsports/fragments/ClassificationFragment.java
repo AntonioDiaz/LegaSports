@@ -28,6 +28,7 @@ public class ClassificationFragment extends Fragment {
 	@BindView(R.id.rv_classification) RecyclerView recyclerView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
 	@BindView(R.id.ll_classification) LinearLayout llClassification;
+	@BindView(R.id.tv_sanctions) TextView tvSanctions;
 
 	public ClassificationFragment() {}
 
@@ -59,6 +60,18 @@ public class ClassificationFragment extends Fragment {
 		} else {
 			llClassification.setVisibility(View.VISIBLE);
 			tvEmptyListItem.setVisibility(View.GONE);
+		}
+		boolean sanctionsFound = false;
+		for (Classification classification : classificationList) {
+			if (classification.getSanctions()>0) {
+				String sanctionStr = getActivity().getString(
+						R.string.sanctions_team, classification.getTeam(), classification.getSanctions().toString());
+				tvSanctions.append("\n" + sanctionStr);
+				sanctionsFound = true;
+			}
+		}
+		if (!sanctionsFound) {
+			tvSanctions.setText(getString(R.string.sanctions_empty));
 		}
 	}
 }

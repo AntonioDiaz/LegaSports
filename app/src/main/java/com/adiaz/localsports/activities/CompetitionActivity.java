@@ -323,15 +323,7 @@ public class CompetitionActivity extends AppCompatActivity
 	public static List<Classification> initClassification(Cursor cursorClassification) {
 		List<Classification> list = new ArrayList<>();
 		while (cursorClassification.moveToNext()) {
-			Classification classificationEntry = new Classification();
-			classificationEntry.setPosition(cursorClassification.getInt(ClassificationEntry.INDEX_POSITION));
-			classificationEntry.setTeam(cursorClassification.getString(ClassificationEntry.INDEX_TEAM));
-			classificationEntry.setPoints(cursorClassification.getInt(ClassificationEntry.INDEX_POINTS));
-			classificationEntry.setMatchesPlayed(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_PLAYED));
-			classificationEntry.setMatchesWon(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_WON));
-			classificationEntry.setMatchesDrawn(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_DRAWN));
-			classificationEntry.setMatchesLost(cursorClassification.getInt(ClassificationEntry.INDEX_MACHES_LOST));
-			list.add(classificationEntry);
+			list.add(ClassificationEntry.initEntity(cursorClassification));
 		}
 		return list;
 	}

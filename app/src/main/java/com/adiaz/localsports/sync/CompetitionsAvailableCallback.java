@@ -52,9 +52,11 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 
 	@Override
 	public void onResponse(Call<List<CompetitionRestEntity>> call, Response<List<CompetitionRestEntity>> response) {
-		loadCompetitions(response.body());
-		if (this.competitionsLoadedCallback!=null) {
-			competitionsLoadedCallback.updateActivityLoadedCompetitions();
+		if (response.body()!=null) {
+			loadCompetitions(response.body());
+			if (this.competitionsLoadedCallback!=null) {
+				competitionsLoadedCallback.updateActivityLoadedCompetitions();
+			}
 		}
 	}
 
@@ -82,7 +84,6 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			ContentValues cv = new ContentValues();
 			Long idCompetition = competitionsEntity.getId();
 			Long lastPublishedApp = -1L;
-			Long lastNofitication = -1L;
 			if (mapCompetitions.containsKey(idCompetition)) {
 				lastPublishedApp = mapCompetitions.get(idCompetition).lastUpdateApp();
 			}

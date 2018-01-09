@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LocalSports</string>
+    <string name="app_name">Deporte Local</string>
     <string name="football">Fútbol</string>
     <string name="FUTBOL_11">Fútbol 11</string>
     <string name="FUTBOL_7">Fútbol 7</string>
@@ -101,6 +101,9 @@
     <string name="court_example">La Cantera FT2</string>
     <string name="example_result">12 -  3</string>
     <string name="classification_caption">*PJ Partidos Jugados.\n*PG Partidos Ganados.\n*PE Partidos Empatados.\n*PP Partidos Perdidos.\n*PT Puntos.</string>
+    <string name="sanctions_heading">Sanciones: </string>
+    <string name="sanctions_team">%1$s está sancionado con %2$s puntos</string>
+    <string name="sanctions_empty">No hay sanciones en esta competición.</string>
     <string name="action_mistake">Notificar error</string>
     <string name="mistake_subtitle">Si ha detectado un error en los datos puede informar al administrador del sistema enviando el siguente formulario:</string>
     <string name="mistake_title">Notificación de errores</string>

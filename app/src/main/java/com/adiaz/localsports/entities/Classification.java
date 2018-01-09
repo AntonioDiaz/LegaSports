@@ -12,6 +12,7 @@ public class Classification {
 	private Integer matchesDrawn = 0;
 	private Integer matchesLost = 0;
 	private Integer points = 0;
+	private Integer sanctions = 0;
 
 	public Integer getPosition() {
 		return position;
@@ -67,6 +68,14 @@ public class Classification {
 
 	public void setPoints(Integer points) {
 		this.points = points;
+	}
+
+	public Integer getSanctions() {
+		return sanctions;
+	}
+
+	public void setSanctions(Integer sanctions) {
+		this.sanctions = sanctions;
 	}
 }
 

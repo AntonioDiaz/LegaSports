@@ -71,7 +71,7 @@ public class ClassificationRecyclerViewAdapter extends RecyclerView.Adapter<Clas
 			holder.tvPg.setText("" + c.getMatchesWon());
 			holder.tvPe.setText("" + c.getMatchesDrawn());
 			holder.tvPp.setText("" + c.getMatchesLost());
-			holder.tvPt.setText("" + c.getPoints());
+			holder.tvPt.setText("" + (c.getPoints() - c.getSanctions()));
 		}
 	}
 
