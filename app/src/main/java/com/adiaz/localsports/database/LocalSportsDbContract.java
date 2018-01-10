@@ -8,6 +8,7 @@ import com.adiaz.localsports.entities.Classification;
 import com.adiaz.localsports.entities.Competition;
 import com.adiaz.localsports.entities.Favorite;
 import com.adiaz.localsports.entities.Match;
+import com.adiaz.localsports.entities.Sport;
 
 import java.util.Date;
 
@@ -24,8 +25,7 @@ public class LocalSportsDbContract {
 	public static final String PATH_CLASSIFICATION = "classification";
 	public static final String PATH_SPORT_COURTS = "sportcourts";
 	public static final String PATH_FAVORITES = "favorites";
-
-
+	public static final String PATH_SPORTS = "sports";
 
 	public static final	class CompetitionsEntry implements BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_COMPETITIONS).build();
@@ -250,6 +250,34 @@ public class LocalSportsDbContract {
 			return favorite;
 		}
 	}
+
+    public static final class SportsEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT.buildUpon().appendPath(PATH_SPORTS).build();
+        public static final String TABLE_NAME = "SPORTS";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_TAG = "tag";
+        public static final String COLUMN_IMAGE = "image";
+        public static final String COLUMN_ORDER = "order_sport";
+
+        public static final String[] PROJECTION = {COLUMN_ID, COLUMN_NAME, COLUMN_TAG, COLUMN_IMAGE, COLUMN_ORDER};
+        public static final int INDEX_ID = 0;
+        public static final int INDEX_NAME = 1;
+        public static final int INDEX_TAG = 2;
+        public static final int INDEX_IMAGE = 3;
+        public static final int INDEX_ORDER = 4;
+
+        public static Sport initEntity(Cursor cursor) {
+            Sport sport = Sport.builder()
+                    .id(cursor.getLong(INDEX_ID))
+                    .name(cursor.getString(INDEX_NAME))
+                    .tag(cursor.getString(INDEX_TAG))
+                    .order(cursor.getInt(INDEX_ORDER))
+                    .image(cursor.getString(INDEX_IMAGE)).build();
+            return sport;
+        }
+    }
+
 }
 
 

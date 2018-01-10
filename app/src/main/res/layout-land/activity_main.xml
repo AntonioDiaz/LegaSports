@@ -87,7 +87,7 @@
                     android:contentDescription="@string/football"
                     android:layout_margin="8dp"
                     android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_ball_football"/>
+                    app:srcCompat="@drawable/football"/>
 
             </LinearLayout>
 
@@ -110,7 +110,7 @@
                     android:contentDescription="@string/BALONCESTO"
                     android:layout_margin="8dp"
                     android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_ball_basketball"/>
+                    app:srcCompat="@drawable/basketball"/>
 
             </LinearLayout>
 
@@ -133,7 +133,7 @@
                     android:contentDescription="@string/VOLEIBOL"
                     android:layout_margin="8dp"
                     android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_ball_volleyball"/>
+                    app:srcCompat="@drawable/volleyball"/>
 
             </LinearLayout>
 
@@ -156,7 +156,7 @@
                     android:contentDescription="@string/BALONMANO"
                     android:layout_margin="8dp"
                     android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_ball_handball"/>
+                    app:srcCompat="@drawable/handball"/>
 
             </LinearLayout>
             <LinearLayout
@@ -178,7 +178,7 @@
                     android:contentDescription="@string/UNIHOCKEY"
                     android:layout_margin="8dp"
                     android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_hockey"/>
+                    app:srcCompat="@drawable/hockey"/>
 
             </LinearLayout>
             <LinearLayout

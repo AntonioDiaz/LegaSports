@@ -18,6 +18,8 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.CompetitionsE
 import static com.adiaz.localsports.database.LocalSportsDbContract.FavoritesEntry;
 import static com.adiaz.localsports.database.LocalSportsDbContract.MatchesEntry;
 import static com.adiaz.localsports.database.LocalSportsDbContract.SportCourtsEntry;
+import static com.adiaz.localsports.database.LocalSportsDbContract.SportsEntry;
+
 /**
  * Created by toni on 22/04/2017.
  */
@@ -27,17 +29,18 @@ public class LocalSportsContentProvider extends ContentProvider {
 	private static final String TAG = LocalSportsContentProvider.class.getSimpleName();
 	private LocalSportsDbHelper localSportsDbHelper;
 
-	public static final int COMPETITIONS = 100;
-	public static final int COMPETITIONS_WITH_ID = 101;
-	public static final int COMPETITIONS_WITH_SPORT = 102;
-	public static final int COMPETITIONS_WITH_ID_LASTUPDATE = 103;
-	public static final int MATCHES = 200;
-	public static final int MATCHES_WITH_COMPETITION = 201;
-	public static final int CLASSIFICATION = 300;
-	public static final int CLASSIFICATION_WITH_COMPETITION = 301;
-	public static final int SPORTCOURTS = 400;
-	public static final int FAVORITES = 500;
-	public static final int FAVORITES_WITH_ID = 501;
+	private static final int COMPETITIONS = 100;
+	private static final int COMPETITIONS_WITH_ID = 101;
+	private static final int COMPETITIONS_WITH_SPORT = 102;
+	private static final int COMPETITIONS_WITH_ID_LASTUPDATE = 103;
+	private static final int MATCHES = 200;
+	private static final int MATCHES_WITH_COMPETITION = 201;
+	private static final int CLASSIFICATION = 300;
+	private static final int CLASSIFICATION_WITH_COMPETITION = 301;
+	private static final int SPORTCOURTS = 400;
+	private static final int FAVORITES = 500;
+	private static final int FAVORITES_WITH_ID = 501;
+	private static final int SPORTS = 600;
 
 
 	private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -55,7 +58,8 @@ public class LocalSportsContentProvider extends ContentProvider {
 		uriMatcher.addURI(LocalSportsDbContract.AUTHORITY, LocalSportsDbContract.PATH_SPORT_COURTS, SPORTCOURTS);
 		uriMatcher.addURI(LocalSportsDbContract.AUTHORITY, LocalSportsDbContract.PATH_FAVORITES, FAVORITES);
 		uriMatcher.addURI(LocalSportsDbContract.AUTHORITY, LocalSportsDbContract.PATH_FAVORITES + "/#", FAVORITES_WITH_ID);
-		return uriMatcher;
+        uriMatcher.addURI(LocalSportsDbContract.AUTHORITY, LocalSportsDbContract.PATH_SPORTS, SPORTS);
+        return uriMatcher;
 	}
 
 	@Override
@@ -112,19 +116,33 @@ public class LocalSportsContentProvider extends ContentProvider {
 				}
 				break;
 			case SPORTCOURTS:
-				try {
-					db.beginTransaction();
-					for (ContentValues contentValues : values) {
-						long id = db.insert(SportCourtsEntry.TABLE_NAME, null, contentValues);
-						if (id!=-1) {
-							rowsInserted++;
-						}
-					}
-					db.setTransactionSuccessful();
-				} finally {
-					db.endTransaction();
-				}
-				break;
+                try {
+                    db.beginTransaction();
+                    for (ContentValues contentValues : values) {
+                        long id = db.insert(SportCourtsEntry.TABLE_NAME, null, contentValues);
+                        if (id!=-1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                break;
+            case SPORTS:
+                try {
+                    db.beginTransaction();
+                    for (ContentValues contentValues : values) {
+                        long id = db.insert(SportsEntry.TABLE_NAME, null, contentValues);
+                        if (id!=-1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                break;
 			default:
 				return super.bulkInsert(uri, values);
 		}
@@ -207,6 +225,9 @@ public class LocalSportsContentProvider extends ContentProvider {
 				selectionArgs = new String[]{idFavorite};
 				cursorReturned = db.query(FavoritesEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
 				break;
+            case SPORTS:
+                cursorReturned = db.query(SportsEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+                break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);
 		}
@@ -257,6 +278,9 @@ public class LocalSportsContentProvider extends ContentProvider {
 				selection = FavoritesEntry._ID + "=?";
 				selectionArgs = new String[]{idFavorite};
 				deletedItems = db.delete(FavoritesEntry.TABLE_NAME, selection, selectionArgs);
+				break;
+			case SPORTS:
+				deletedItems = db.delete(SportsEntry.TABLE_NAME, selection, selectionArgs);
 				break;
 			default:
 				throw new UnsupportedOperationException("error " + uri);

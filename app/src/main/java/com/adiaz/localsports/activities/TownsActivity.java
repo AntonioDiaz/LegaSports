@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.adapters.TownsAdapter;
-import com.adiaz.localsports.sync.TownsAvailableCallback;
+import com.adiaz.localsports.sync.retrofit.callbacks.TownsAvailableCallback;
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
 import com.adiaz.localsports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.localsports.utilities.LocalSportsConstants;

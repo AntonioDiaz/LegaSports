@@ -1,4 +1,4 @@
-package com.adiaz.localsports.sync;
+package com.adiaz.localsports.sync.retrofit.callbacks;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

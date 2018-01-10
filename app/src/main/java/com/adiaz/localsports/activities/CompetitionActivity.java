@@ -9,8 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -25,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.entities.Classification;
@@ -38,7 +35,7 @@ import com.adiaz.localsports.fragments.CalendarFragment;
 import com.adiaz.localsports.fragments.ClassificationFragment;
 import com.adiaz.localsports.fragments.SendIssueDialogFragment;
 import com.adiaz.localsports.fragments.TeamsFragment;
-import com.adiaz.localsports.sync.CompetitionDetailsCallbak;
+import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionDetailsCallbak;
 import com.adiaz.localsports.utilities.CompetitionDbUtils;
 import com.adiaz.localsports.utilities.FavoritesUtils;
 import com.adiaz.localsports.utilities.MenuActionsUtils;
@@ -47,7 +44,6 @@ import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.NetworkUtilities;
 import com.adiaz.localsports.utilities.PreferencesUtils;
 import com.adiaz.localsports.utilities.ViewPagerAdapter;
-import com.adiaz.localsports.utilities.harcoPro.HeaderView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,6 +72,10 @@ public class CompetitionActivity extends AppCompatActivity implements Competitio
 
 	@BindView(R.id.viewpager)
 	ViewPager viewPager;
+
+    @BindView(R.id.ll_progress_competition_details)
+    LinearLayout llProgress;
+
 
 	private boolean isHideToolbarView = false;
 
@@ -107,7 +107,8 @@ public class CompetitionActivity extends AppCompatActivity implements Competitio
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(competitionName);
         getSupportActionBar().setSubtitle(category + " - " + sport);
-
+        llProgress.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -216,6 +217,8 @@ public class CompetitionActivity extends AppCompatActivity implements Competitio
 		}
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
+		viewPager.setVisibility(View.VISIBLE);
+		llProgress.setVisibility(View.INVISIBLE);
 	}
 
 	private static List<Team> initTeams(Cursor cursorMatches) {

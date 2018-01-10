@@ -50,7 +50,8 @@
         <activity
             android:name="com.adiaz.localsports.activities.SettingsActivity"
             android:label="@string/action_preferences"
-            android:parentActivityName="com.adiaz.localsports.activities.SportsActivity">
+            android:parentActivityName="com.adiaz.localsports.activities.SportsActivity"
+            android:theme="@style/MyMaterialTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adiaz.localsports.activities.SportsActivity" />

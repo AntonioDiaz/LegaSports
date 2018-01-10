@@ -1,4 +1,4 @@
-package com.adiaz.localsports.sync.retrofit;
+package com.adiaz.localsports.sync.retrofit.callbacks;
 
 import android.content.Context;
 import android.widget.Toast;

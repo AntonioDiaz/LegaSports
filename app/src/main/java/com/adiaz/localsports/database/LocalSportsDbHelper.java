@@ -9,6 +9,8 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.CompetitionsE
 import static com.adiaz.localsports.database.LocalSportsDbContract.MatchesEntry;
 import static com.adiaz.localsports.database.LocalSportsDbContract.SportCourtsEntry;
 import static com.adiaz.localsports.database.LocalSportsDbContract.FavoritesEntry;
+import static com.adiaz.localsports.database.LocalSportsDbContract.SportsEntry;
+
 /**
  * Created by toni on 20/04/2017.
  */
@@ -16,7 +18,7 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "localsports.db";
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 20;
 
 	public LocalSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -88,12 +90,21 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 						FavoritesEntry.COLUMN_LAST_NOTIFICATION + " INTEGER" +
 						") ";
 
-
+		final String SQL_CREATE_TABLE_SPORTS =
+				"CREATE TABLE " + SportsEntry.TABLE_NAME +
+						"(" +
+						SportsEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " +
+						SportsEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+						SportsEntry.COLUMN_TAG + " TEXT NOT NULL, " +
+						SportsEntry.COLUMN_IMAGE + " TEXT NOT NULL, " +
+						SportsEntry.COLUMN_ORDER + " INTEGER " +
+						")";
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_COMPETITION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_MATCHES);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_CLASSIFICATION);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_SPORTCOURTS);
 		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_FAVORITES);
+		sqLiteDatabase.execSQL(SQL_CREATE_TABLE_SPORTS);
 	}
 
 	@Override
@@ -103,6 +114,7 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MatchesEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ClassificationEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CompetitionsEntry.TABLE_NAME);
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SportsEntry.TABLE_NAME);
 		onCreate(sqLiteDatabase);
 	}
 }

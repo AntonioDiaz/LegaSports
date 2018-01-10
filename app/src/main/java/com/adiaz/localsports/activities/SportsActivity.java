@@ -3,10 +3,13 @@ package com.adiaz.localsports.activities;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -15,11 +18,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.adiaz.localsports.R;
+import com.adiaz.localsports.adapters.SportsAdapter;
 import com.adiaz.localsports.database.LocalSportsDbContract;
-import com.adiaz.localsports.sync.CompetitionsAvailableCallback;
+import com.adiaz.localsports.entities.Sport;
+import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionsAvailableCallback;
 import com.adiaz.localsports.sync.LocalSportsSyncUtils;
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
+import com.adiaz.localsports.sync.retrofit.callbacks.SportsCallback;
 import com.adiaz.localsports.sync.retrofit.entities.competition.CompetitionRestEntity;
+import com.adiaz.localsports.sync.retrofit.entities.competition.SportEntity;
+import com.adiaz.localsports.sync.retrofit.entities.sport.SportsRestEntity;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.NetworkUtilities;
@@ -37,15 +45,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.adiaz.localsports.database.LocalSportsDbContract.SportsEntry;
 
 /**
  * Created by adiaz on 9/1/18.
  */
 
-public class SportsActivity extends AppCompatActivity implements CompetitionsAvailableCallback.CompetitionsLoadedCallback, SharedPreferences.OnSharedPreferenceChangeListener {
+public class SportsActivity extends AppCompatActivity implements CompetitionsAvailableCallback.CompetitionsLoadedCallback, SharedPreferences.OnSharedPreferenceChangeListener, SportsCallback.SportsLoadedCallback, SportsAdapter.ListItemClickListener {
 
     private static final String TAG = SportsActivity.class.getSimpleName();
     private Menu mMenu;
+    private boolean mFinishLoadCompetitions;
+    private boolean mFinishLoadSports;
+    private Cursor mCursorSports;
 
     @BindView((R.id.layout_activity_sports))
     View activityView;
@@ -53,8 +65,8 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
     @BindView(R.id.ll_progress_competitions)
     LinearLayout llProgressCompetition;
 
-    @BindView(R.id.gl_sports)
-    GridLayout glSports;
+    @BindView(R.id.rv_sports)
+    RecyclerView rvSports;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +75,6 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
         setContentView(R.layout.activity_sports);
         ButterKnife.bind(this);
         String town = PreferencesUtils.queryPreferenceTown(this);
-        Log.d(TAG, "onCreate: town -->" + town);
         if (TextUtils.isEmpty(town)) {
             Intent intent = new Intent(this, TownsActivity.class);
             startActivity(intent);
@@ -74,8 +85,8 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
                 getSupportActionBar().setIcon(R.mipmap.ic_launcher);
                 getSupportActionBar().setDisplayUseLogoEnabled(true);
                 getSupportActionBar().setTitle(" " + town);
+                getSupportActionBar().setSubtitle(" " + getString(R.string.app_name));
             }
-            getSupportActionBar().setSubtitle(" " + getString(R.string.app_name));
             if (!getDefaultSharedPreferences(this).contains(LocalSportsConstants.KEY_LASTUPDATE)) {
                 if (NetworkUtilities.isNetworkAvailable(this)) {
                     updateCompetitions();
@@ -84,6 +95,8 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
                     llProgressCompetition.setVisibility(View.INVISIBLE);
                 }
             } else {
+                mFinishLoadCompetitions = true;
+                mFinishLoadSports = true;
                 endLoadingCompetitions();
             }
         }
@@ -143,18 +156,29 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         LocalSportsRestApi localSportsRestApi = retrofit.create(LocalSportsRestApi.class);
-        Call<List<CompetitionRestEntity>> call = localSportsRestApi.competitionsQuery(idTownSelect);
-        call.enqueue(new CompetitionsAvailableCallback(this, this));
+        Call<List<CompetitionRestEntity>> callCompetitions = localSportsRestApi.competitionsQuery(idTownSelect);
+        callCompetitions.enqueue(new CompetitionsAvailableCallback(this, this));
+        Call<List<SportsRestEntity>> callSports = localSportsRestApi.sportsQuery(idTownSelect);
+        callSports.enqueue(new SportsCallback(this, this));
     }
 
     private void endLoadingCompetitions() {
-        llProgressCompetition.setVisibility(View.INVISIBLE);
-        glSports.setVisibility(View.VISIBLE);
+        if (mFinishLoadSports && mFinishLoadCompetitions) {
+            llProgressCompetition.setVisibility(View.INVISIBLE);
+            ContentResolver contentResolver = getContentResolver();
+            mCursorSports = contentResolver.query(SportsEntry.CONTENT_URI, SportsEntry.PROJECTION, null, null, SportsEntry.COLUMN_ORDER);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+            SportsAdapter sportsAdapter = new SportsAdapter(this, this);
+            rvSports.setLayoutManager(gridLayoutManager);
+            rvSports.setAdapter(sportsAdapter);
+            sportsAdapter.swapCursor(mCursorSports);
+            rvSports.setVisibility(View.VISIBLE);
+        }
     }
 
     private void startLoadingCompetitions() {
         llProgressCompetition.setVisibility(View.VISIBLE);
-        glSports.setVisibility(View.INVISIBLE);
+        rvSports.setVisibility(View.INVISIBLE);
     }
 
     private void updateLastUpdateMenuItem(Menu menu) {
@@ -175,31 +199,11 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
     }
 
     @Override
-    public void updateActivityLoadedCompetitions() {
-        endLoadingCompetitions();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (PreferencesUtils.queryPreferenceTownId(this)!=null) {
             LocalSportsSyncUtils.initialize(this);
         }
-    }
-
-
-    public void openSport(View view) {
-        Intent intent = new Intent(this, SelectCompetitionActivity.class);
-        intent.putExtra(LocalSportsConstants.INTENT_SPORT_TAG, (String) view.getTag());
-        startActivity(intent);
-    }
-
-    public void openSportFootball(View view) {
-        startActivity(new Intent(this, FootballActivity.class));
-    }
-
-    public void openFavorites(View view) {
-        startActivity(new Intent(this, FavoritesActivity.class));
     }
 
     @Override
@@ -208,5 +212,31 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
         if (key.equals(LocalSportsConstants.KEY_LASTUPDATE) && sharedPreferences.contains(key)) {
             updateLastUpdateMenuItem(this.mMenu);
         }
+    }
+
+    @Override
+    public void finishLoadCompetitions() {
+        mFinishLoadCompetitions = true;
+        endLoadingCompetitions();
+    }
+
+    @Override
+    public void finishLoadSports() {
+        mFinishLoadSports = true;
+        endLoadingCompetitions();
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        if (clickedItemIndex == 0) {
+            startActivity(new Intent(this, FavoritesActivity.class));
+        } else {
+            mCursorSports.moveToPosition(clickedItemIndex  - 1);
+            Sport sport = SportsEntry.initEntity(mCursorSports);
+            Intent intent = new Intent(this, SelectCompetitionActivity.class);
+            intent.putExtra(LocalSportsConstants.INTENT_SPORT_TAG, (String) sport.tag());
+            startActivity(intent);
+        }
+
     }
 }

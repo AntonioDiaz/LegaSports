@@ -1,4 +1,4 @@
-package com.adiaz.localsports.sync;
+package com.adiaz.localsports.sync.retrofit.callbacks;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -55,7 +55,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		if (response.body()!=null) {
 			loadCompetitions(response.body());
 			if (this.competitionsLoadedCallback!=null) {
-				competitionsLoadedCallback.updateActivityLoadedCompetitions();
+				competitionsLoadedCallback.finishLoadCompetitions();
 			}
 		}
 	}
@@ -147,6 +147,6 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 	}
 
 	public interface CompetitionsLoadedCallback {
-		void updateActivityLoadedCompetitions();
+		void finishLoadCompetitions();
 	}
 }

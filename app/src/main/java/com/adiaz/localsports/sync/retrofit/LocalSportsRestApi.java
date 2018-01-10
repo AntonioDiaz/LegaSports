@@ -4,6 +4,7 @@ import com.adiaz.localsports.sync.retrofit.entities.competition.CompetitionRestE
 import com.adiaz.localsports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.localsports.sync.retrofit.entities.issue.Issue;
 import com.adiaz.localsports.sync.retrofit.entities.match.MatchRestEntity;
+import com.adiaz.localsports.sync.retrofit.entities.sport.SportsRestEntity;
 import com.adiaz.localsports.sync.retrofit.entities.town.TownRestEntity;
 
 import java.util.List;
@@ -21,9 +22,6 @@ import retrofit2.http.Query;
 
 public interface LocalSportsRestApi {
 
-/*	@GET("/server/competitions/")
-	Call<List<CompetitionRestEntity>> competitionsQuery();*/
-
 	@GET("/server/towns/")
 	Call<List<TownRestEntity>> townsQuery();
 
@@ -38,4 +36,8 @@ public interface LocalSportsRestApi {
 
 	@POST ("/server/issues")
 	Call<Long> addIssue(@Body Issue issue);
+
+	@GET ("/server/search_sports/")
+    Call<List<SportsRestEntity>> sportsQuery(@Query("idTown") Long idTown);
+
 }

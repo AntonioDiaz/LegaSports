@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
+import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionsAvailableCallback;
 import com.adiaz.localsports.sync.retrofit.entities.competition.CompetitionRestEntity;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.NetworkUtilities;

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.adiaz.localsports.entities.Competition;
-import com.adiaz.localsports.sync.CompetitionDetailsCallbak;
+import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionDetailsCallbak;
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
 import com.adiaz.localsports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 

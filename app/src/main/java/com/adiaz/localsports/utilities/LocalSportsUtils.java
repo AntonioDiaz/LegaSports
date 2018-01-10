@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.entities.Competition;
 import com.adiaz.localsports.entities.Match;
-import com.adiaz.localsports.sync.retrofit.AddIssueCallback;
+import com.adiaz.localsports.sync.retrofit.callbacks.AddIssueCallback;
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
 import com.adiaz.localsports.sync.retrofit.entities.issue.Issue;
 
