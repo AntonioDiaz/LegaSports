@@ -1,71 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
+    android:id="@+id/layout_activity_team"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_activity_team"
-    tools:context="com.adiaz.localsports.activities.FavoriteTeamActivity">
+    tools:context=".activities.FavoriteTeamActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_size"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/HeaderTitleStyleCollapsed"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@style/HeaderTitleStyle"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/title_marginLeft"
-                android:layout_marginTop="@dimen/title_marginTop"
-                android:text="@string/app_name"
-                android:textColor="@color/colorWhite"/>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_collapseMode="pin"
-                app:contentInsetStart="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStartWithNavigation="0dp">
-                <include
-                    android:id="@+id/toolbar_header_view"
-                    layout="@layout/header_view"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginRight="@dimen/header_view_end_margin_right"
-                    android:visibility="gone"/>
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fillViewport="true"
-        android:scrollbars="none">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_fav_team_jornadas"
             android:layout_width="match_parent"
@@ -101,14 +47,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimary"/>
         </LinearLayout>
-        </FrameLayout>
+    </FrameLayout>
 
-    </android.support.v4.widget.NestedScrollView>
-    <include
-        android:id="@+id/float_header_view"
-        layout="@layout/header_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.adiaz.localsports.utilities.harcoPro.ViewBehavior"/>
+</RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>

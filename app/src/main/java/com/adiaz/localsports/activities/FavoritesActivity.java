@@ -16,6 +16,7 @@ import com.adiaz.localsports.fragments.FavoritesCompetitionsFragment;
 import com.adiaz.localsports.fragments.FavoritesTeamsFragment;
 import com.adiaz.localsports.utilities.FavoritesUtils;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
+import com.adiaz.localsports.utilities.PreferencesUtils;
 import com.adiaz.localsports.utilities.ViewPagerAdapter;
 
 import java.util.List;
@@ -27,15 +28,13 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 
 public class FavoritesActivity extends AppCompatActivity {
-	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+
 	private static final String TAG = FavoritesActivity.class.getSimpleName();
 	public static final String TEAM_NAME = "team_name";
 
-
 	@BindView(R.id.tabs) TabLayout tabLayout;
+	@BindView(R.id.toolbar) Toolbar toolbar;
 	@BindView(R.id.viewpager) ViewPager viewPager;
-	@BindView(R.id.tv_title) TextView tvTitle;
 
 	public static List<Competition> competitionsFavorites;
 	public static List<TeamFavorite> teamsFavorites;
@@ -47,12 +46,14 @@ public class FavoritesActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		collapsingToolbar.setTitle(getString(R.string.favorites));
+        getSupportActionBar().setTitle(getString(R.string.favorites));
+        String town = PreferencesUtils.queryPreferenceTown(this);
+        String subtitle = getString(R.string.app_name) + " - " + town;
+        getSupportActionBar().setSubtitle(subtitle);
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		String townSelect = preferences.getString(LocalSportsConstants.KEY_TOWN_NAME, null);
-		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 
 	@Override

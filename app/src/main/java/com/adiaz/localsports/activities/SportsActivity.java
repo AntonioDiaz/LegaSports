@@ -69,10 +69,12 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
             startActivity(intent);
             finish();
         } else {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-            getSupportActionBar().setDisplayUseLogoEnabled(true);
-            getSupportActionBar().setTitle(" " + town);
+            if (getSupportActionBar()!=null) {
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+                getSupportActionBar().setDisplayUseLogoEnabled(true);
+                getSupportActionBar().setTitle(" " + town);
+            }
             getSupportActionBar().setSubtitle(" " + getString(R.string.app_name));
             if (!getDefaultSharedPreferences(this).contains(LocalSportsConstants.KEY_LASTUPDATE)) {
                 if (NetworkUtilities.isNetworkAvailable(this)) {

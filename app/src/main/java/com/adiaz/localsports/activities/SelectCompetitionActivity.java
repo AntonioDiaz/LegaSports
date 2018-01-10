@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import com.adiaz.localsports.database.LocalSportsDbContract;
 import com.adiaz.localsports.entities.Competition;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
+import com.adiaz.localsports.utilities.PreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,13 +31,14 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.CompetitionsE
 
 public class SelectCompetitionActivity extends AppCompatActivity implements CompetitionsAdapter.ListItemClickListener {
 
-	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-	@BindView(R.id.rv_competitions) RecyclerView recyclerView;
-	@BindView(R.id.tv_title) TextView tvTitle;
-	@BindView(R.id.tv_empty_list_item) TextView tvEmptyListItem;
+    private static final String TAG = SelectCompetitionActivity.class.getSimpleName();
 
-	private static final String TAG = SelectCompetitionActivity.class.getSimpleName();
+    @BindView(R.id.rv_competitions)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.tv_empty_list_item)
+    TextView tvEmptyListItem;
+
 	private String sportTag;
 	private String sportTitle;
 	private Cursor mCursor;
@@ -46,9 +50,14 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		ButterKnife.bind(this);
 		sportTag = getIntent().getStringExtra(LocalSportsConstants.INTENT_SPORT_TAG);
 		sportTitle = LocalSportsUtils.getStringResourceByName(this, sportTag);
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		collapsingToolbar.setTitle(sportTitle);
+		Log.d(TAG, "onCreate: sportTag - " + sportTag);
+		if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(sportTitle);
+            String town = PreferencesUtils.queryPreferenceTown(this);
+            String subtitle = getString(R.string.app_name) + " - " + town;
+            getSupportActionBar().setSubtitle(subtitle);
+        }
 		// TODO: 25/04/2017 should get the competitions from the contentprovider.
 		Uri uriWithSport = LocalSportsDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
 		mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
@@ -67,14 +76,16 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		}
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		String townSelect = preferences.getString(LocalSportsConstants.KEY_TOWN_NAME, null);
-		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 	}
 
-	@Override
-	public boolean onSupportNavigateUp() {
-		onBackPressed();
-		return true;
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 	@Override
 	public void onListItemClick(int clickedItemIndex) {

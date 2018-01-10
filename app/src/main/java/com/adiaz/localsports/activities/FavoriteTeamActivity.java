@@ -50,19 +50,11 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.MatchesEntry;
 
 public class FavoriteTeamActivity extends AppCompatActivity
 		implements
-				AppBarLayout.OnOffsetChangedListener,
 				CompetitionDetailsCallbak.OnFinishLoad,
 		SendIssueDialogFragment.OnSendIssue {
 
-	@BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
-	@BindView(R.id.toolbar) Toolbar toolbar;
-	@BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
-	@BindView(R.id.toolbar_header_view)	HeaderView toolbarHeaderView;
-	@BindView(R.id.float_header_view) HeaderView floatHeaderView;
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
-	@BindView(R.id.tv_title) TextView tvTitle;
 	@BindView(R.id.ll_progress_team) LinearLayout llProgressTeam;
-	@Nullable
 	@BindView((R.id.layout_activity_team)) View activityView;
 
 
@@ -76,20 +68,11 @@ public class FavoriteTeamActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorite_team);
 		ButterKnife.bind(this);
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mTeamName = getIntent().getStringExtra(LocalSportsConstants.INTENT_TEAM_NAME);
 		mIdCompetition = getIntent().getLongExtra(LocalSportsConstants.INTENT_ID_COMPETITION_SERVER, 0L);
 		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
 		String subTitle = mCompetition.name();
 		subTitle += " - " + LocalSportsUtils.getStringResourceByName(this, mCompetition.sportName());
-		subTitle += " - " + LocalSportsUtils.getStringResourceByName(this, mCompetition.categoryName());
-		collapsingToolbar.setTitle(" ");
-
-		toolbarHeaderView.bindTo(mTeamName, subTitle, 0);
-		floatHeaderView.bindTo(mTeamName, subTitle, 16);
-		appBarLayout.addOnOffsetChangedListener(this);
-
 		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
 			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), mIdCompetition);
@@ -103,8 +86,9 @@ public class FavoriteTeamActivity extends AppCompatActivity
 			finishLoad();
 		}
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(LocalSportsConstants.KEY_TOWN_NAME, null);
-		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(mTeamName);
+		getSupportActionBar().setSubtitle(subTitle);
 	}
 
 	@Override
@@ -186,19 +170,6 @@ public class FavoriteTeamActivity extends AppCompatActivity
 		SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(match, mCompetition);
 		dialog.show(getSupportFragmentManager(), "dialog");
 
-	}
-
-	@Override
-	public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-		int maxScroll = appBarLayout.getTotalScrollRange();
-		float percentage = (float) Math.abs(offset) / (float) maxScroll;
-		if (percentage == 1f && isHideToolbarView) {
-			toolbarHeaderView.setVisibility(View.VISIBLE);
-			isHideToolbarView = !isHideToolbarView;
-		} else if (percentage < 1f && !isHideToolbarView) {
-			toolbarHeaderView.setVisibility(View.GONE);
-			isHideToolbarView = !isHideToolbarView;
-		}
 	}
 
 	private static Team initTeamCompetition(Context context, String teamName, Long idCompetitionServer) {

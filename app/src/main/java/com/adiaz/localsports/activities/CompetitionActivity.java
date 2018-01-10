@@ -62,34 +62,20 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.Classificatio
 import static com.adiaz.localsports.database.LocalSportsDbContract.MatchesEntry;
 
 
-public class CompetitionActivity extends AppCompatActivity
-		implements AppBarLayout.OnOffsetChangedListener, CompetitionDetailsCallbak.OnFinishLoad, SendIssueDialogFragment.OnSendIssue {
+public class CompetitionActivity extends AppCompatActivity implements CompetitionDetailsCallbak.OnFinishLoad, SendIssueDialogFragment.OnSendIssue {
 
 	private static final String TAG = CompetitionActivity.class.getSimpleName();
 	public static final String BUNDLE_KEY_ID_COMPETITION = "BUNDLE_KEY_ID_COMPETITION";
 
 	@Nullable
-	@BindView((R.id.layout_activity_competition)) View activityView;
+	@BindView((R.id.layout_activity_competition))
+    View activityView;
 
-
-	@BindView(R.id.app_bar_layout)
-	AppBarLayout appBarLayout;
-	@BindView(R.id.toolbar)
-	Toolbar toolbar;
-	@BindView(R.id.collapsing_toolbar)
-	CollapsingToolbarLayout collapsingToolbar;
-	@BindView(R.id.toolbar_header_view)
-	HeaderView toolbarHeaderView;
-	@BindView(R.id.float_header_view)
-	HeaderView floatHeaderView;
 	@BindView(R.id.tabs)
 	TabLayout tabLayout;
+
 	@BindView(R.id.viewpager)
 	ViewPager viewPager;
-	@BindView(R.id.tv_title)
-	TextView tvTitle;
-	@BindView(R.id.ll_progress_competition)
-	LinearLayout llCompetition;
 
 	private boolean isHideToolbarView = false;
 
@@ -107,27 +93,26 @@ public class CompetitionActivity extends AppCompatActivity
 		setContentView(R.layout.activity_competition);
 		ButterKnife.bind(this);
 		String townSelect = PreferencesUtils.queryPreferenceTown(this);
-		tvTitle.setText(townSelect + " - " + getString(R.string.app_name));
 		mCompetition = getIntent().getParcelableExtra(LocalSportsConstants.INTENT_COMPETITION);
 		mIdCompetition = mCompetition.serverId();
 		String sportTag = mCompetition.sportName();
 		String categoryTag = mCompetition.categoryName();
 		String competitionName = mCompetition.name();
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		collapsingToolbar.setTitle(" ");
+
 		String sport = LocalSportsUtils.getStringResourceByName(this, sportTag);
 		String category = LocalSportsUtils.getStringResourceByName(this, categoryTag);
-		String sportTitle = sport + " (" + category + ")";
-		toolbarHeaderView.bindTo(competitionName, sportTitle, 0);
-		floatHeaderView.bindTo(competitionName, sportTitle, 16);
-		appBarLayout.addOnOffsetChangedListener(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(competitionName);
+        getSupportActionBar().setSubtitle(category + " - " + sport);
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		showLoading();
 		if (NetworkUtilities.isNetworkAvailable(this)) {
 			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), mIdCompetition);
 			if (needToUpdate) {
@@ -136,20 +121,9 @@ public class CompetitionActivity extends AppCompatActivity
 				finishLoad();
 			}
 		} else {
-			hideLoading();
 			LocalSportsUtils.showNoInternetAlert(this, activityView);
 			finishLoad();
 		}
-	}
-
-	private void hideLoading() {
-		llCompetition.setVisibility(View.INVISIBLE);
-		viewPager.setVisibility(View.VISIBLE);
-	}
-
-	private void showLoading() {
-		llCompetition.setVisibility(View.VISIBLE);
-		viewPager.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -226,19 +200,6 @@ public class CompetitionActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-		int maxScroll = appBarLayout.getTotalScrollRange();
-		float percentage = (float) Math.abs(offset) / (float) maxScroll;
-		if (percentage == 1f && isHideToolbarView) {
-			toolbarHeaderView.setVisibility(View.VISIBLE);
-			isHideToolbarView = !isHideToolbarView;
-		} else if (percentage < 1f && !isHideToolbarView) {
-			toolbarHeaderView.setVisibility(View.GONE);
-			isHideToolbarView = !isHideToolbarView;
-		}
-	}
-
-	@Override
 	public void finishLoad() {
 		ContentResolver contentResolver = this.getContentResolver();
 		Uri uriMatches = MatchesEntry.buildMatchesUriWithCompetitions(mIdCompetition);
@@ -255,7 +216,6 @@ public class CompetitionActivity extends AppCompatActivity
 		}
 		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
-		hideLoading();
 	}
 
 	private static List<Team> initTeams(Cursor cursorMatches) {
