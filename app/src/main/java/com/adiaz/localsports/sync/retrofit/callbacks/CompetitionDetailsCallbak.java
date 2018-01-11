@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.adiaz.localsports.database.LocalSportsDbContract;
+import com.adiaz.localsports.database.daos.CompetitionsDAO;
 import com.adiaz.localsports.sync.retrofit.entities.competitiondetails.Classification;
 import com.adiaz.localsports.sync.retrofit.entities.competitiondetails.CompetitionDetails;
 import com.adiaz.localsports.sync.retrofit.entities.competitiondetails.Match;
@@ -53,12 +54,7 @@ public class CompetitionDetailsCallbak implements Callback<CompetitionDetails> {
 		loadClassification(classification, this.idCompetitionServer, this.mContext);
 		loadSportCourts(matches, this.mContext);
 		/* Updating local server update date. */
-		ContentValues contentValues = new ContentValues();
-		contentValues.put(CompetitionsEntry.COLUMN_LAST_UPDATE_APP, response.body().getLastPublished());
-		String selection = CompetitionsEntry.COLUMN_ID_SERVER + "=?";
-		String[] selectionArgs = new String[]{idCompetitionServer.toString()};
-		ContentResolver contentResolver = mContext.getContentResolver();
-		contentResolver.update(CompetitionsEntry.CONTENT_URI, contentValues, selection, selectionArgs);
+		CompetitionsDAO.markCompetitionsAsDirty(mContext, this.idCompetitionServer, false);
 		onFinishLoad.finishLoad();
 	}
 

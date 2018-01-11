@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "685528310190",
+    "firebase_url": "https://localsports-firebase.firebaseio.com",
+    "project_id": "localsports-firebase",
+    "storage_bucket": "localsports-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685528310190:android:361e27bcb8802b4f",
+        "android_client_info": {
+          "package_name": "com.adiaz.localsports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685528310190-lim800qf044ivuvp7ck9m841ak9s1r26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adiaz.localsports",
+            "certificate_hash": "8fdac00c96c59264c5aa545c87beeee3dcca7146"
+          }
+        },
+        {
+          "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnnNSUfqyST1xoOi2X250qRLIeIKIe6z4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

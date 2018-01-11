@@ -21,8 +21,7 @@ public abstract class Competition implements Parcelable {
 		public abstract Builder setSportName(String value);
 		public abstract Builder setCategoryName(String value);
 		public abstract Builder setServerId(Long value);
-		public abstract Builder setLastUpdateServer(Long value);
-		public abstract Builder setLastUpdateApp(Long value);
+		public abstract Builder setIsDirty(boolean isDirty);
 		public abstract Competition build();
 	}
 
@@ -30,6 +29,5 @@ public abstract class Competition implements Parcelable {
 	public abstract String sportName();
 	public abstract String categoryName();
 	public abstract Long serverId();
-	public abstract Long lastUpdateServer();
-	public abstract Long lastUpdateApp();
+	public abstract boolean isDirty();
 }

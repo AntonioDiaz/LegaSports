@@ -46,7 +46,9 @@ public class SportsCallback implements Callback<List<SportsRestEntity>> {
         ContentResolver contentResolver = mContext.getContentResolver();
         contentResolver.delete(SportsEntry.CONTENT_URI, null, null);
         contentResolver.bulkInsert(SportsEntry.CONTENT_URI, sports);
-        mSportsLoadedCallback.finishLoadSports();
+        if (mSportsLoadedCallback!=null) {
+            mSportsLoadedCallback.finishLoadSports();
+        }
     }
 
     @Override

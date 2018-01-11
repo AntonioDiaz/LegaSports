@@ -28,6 +28,11 @@ public class PreferencesUtils {
 		return clientId;
 	}
 
+	public static String queryPreferenceFCMTopic(Context context) {
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(context);
+		return sharedPreferences.getString(LocalSportsConstants.KEY_TOWN_TOPIC, null);
+	}
+
 	public static String queryPreferenceTown(Context context) {
 		SharedPreferences sharedPreferences = getDefaultSharedPreferences(context);
 		return sharedPreferences.getString(LocalSportsConstants.KEY_TOWN_NAME, null);

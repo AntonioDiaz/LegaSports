@@ -13,12 +13,18 @@ public class TownRestEntity {
 	@SerializedName("id")
 	@Expose
 	private Long id;
+
 	@SerializedName("name")
 	@Expose
 	private String name;
+
 	@SerializedName("active")
 	@Expose
 	private Boolean active;
+
+	@SerializedName("fcmTopic")
+	@Expose
+	private String fcmTopic;
 
 	public Long getId() {
 		return id;
@@ -44,4 +50,11 @@ public class TownRestEntity {
 		this.active = active;
 	}
 
+	public String getFcmTopic() {
+		return fcmTopic;
+	}
+
+	public void setFcmTopic(String fcmTopic) {
+		this.fcmTopic = fcmTopic;
+	}
 }

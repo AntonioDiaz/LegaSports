@@ -38,19 +38,9 @@ public class CompetitionDbUtils {
 
 	public static final boolean itIsNecesaryUpdate(ContentResolver contentResolver, Long idCompetition) {
 		Uri uri = CompetitionsEntry.buildCompetitionUriWithServerId(idCompetition);
-		String[] projection = {	CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER, CompetitionsEntry.COLUMN_LAST_UPDATE_APP };
-		Cursor cursor = contentResolver.query(uri, projection, null, null, null);
-		long lastPublishedOnServer;
-		long lastPublishedOnApp;
-		try {
-			cursor.moveToFirst();
-			lastPublishedOnServer = cursor.getLong(0);
-			lastPublishedOnApp = cursor.getLong(1);
-		} finally {
-			cursor.close();
-
-		}
-		return lastPublishedOnApp<lastPublishedOnServer;
+		Cursor cursor = contentResolver.query(uri, CompetitionsEntry.PROJECTION, null, null, null);
+		cursor.moveToFirst();
+		return CompetitionsEntry.initEntity(cursor).isDirty();
 	}
 
 	public static final void updateCompetition (Context context, CompetitionDetailsCallbak.OnFinishLoad onFinishLoad, Long idCompetition) {

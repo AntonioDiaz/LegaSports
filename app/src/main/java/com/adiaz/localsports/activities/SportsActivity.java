@@ -32,6 +32,8 @@ import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.NetworkUtilities;
 import com.adiaz.localsports.utilities.PreferencesUtils;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -138,8 +140,14 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
                 contentResolver.delete(LocalSportsDbContract.ClassificationEntry.CONTENT_URI, null, null);
                 contentResolver.delete(LocalSportsDbContract.SportCourtsEntry.CONTENT_URI, null, null);
                 contentResolver.delete(LocalSportsDbContract.FavoritesEntry.CONTENT_URI, null, null);
+                contentResolver.delete(SportsEntry.CONTENT_URI, null, null);
 				/* stop the FirebaseJob. */
                 LocalSportsSyncUtils.stopJob(this);
+                SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+                String fcmTopic = sharedPreferences.getString(LocalSportsConstants.KEY_TOWN_TOPIC, null);
+                if (!TextUtils.isEmpty(fcmTopic)) {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(fcmTopic);
+                }
                 Intent intentTowns = new Intent(this, TownsActivity.class);
                 startActivity(intentTowns);
                 finish();

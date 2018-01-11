@@ -18,7 +18,7 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 
 
 	private static final String DATABASE_NAME = "localsports.db";
-	private static final int DATABASE_VERSION = 20;
+	private static final int DATABASE_VERSION = 21;
 
 	public LocalSportsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,8 +34,7 @@ public class LocalSportsDbHelper extends SQLiteOpenHelper {
 							CompetitionsEntry.COLUMN_CATEGORY + " TEXT NOT NULL, " +
 							CompetitionsEntry.COLUMN_CATEGORY_ORDER + " INTEGER NOT NULL, " +
 							CompetitionsEntry.COLUMN_ID_SERVER + " TEXT NOT NULL, " +
-							CompetitionsEntry.COLUMN_LAST_UPDATE_SERVER + " INTEGER NOT NULL, " +
-							CompetitionsEntry.COLUMN_LAST_UPDATE_APP + " INTEGER NOT NULL, " +
+							CompetitionsEntry.COLUMN_IS_DIRTY + " INTEGER NOT NULL, " +
 							"UNIQUE (" + CompetitionsEntry.COLUMN_ID_SERVER + ") ON CONFLICT REPLACE" +
 						")";
 

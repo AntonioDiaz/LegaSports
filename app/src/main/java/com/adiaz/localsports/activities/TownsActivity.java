@@ -18,6 +18,7 @@ import com.adiaz.localsports.sync.retrofit.entities.town.TownRestEntity;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.NetworkUtilities;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -99,9 +100,12 @@ public class TownsActivity extends AppCompatActivity implements TownsAvailableCa
     public void onListItemClick(int clickedItemIndex) {
         SharedPreferences preferences = getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(LocalSportsConstants.KEY_TOWN_NAME, mTownRestEntityList.get(clickedItemIndex).getName());
-        editor.putLong(LocalSportsConstants.KEY_TOWN_ID, mTownRestEntityList.get(clickedItemIndex).getId());
+        TownRestEntity town = mTownRestEntityList.get(clickedItemIndex);
+        editor.putString(LocalSportsConstants.KEY_TOWN_NAME, town.getName());
+        editor.putLong(LocalSportsConstants.KEY_TOWN_ID, town.getId());
+        editor.putString(LocalSportsConstants.KEY_TOWN_TOPIC, town.getFcmTopic());
         editor.commit();
+        FirebaseMessaging.getInstance().subscribeToTopic(town.getFcmTopic());
         finish();
         Intent intent = new Intent(this, SportsActivity.class);
         startActivity(intent);

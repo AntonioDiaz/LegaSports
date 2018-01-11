@@ -48,23 +48,23 @@ public class LocalSportsDbContract {
 		public static final String COLUMN_CATEGORY = "category";
 		public static final String COLUMN_CATEGORY_ORDER = "category_order";
 		public static final String COLUMN_ID_SERVER = "id_server";
-		public static final String COLUMN_LAST_UPDATE_SERVER = "last_update_server";
-		public static final String COLUMN_LAST_UPDATE_APP = "last_update_app";
+		public static final String COLUMN_IS_DIRTY = "is_dirty";
+
 
 		public static final String[] PROJECTION = {
 				COLUMN_NAME,
 				COLUMN_SPORT,
 				COLUMN_CATEGORY,
 				COLUMN_ID_SERVER,
-				COLUMN_LAST_UPDATE_SERVER,
-				COLUMN_LAST_UPDATE_APP
+                COLUMN_IS_DIRTY
+
 		};
 		public static final int INDEX_NAME = 0;
 		public static final int INDEX_SPORT = 1;
 		public static final int INDEX_CATEGORY = 2;
 		public static final int INDEX_ID_SERVER = 3;
-		public static final int INDEX_LAST_UPDATE_SERVER = 4;
-		public static final int INDEX_LAST_UPDATE_APP = 5;
+		public static final int INDEX_IS_DIRTY = 4;
+
 
 		public static Competition initEntity(Cursor c) {
 			Competition competition = Competition.builder()
@@ -72,8 +72,7 @@ public class LocalSportsDbContract {
 					.setName(c.getString(CompetitionsEntry.INDEX_NAME))
 					.setSportName(c.getString(CompetitionsEntry.INDEX_SPORT))
 					.setCategoryName(c.getString(CompetitionsEntry.INDEX_CATEGORY))
-					.setLastUpdateServer(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_SERVER))
-					.setLastUpdateApp(c.getLong(CompetitionsEntry.INDEX_LAST_UPDATE_APP))
+					.setIsDirty(c.getInt(CompetitionsEntry.INDEX_IS_DIRTY)==1)
 					.build();
 			return competition;
 		}

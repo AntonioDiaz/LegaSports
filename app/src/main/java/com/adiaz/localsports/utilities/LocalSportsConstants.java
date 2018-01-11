@@ -23,6 +23,7 @@ public class LocalSportsConstants {
 	public static final String INTENT_TEAM_NAME = "intent_team_name";
 	public static final String KEY_TOWN_NAME = "KEY_TOWN_NAME";
 	public static final String KEY_TOWN_ID = "KEY_TOWN_ID";
+	public static final String KEY_TOWN_TOPIC = "KEY_TOPIC";
 	public static final String KEY_LASTUPDATE = "KEY_LASTUPDATE";
 	public static final String KEY_FAVORITES_TEAMS = "KEY_FAVORITES_TEAMS";
 	public static final String KEY_UUID = "KEY_UUID";
