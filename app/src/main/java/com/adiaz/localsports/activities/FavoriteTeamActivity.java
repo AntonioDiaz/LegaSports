@@ -67,22 +67,27 @@ public class FavoriteTeamActivity extends AppCompatActivity
 		mCompetition = CompetitionDbUtils.queryCompetition(this.getContentResolver(), mIdCompetition);
 		String subTitle = mCompetition.name();
 		subTitle += " - " + LocalSportsUtils.getStringResourceByName(this, mCompetition.sportName());
-		showLoading();
-		if (NetworkUtilities.isNetworkAvailable(this)) {
-			boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), mIdCompetition);
-			if (needToUpdate) {
-				CompetitionDbUtils.updateCompetition(this, this, mIdCompetition);
-			} else {
-				finishLoad();
-			}
-		} else {
-			LocalSportsUtils.showNoInternetAlert(this, activityView);
-			finishLoad();
-		}
 		SharedPreferences preferences = getDefaultSharedPreferences(this);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(mTeamName);
 		getSupportActionBar().setSubtitle(subTitle);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+        showLoading();
+        if (NetworkUtilities.isNetworkAvailable(this)) {
+            boolean needToUpdate = CompetitionDbUtils.itIsNecesaryUpdate(this.getContentResolver(), mIdCompetition);
+            if (needToUpdate) {
+                CompetitionDbUtils.updateCompetition(this, this, mIdCompetition);
+            } else {
+                finishLoad();
+            }
+        } else {
+            LocalSportsUtils.showNoInternetAlert(this, activityView);
+            finishLoad();
+        }
 	}
 
 	@Override

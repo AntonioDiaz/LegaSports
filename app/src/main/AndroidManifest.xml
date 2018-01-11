@@ -45,7 +45,8 @@
         </activity>
         <activity android:name="com.adiaz.localsports.activities.FavoritesActivity"
             android:theme="@style/MyMaterialTheme"></activity>
-        <activity android:name="com.adiaz.localsports.activities.FavoriteTeamActivity"></activity>
+        <activity android:name="com.adiaz.localsports.activities.FavoriteTeamActivity"
+            android:launchMode="singleTop"></activity>
         <activity android:name="com.adiaz.localsports.activities.FootballActivity"></activity>
         <activity
             android:name="com.adiaz.localsports.activities.SettingsActivity"
