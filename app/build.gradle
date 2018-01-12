@@ -21,7 +21,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-messaging:11.0.4'
+    implementation 'com.google.firebase:firebase-messaging:11.8.0'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -45,6 +46,7 @@ dependencies {
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.4'
     compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.google.android.gms:play-services-ads:11.8.0'
 }
 
 

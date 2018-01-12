@@ -26,7 +26,7 @@
     <TextView
         android:id="@+id/childItem_teamlocal"
         style="@style/child_expandable_list"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/rounded_corner_dark"
         android:textColor="@color/colorWhite"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/childItem_teamvisitor"
         style="@style/child_expandable_list"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/rounded_corner_dark"
         android:textColor="@color/colorWhite"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"

@@ -7,11 +7,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,19 +19,20 @@ import com.adiaz.localsports.R;
 import com.adiaz.localsports.adapters.SportsAdapter;
 import com.adiaz.localsports.database.LocalSportsDbContract;
 import com.adiaz.localsports.entities.Sport;
-import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionsAvailableCallback;
 import com.adiaz.localsports.sync.LocalSportsSyncUtils;
 import com.adiaz.localsports.sync.retrofit.LocalSportsRestApi;
+import com.adiaz.localsports.sync.retrofit.callbacks.CompetitionsAvailableCallback;
 import com.adiaz.localsports.sync.retrofit.callbacks.SportsCallback;
 import com.adiaz.localsports.sync.retrofit.entities.competition.CompetitionRestEntity;
-import com.adiaz.localsports.sync.retrofit.entities.competition.SportEntity;
 import com.adiaz.localsports.sync.retrofit.entities.sport.SportsRestEntity;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.NetworkUtilities;
 import com.adiaz.localsports.utilities.PreferencesUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,13 +52,18 @@ import static com.adiaz.localsports.database.LocalSportsDbContract.SportsEntry;
  * Created by adiaz on 9/1/18.
  */
 
-public class SportsActivity extends AppCompatActivity implements CompetitionsAvailableCallback.CompetitionsLoadedCallback, SharedPreferences.OnSharedPreferenceChangeListener, SportsCallback.SportsLoadedCallback, SportsAdapter.ListItemClickListener {
+public class SportsActivity extends AppCompatActivity implements
+        CompetitionsAvailableCallback.CompetitionsLoadedCallback,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        SportsCallback.SportsLoadedCallback,
+        SportsAdapter.ListItemClickListener {
 
     private static final String TAG = SportsActivity.class.getSimpleName();
     private Menu mMenu;
     private boolean mFinishLoadCompetitions;
     private boolean mFinishLoadSports;
     private Cursor mCursorSports;
+    public static Integer interstitialCount = 0;
 
     @BindView((R.id.layout_activity_sports))
     View activityView;
@@ -70,11 +74,15 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
     @BindView(R.id.rv_sports)
     RecyclerView rvSports;
 
+    @BindView(R.id.adView)
+    AdView mAdView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
+        MobileAds.initialize(this, LocalSportsConstants.ADMOB_ID);
         ButterKnife.bind(this);
         String town = PreferencesUtils.queryPreferenceTown(this);
         if (TextUtils.isEmpty(town)) {
@@ -82,6 +90,9 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
             startActivity(intent);
             finish();
         } else {
+            getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
             if (getSupportActionBar()!=null) {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setIcon(R.mipmap.ic_launcher);
@@ -190,7 +201,6 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
     }
 
     private void updateLastUpdateMenuItem(Menu menu) {
-        Log.d(TAG, "updateLastUpdateMenuItem: " + menu);
         SharedPreferences preferences = getDefaultSharedPreferences(this);
         if (menu != null) {
             String title;
@@ -216,7 +226,6 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, "onSharedPreferenceChanged: should update key " + key);
         if (key.equals(LocalSportsConstants.KEY_LASTUPDATE) && sharedPreferences.contains(key)) {
             updateLastUpdateMenuItem(this.mMenu);
         }
@@ -245,6 +254,5 @@ public class SportsActivity extends AppCompatActivity implements CompetitionsAva
             intent.putExtra(LocalSportsConstants.INTENT_SPORT_TAG, (String) sport.tag());
             startActivity(intent);
         }
-
     }
 }

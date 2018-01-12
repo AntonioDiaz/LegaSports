@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -105,7 +106,9 @@ public class TownsActivity extends AppCompatActivity implements TownsAvailableCa
         editor.putLong(LocalSportsConstants.KEY_TOWN_ID, town.getId());
         editor.putString(LocalSportsConstants.KEY_TOWN_TOPIC, town.getFcmTopic());
         editor.commit();
-        FirebaseMessaging.getInstance().subscribeToTopic(town.getFcmTopic());
+        if (!TextUtils.isEmpty(town.getFcmTopic())) {
+            FirebaseMessaging.getInstance().subscribeToTopic(town.getFcmTopic());
+        }
         finish();
         Intent intent = new Intent(this, SportsActivity.class);
         startActivity(intent);

@@ -19,9 +19,13 @@ import com.adiaz.localsports.R;
 import com.adiaz.localsports.adapters.CompetitionsAdapter;
 import com.adiaz.localsports.database.LocalSportsDbContract;
 import com.adiaz.localsports.entities.Competition;
+import com.adiaz.localsports.entities.Sport;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 import com.adiaz.localsports.utilities.PreferencesUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +46,8 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 	private String sportTag;
 	private String sportTitle;
 	private Cursor mCursor;
+	InterstitialAd mInterstitialAd;
+	int mClickedItemIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +80,18 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 			recyclerView.setAdapter(competitionsAdapter);
 			recyclerView.setNestedScrollingEnabled(false);
 		}
-		SharedPreferences preferences = getDefaultSharedPreferences(this);
-		String townSelect = preferences.getString(LocalSportsConstants.KEY_TOWN_NAME, null);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(LocalSportsConstants.INTESTITIAL_AD_ID);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                SelectCompetitionActivity.this.onAdClosed();
+            }
+        });
+
 	}
 
     @Override
@@ -89,11 +105,13 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 
 	@Override
 	public void onListItemClick(int clickedItemIndex) {
-		mCursor.moveToPosition(clickedItemIndex);
-		Intent intent = new Intent(this, CompetitionActivity.class);
-		Competition competition = CompetitionsEntry.initEntity(mCursor);
-		intent.putExtra(LocalSportsConstants.INTENT_COMPETITION, competition);
-		startActivity(intent);
+        mClickedItemIndex = clickedItemIndex;
+        SportsActivity.interstitialCount++;
+        if (mInterstitialAd.isLoaded() && SportsActivity.interstitialCount % LocalSportsConstants.INTERSTITIAL_FRECUENCY==0) {
+            mInterstitialAd.show();
+        } else {
+            onAdClosed();
+        }
 	}
 
 	@Override
@@ -101,5 +119,13 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		mCursor.close();
 		super.onDestroy();
 	}
+
+    private void onAdClosed() {
+        mCursor.moveToPosition(mClickedItemIndex);
+        Intent intent = new Intent(this, CompetitionActivity.class);
+        Competition competition = CompetitionsEntry.initEntity(mCursor);
+        intent.putExtra(LocalSportsConstants.INTENT_COMPETITION, competition);
+        startActivity(intent);
+    }
 }
 

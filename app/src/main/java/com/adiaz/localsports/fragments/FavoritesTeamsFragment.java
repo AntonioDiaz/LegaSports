@@ -14,9 +14,14 @@ import android.widget.TextView;
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.activities.FavoriteTeamActivity;
 import com.adiaz.localsports.activities.FavoritesActivity;
+import com.adiaz.localsports.activities.SelectCompetitionActivity;
+import com.adiaz.localsports.activities.SportsActivity;
 import com.adiaz.localsports.adapters.FavoritesTeamsAdapter;
 import com.adiaz.localsports.entities.TeamFavorite;
 import com.adiaz.localsports.utilities.LocalSportsConstants;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +32,9 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 
 	@BindView(R.id.rv_fav_teams) RecyclerView recyclerView;
 	@BindView(R.id.tv_empty_list_item) TextView tvEmptyList;
+
+	InterstitialAd mInterstitialAd;
+	int mClickedItemIndex;
 
 	public FavoritesTeamsFragment() {
 	}
@@ -41,6 +49,17 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_fav_teams, container, false);
 		ButterKnife.bind(this, view);
+        mInterstitialAd = new InterstitialAd(this.getActivity());
+        mInterstitialAd.setAdUnitId(LocalSportsConstants.INTESTITIAL_AD_ID);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                FavoritesTeamsFragment.this.onAdClosed();
+            }
+        });
 		return view;
 	}
 
@@ -63,10 +82,22 @@ public class FavoritesTeamsFragment extends Fragment implements FavoritesTeamsAd
 
 	@Override
 	public void onListItemClick(int clickedItemIndex) {
-		Intent intent = new Intent(getActivity(), FavoriteTeamActivity.class);
-		TeamFavorite teamFavorite = FavoritesActivity.teamsFavorites.get(clickedItemIndex);
-		intent.putExtra(LocalSportsConstants.INTENT_TEAM_NAME, teamFavorite.getName());
-		intent.putExtra(LocalSportsConstants.INTENT_ID_COMPETITION_SERVER, teamFavorite.getIdCompetitionServer());
-		startActivity(intent);
+        mClickedItemIndex = clickedItemIndex;
+        SportsActivity.interstitialCount++;
+        if (mInterstitialAd.isLoaded() && SportsActivity.interstitialCount % LocalSportsConstants.INTERSTITIAL_FRECUENCY==0) {
+            mInterstitialAd.show();
+        } else {
+            onAdClosed();
+        }
 	}
+
+    private void onAdClosed() {
+        Intent intent = new Intent(getActivity(), FavoriteTeamActivity.class);
+        TeamFavorite teamFavorite = FavoritesActivity.teamsFavorites.get(mClickedItemIndex);
+        intent.putExtra(LocalSportsConstants.INTENT_TEAM_NAME, teamFavorite.getName());
+        intent.putExtra(LocalSportsConstants.INTENT_ID_COMPETITION_SERVER, teamFavorite.getIdCompetitionServer());
+        startActivity(intent);
+    }
+
+
 }

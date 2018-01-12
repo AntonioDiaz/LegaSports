@@ -51,15 +51,18 @@ public class SportsAdapter extends RecyclerView.Adapter<SportsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        int colorPrimaryDark = ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimaryDark, null);
+        int colorAccent = ResourcesCompat.getColor(mContext.getResources(), R.color.colorAccent, null);
+        //holder.mSportName.setBackgroundColor(colorPrimaryDark);
         if (position==0) {
             holder.mSportName.setText(mContext.getString(R.string.favorites));
             holder.mIvSport.setImageResource(R.drawable.favorite);
-            int color = ResourcesCompat.getColor(mContext.getResources(), R.color.colorAccent, null);
-            holder.mIvSport.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            holder.mIvSport.setColorFilter(colorAccent, PorterDuff.Mode.SRC_IN);
         } else {
             mCursor.moveToPosition(position - 1);
             Sport sport = LocalSportsDbContract.SportsEntry.initEntity(mCursor);
             holder.mSportName.setText(LocalSportsUtils.getStringResourceByName(mContext, sport.tag()));
+            holder.mIvSport.setColorFilter(colorPrimaryDark, PorterDuff.Mode.SRC_IN);
             try {
                 int identifier = mContext.getResources().getIdentifier(sport.image(), "drawable", mContext.getPackageName());
                 holder.mIvSport.setImageResource(identifier);
@@ -93,9 +96,8 @@ public class SportsAdapter extends RecyclerView.Adapter<SportsAdapter.ViewHolder
             int clickedItemIndex = getAdapterPosition();
             mListItemClickListener.onListItemClick(clickedItemIndex);
         }
-
-
     }
+
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
     }

@@ -83,23 +83,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
         }
-        //ContentResolver contentResolver = getApplicationContext().getContentResolver();
-        //NotificationUtils.remindUpdatedTeam(getApplicationContext(), competition, "vamos q nos vamos");
     }
-
 
     private void showNotificationTeam(Context context, Competition competition, String teamName) {
         if (LocalSportsUtils.isShowNotification(context)) {
             NotificationUtils.remindUpdatedTeam(context, competition, teamName);
         }
-        //FavoritesUtils.updateLastNotification(context.getContentResolver(), favorite.getId(), Calendar.getInstance().getTimeInMillis());
     }
 
     private void showNotificationCompetition(Context context, Competition competition) {
         if (LocalSportsUtils.isShowNotification(context)) {
             NotificationUtils.remindUpdatedCompetition(context, competition);
         }
-        //disable notification for this favorite.
-        //FavoritesUtils.updateLastNotification(context.getContentResolver(), favorite.getId(), Calendar.getInstance().getTimeInMillis());
     }
 }

@@ -94,7 +94,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putLong(LocalSportsConstants.KEY_LASTUPDATE, new Date().getTime());
-		editor.commit();
+		editor.apply();
 		Log.d(TAG, "loadCompetitions: lastupdate updated...." + preferences.getLong(LocalSportsConstants.KEY_LASTUPDATE, -1));
 	}
 
