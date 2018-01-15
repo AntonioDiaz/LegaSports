@@ -40,5 +40,5 @@ public class LocalSportsConstants {
 
 	public static final String INTESTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
 	public static final String ADMOB_ID = "ca-app-pub-3940256099942544~3347511713";
-	public static final Integer INTERSTITIAL_FRECUENCY = 2;
+	public static final Integer INTERSTITIAL_FRECUENCY = 5;
 }
