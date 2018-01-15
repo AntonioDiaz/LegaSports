@@ -15,14 +15,14 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="ActionBar.Solid.LocalSports.NoTitle"
+    <style name="ActionBar.Solid.DeporteLocal.NoTitle"
            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome|showTitle</item>
         <item name="logo">@mipmap/ic_launcher</item>
     </style>
 
-    <style name="AppTheme.LocalSports" parent="@style/AppTheme">
-        <item name="actionBarStyle">@style/ActionBar.Solid.LocalSports.NoTitle</item>
+    <style name="AppTheme.DeporteLocal" parent="@style/AppTheme">
+        <item name="actionBarStyle">@style/ActionBar.Solid.DeporteLocal.NoTitle</item>
     </style>
 
 

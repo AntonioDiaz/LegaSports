@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:685528310190:android:361e27bcb8802b4f",
+        "mobilesdk_app_id": "1:685528310190:android:2192f1e3ec5014f4",
         "android_client_info": {
-          "package_name": "com.adiaz.localsports"
+          "package_name": "com.adiaz.deportelocal"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "685528310190-lim800qf044ivuvp7ck9m841ak9s1r26.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.adiaz.localsports",
-            "certificate_hash": "8fdac00c96c59264c5aa545c87beeee3dcca7146"
-          }
-        },
         {
           "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
