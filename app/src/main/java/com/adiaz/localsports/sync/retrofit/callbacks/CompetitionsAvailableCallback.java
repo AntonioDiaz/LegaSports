@@ -80,7 +80,7 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 			cv.put(CompetitionsEntry.COLUMN_ID_SERVER, competitionEntity.getId());
 			cv.put(CompetitionsEntry.COLUMN_NAME, competitionEntity.getName());
 			cv.put(CompetitionsEntry.COLUMN_SPORT, competitionEntity.getSportEntity().getTag());
-			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionEntity.getCategoryEntity().getName().toLowerCase());
+			cv.put(CompetitionsEntry.COLUMN_CATEGORY, competitionEntity.getCategoryEntity().getName());
 			cv.put(CompetitionsEntry.COLUMN_CATEGORY_ORDER, competitionEntity.getCategoryEntity().getOrder());
 			cv.put(CompetitionsEntry.COLUMN_IS_DIRTY, 1);
 			competitions[i] = cv;
@@ -95,7 +95,6 @@ public class CompetitionsAvailableCallback implements Callback<List<CompetitionR
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putLong(LocalSportsConstants.KEY_LASTUPDATE, new Date().getTime());
 		editor.apply();
-		Log.d(TAG, "loadCompetitions: lastupdate updated...." + preferences.getLong(LocalSportsConstants.KEY_LASTUPDATE, -1));
 	}
 
 	@Override

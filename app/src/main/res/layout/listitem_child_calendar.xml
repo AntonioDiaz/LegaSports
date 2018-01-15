@@ -26,7 +26,7 @@
     <TextView
         android:id="@+id/childItem_teamlocal"
         style="@style/child_expandable_list"
-        android:background="@drawable/rounded_corner_dark"
+        android:background="@drawable/rounded_corner_dark_less_radius"
         android:textColor="@color/colorWhite"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -34,6 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:padding="4dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:visibility="visible"
@@ -45,7 +46,7 @@
     <TextView
         android:id="@+id/childItem_teamvisitor"
         style="@style/child_expandable_list"
-        android:background="@drawable/rounded_corner_dark"
+        android:background="@drawable/rounded_corner_dark_less_radius"
         android:textColor="@color/colorWhite"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
+        android:padding="4dp"
         android:visibility="visible"
         android:ellipsize="end"
         android:maxLines="1"

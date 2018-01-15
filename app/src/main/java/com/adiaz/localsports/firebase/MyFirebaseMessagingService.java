@@ -50,7 +50,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
                 String competitionStr = data.get("competition");
-                Log.d(TAG, "onMessageReceived: competitionStr " + competitionStr);
                 Gson gson = new Gson();
                 CompetitionRestEntity competitionRestEntity = gson.fromJson(competitionStr, CompetitionRestEntity.class);
                 Competition competition = CompetitionsDAO.findCompetition(getApplicationContext(), competitionRestEntity.getId());

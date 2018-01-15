@@ -56,7 +56,6 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
 		ButterKnife.bind(this);
 		sportTag = getIntent().getStringExtra(LocalSportsConstants.INTENT_SPORT_TAG);
 		sportTitle = LocalSportsUtils.getStringResourceByName(this, sportTag);
-		Log.d(TAG, "onCreate: sportTag - " + sportTag);
 		if (getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(sportTitle);

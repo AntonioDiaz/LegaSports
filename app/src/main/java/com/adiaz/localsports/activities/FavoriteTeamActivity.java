@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.adapters.FavoriteTeamAdapter;
@@ -131,10 +132,12 @@ public class FavoriteTeamActivity extends AppCompatActivity
 				if (favorite!=null) {
 					FavoritesUtils.removeFavorites(this, favorite.getId());
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
-				} else {
+                    Toast.makeText(this, getString(R.string.favorites_team_removed), Toast.LENGTH_SHORT).show();
+                } else {
 					FavoritesUtils.addFavorites(this, mIdCompetition, mTeamName);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
-				}
+                    Toast.makeText(this, R.string.favorites_team_added, Toast.LENGTH_SHORT).show();
+                }
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
 				final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
 				drawable.setColorFilter(colorFilter);

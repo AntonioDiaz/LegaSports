@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.database.LocalSportsDbContract;
+import com.adiaz.localsports.entities.Competition;
 import com.adiaz.localsports.utilities.LocalSportsUtils;
 
 import butterknife.BindView;
@@ -44,10 +45,9 @@ public class CompetitionsAdapter extends RecyclerView.Adapter<CompetitionsAdapte
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		competitions.moveToPosition(position);
-		String competition = competitions.getString(LocalSportsDbContract.CompetitionsEntry.INDEX_NAME);
-		String category = competitions.getString(LocalSportsDbContract.CompetitionsEntry.INDEX_CATEGORY);
-		holder.tvCompetitionName.setText(competition);
-		holder.tvCategoryName.setText(LocalSportsUtils.getStringResourceByName(context, category.toLowerCase()));
+        Competition competition = LocalSportsDbContract.CompetitionsEntry.initEntity(competitions);
+		holder.tvCompetitionName.setText(competition.name());
+		holder.tvCategoryName.setText(competition.categoryName());
 	}
 
 	@Override

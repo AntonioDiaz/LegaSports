@@ -85,7 +85,6 @@ public class FavoritesCompetitionsFragment extends Fragment implements Favorites
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        Log.d(TAG, "onListItemClick: toma toma" + clickedItemIndex);
         mClickedItemIndex = clickedItemIndex;
         SportsActivity.interstitialCount++;
         if (mInterstitialAd.isLoaded() && SportsActivity.interstitialCount % LocalSportsConstants.INTERSTITIAL_FRECUENCY==0) {

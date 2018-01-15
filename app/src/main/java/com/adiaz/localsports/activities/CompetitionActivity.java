@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.adiaz.localsports.R;
 import com.adiaz.localsports.entities.Classification;
@@ -170,10 +171,12 @@ public class CompetitionActivity extends AppCompatActivity implements Competitio
 				if (favorite!=null) {
 					FavoritesUtils.removeFavorites(this, favorite.getId());
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite);
-				} else {
+                    Toast.makeText(this, R.string.favorites_competition_removed, Toast.LENGTH_SHORT).show();
+                } else {
 					FavoritesUtils.addFavorites(this, mIdCompetition);
 					drawable = ContextCompat.getDrawable(this, R.drawable.ic_favorite_fill);
-				}
+                    Toast.makeText(this, R.string.favorites_competition_added, Toast.LENGTH_SHORT).show();
+                }
 				int colorWhite = ContextCompat.getColor(this, R.color.colorWhite);
 				final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
 				drawable.setColorFilter(colorFilter);
@@ -189,16 +192,18 @@ public class CompetitionActivity extends AppCompatActivity implements Competitio
 	public void selectFavorite(View view) {
 		ImageView imageView = (ImageView) view.findViewById(R.id.iv_favorites);
 		String idTeam = (String) imageView.getTag();
-		Log.d(TAG, "selectFavorite: " + idTeam);
 		Favorite favorite = FavoritesUtils.queryFavoriteTeam(this, mIdCompetition, idTeam);
-		if (favorite!=null) {
+        if (favorite!=null) {
 			imageView.setImageResource(R.drawable.ic_favorite);
 			FavoritesUtils.removeFavorites(this, favorite.getId());
-		} else {
+            Toast.makeText(this, R.string.favorites_team_removed, Toast.LENGTH_SHORT).show();
+
+        } else {
 			imageView.setImageResource(R.drawable.ic_favorite_fill);
 			FavoritesUtils.addFavorites(this, mIdCompetition, idTeam);
-		}
-	}
+            Toast.makeText(this, R.string.favorites_team_added, Toast.LENGTH_SHORT).show();
+        }
+    }
 
 	@Override
 	public void finishLoad() {

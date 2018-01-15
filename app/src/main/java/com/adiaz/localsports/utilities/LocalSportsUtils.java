@@ -36,7 +36,7 @@ public class LocalSportsUtils {
 			int resId = context.getResources().getIdentifier(aString, "string", packageName);
 			strResource = context.getString(resId);
 		} catch (Exception e) {
-			Log.d(TAG, "resource not found at getStringResourceByName: " + aString);
+			Log.e(TAG, "resource not found at getStringResourceByName: " + aString, e);
 		}
 		return strResource;
 	}

@@ -125,8 +125,13 @@
     <string name="dialog_title_send_issue">Notificar error</string>
     <string name="dialog_description">Descripción del error</string>
     <string name="dialog_match_description">Jornada %1$s: %2$s - %3$s</string>
-    <string name="dialog_description_empty">Por favor indique una breve descripción del error.</string>
+    <string name="dialog_description_empty">Por favor, indique una breve descripción del error.</string>
     <string name="dialog_issue_added">Se ha enviado el notificación al servidor, gracias por su colaboración.</string>
     <string name="dialog_issue_error">No se ha conseguido enviar la notificación.</string>
     <string name="dialog_issue_error_http">No se ha conseguido enviar la notificación. Código: %1$s</string>
+    <string name="favorites_competition_added">Se añadió la competición a la lista de favoritos.</string>
+    <string name="favorites_competition_removed">Se eliminó la competición de la lista de favoritos.</string>
+    <string name="favorites_team_added">Se añadió el equipo a la lista de favoritos.</string>
+    <string name="favorites_team_removed">Se eliminó el equipo de la lista de favoritos.</string>
+
 </resources>
