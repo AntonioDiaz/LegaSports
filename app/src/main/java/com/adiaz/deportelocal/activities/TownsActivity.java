@@ -52,6 +52,10 @@ public class TownsActivity extends AppCompatActivity implements TownsAvailableCa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_towns);
+        if (getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        }
         ButterKnife.bind(this);
         if (NetworkUtilities.isNetworkAvailable(this)) {
             startLoadingTowns();
