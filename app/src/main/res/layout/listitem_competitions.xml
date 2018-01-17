@@ -27,7 +27,7 @@
             <TextView
                 android:id="@+id/tv_competition_name"
                 style="@style/main_list_text_small"
-                android:background="@drawable/rounded_corner_accent"
+                android:background="@drawable/rounded_corner_accent_less_radius"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

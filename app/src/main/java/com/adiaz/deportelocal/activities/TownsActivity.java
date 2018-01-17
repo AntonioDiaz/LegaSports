@@ -55,6 +55,7 @@ public class TownsActivity extends AppCompatActivity implements TownsAvailableCa
         if (getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+            getSupportActionBar().setTitle("   " + getString(R.string.app_name));
         }
         ButterKnife.bind(this);
         if (NetworkUtilities.isNetworkAvailable(this)) {

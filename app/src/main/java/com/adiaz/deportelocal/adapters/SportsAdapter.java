@@ -3,6 +3,7 @@ package com.adiaz.deportelocal.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,9 +53,10 @@ public class SportsAdapter extends RecyclerView.Adapter<SportsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         int colorPrimaryDark = ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimaryDark, null);
         int colorAccent = ResourcesCompat.getColor(mContext.getResources(), R.color.colorAccent, null);
-        //holder.mSportName.setBackgroundColor(colorPrimaryDark);
         if (position==0) {
             holder.mSportName.setText(mContext.getString(R.string.favorites));
+            holder.mSportName.setBackgroundColor(colorAccent);
+            holder.mSportName.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.rounded_corner_accent));
             holder.mIvSport.setImageResource(R.drawable.favorite);
             holder.mIvSport.setColorFilter(colorAccent, PorterDuff.Mode.SRC_IN);
         } else {

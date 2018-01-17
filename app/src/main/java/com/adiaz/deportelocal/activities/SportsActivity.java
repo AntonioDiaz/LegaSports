@@ -97,8 +97,8 @@ public class SportsActivity extends AppCompatActivity implements
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setIcon(R.mipmap.ic_launcher);
                 getSupportActionBar().setDisplayUseLogoEnabled(true);
-                getSupportActionBar().setTitle(" " + town);
-                getSupportActionBar().setSubtitle(" " + getString(R.string.app_name));
+                getSupportActionBar().setTitle("   " + town);
+                getSupportActionBar().setSubtitle("    " + getString(R.string.app_name));
             }
             if (!getDefaultSharedPreferences(this).contains(DeporteLocalConstants.KEY_LASTUPDATE)) {
                 if (NetworkUtilities.isNetworkAvailable(this)) {
