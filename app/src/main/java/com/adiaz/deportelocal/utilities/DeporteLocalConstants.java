@@ -31,12 +31,11 @@ public class DeporteLocalConstants {
 	public static final String KEY_FAVORITES_COMPETITIONS = "KEY_FAVORITES_COMPETITIONS";
 
 	public static final String UNDEFINDED_FIELD = " - ";
-	public static final Integer MINUTES_NECESSARY_TO_UPDATE = 30;
 
-	public static final Long MILISECONDS_NECESSARY_TO_UPDATE = TimeUnit.MINUTES.toMillis(MINUTES_NECESSARY_TO_UPDATE);
 	public static final int STATE_PENDING = 0;
 	public static final int STATE_PLAYED = 1;
 	public static final int STATE_CANCELED = 2;
+	public static final int STATE_RESTING = 3;
 
 	public static final String INTESTITIAL_AD_ID = "ca-app-pub-3940256099942544/1033173712";
 	public static final String ADMOB_ID = "ca-app-pub-3940256099942544~3347511713";

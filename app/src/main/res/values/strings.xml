@@ -44,6 +44,7 @@
     <string name="classification_c">C</string>
     <string name="classification_points">Puntos</string>
 
+    <string name="jornada_header_calendar">Jornada %1$d  (%2$s)</string>
     <string name="jornada_header">Jornada %1$d</string>
 
     <string name="not_implemented">Not implemented</string>
@@ -71,6 +72,8 @@
     <string name="loading_team_calendar">cargando calendar</string>
     <string name="action_preferences">Preferencias</string>
     <string name="action_changetown">Cambiar municipio</string>
+    <string name="action_login">Iniciar sesión</string>
+    <string name="action_logout">Cerrar sesión</string>
     <string name="action_update">Actualizar (%1$s)</string>
     <string name="emptyTeamList">No hay equipos registrados para esta competición</string>
     <string name="emptyClassificationList">No hay clasificación para esta competición</string>
@@ -86,7 +89,8 @@
     <string name="rest_team">(descansa)</string>
     <string name="match_pending">(pendiente)</string>
     <string name="match_cancel">(cancelado)</string>
-    <string name="match_played">(juegado)</string>
+    <string name="match_played">(jugado)</string>
+    <string name="match_resting">(descansa)</string>
     <string name="update_competition_notification_title">Actualización: %1$s</string>
     <string name="update_competition_notification_body">Se ha registrado una actualización en la competición <b>%1$s</b> (%2$s - %3$s).</string>
     <string name="update_team_notification_title">Actualización: %1$s</string>

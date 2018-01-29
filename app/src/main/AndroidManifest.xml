@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.adiaz.deportelocal">
+    package="com.adiaz.deportelocal">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -13,69 +13,70 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity
-            android:name="com.adiaz.deportelocal.activities.SportsActivity"
+            android:name=".activities.SportsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.adiaz.deportelocal.activities.TownsActivity"
-            android:launchMode="singleTop">
-        </activity>
-
         <activity
-            android:name="com.adiaz.deportelocal.activities.SelectCompetitionActivity"
-            android:launchMode="singleTop">
-
-        </activity>
+            android:name=".activities.TownsActivity"
+            android:launchMode="singleTop"></activity>
         <activity
-            android:name="com.adiaz.deportelocal.activities.CompetitionActivity"
+            android:name=".activities.SelectCompetitionActivity"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".activities.CompetitionActivity"
             android:launchMode="singleTop"
-            android:parentActivityName="com.adiaz.deportelocal.activities.SelectCompetitionActivity"
+            android:parentActivityName=".activities.SelectCompetitionActivity"
             android:theme="@style/MyMaterialTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adiaz.deportelocal.activities.SelectCompetitionActivity"/>
+                android:value="com.adiaz.deportelocal.activities.SelectCompetitionActivity" />
         </activity>
-        <activity android:name="com.adiaz.deportelocal.activities.FavoritesActivity"
-            android:theme="@style/MyMaterialTheme"></activity>
-        <activity android:name="com.adiaz.deportelocal.activities.FavoriteTeamActivity"
-            android:launchMode="singleTop"></activity>
-        <activity android:name="com.adiaz.deportelocal.activities.FootballActivity"></activity>
         <activity
-            android:name="com.adiaz.deportelocal.activities.SettingsActivity"
+            android:name=".activities.FavoritesActivity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activities.FavoriteTeamActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".activities.FootballActivity" />
+        <activity
+            android:name=".activities.SettingsActivity"
             android:label="@string/action_preferences"
-            android:parentActivityName="com.adiaz.deportelocal.activities.SportsActivity"
+            android:parentActivityName=".activities.SportsActivity"
             android:theme="@style/MyMaterialTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adiaz.deportelocal.activities.SportsActivity" />
         </activity>
-        <service
-            android:name="com.adiaz.deportelocal.firebase.MyFirebaseMessagingService">
+
+        <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name="com.adiaz.deportelocal.firebase.MyFirebaseInstanceIdService">
+        <service android:name=".firebase.MyFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
+
         <provider
+            android:name=".contentproviders.DeporteLocalContentProvider"
             android:authorities="com.adiaz.deportelocal"
-            android:name="com.adiaz.deportelocal.contentproviders.DeporteLocalContentProvider"
-            android:exported="false"></provider>
+            android:exported="false" />
+
+        <activity android:name=".activities.LoginActivity"></activity>
     </application>
 
 </manifest>

@@ -97,6 +97,9 @@ public class DeporteLocalUtils {
 			case DeporteLocalConstants.STATE_CANCELED:
 				stateDesc = context.getString(R.string.match_cancel);
 				break;
+			case DeporteLocalConstants.STATE_RESTING:
+				stateDesc = context.getString(R.string.match_resting);
+				break;
 		}
 		return stateDesc;
 	}

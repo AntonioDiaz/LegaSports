@@ -5,8 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_margin="0dp"
-              android:orientation="horizontal"
-    >
+              android:orientation="horizontal">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_fav_card"
@@ -15,58 +14,60 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_match_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginBottom="8dp"
-            >
+            android:visibility="gone">
+
             <TextView
                 android:id="@+id/tv_fav_team_jornada_empty"
                 style="@style/text_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corner_dark"
+                android:padding="8dp"
+                android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:padding="8dp"
-                android:background="@drawable/rounded_corner_dark"
-                android:textColor="@color/colorWhite"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/example_jornada"
-                android:layout_marginStart="8dp"/>
+                tools:text="@string/example_jornada" />
 
             <TextView
                 android:id="@+id/tv_fav_team_undefined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="@string/undefined_week"
-                android:textAppearance="@style/text_header_small"
-                android:gravity="right"
-
-                app:layout_constraintLeft_toRightOf="@+id/tv_fav_team_jornada_empty"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
+
                 android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:textAppearance="@style/text_header_small"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_team_jornada_empty"
+                app:layout_constraintLeft_toRightOf="@+id/tv_fav_team_jornada_empty"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_fav_team_jornada_empty"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_team_jornada_empty"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+                tools:text="@string/undefined_week" />
 
         </android.support.constraint.ConstraintLayout>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_match_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            >
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_fav_team_jornada"
@@ -74,29 +75,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corner_dark"
+                android:padding="8dp"
+                android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:padding="8dp"
-                android:background="@drawable/rounded_corner_dark"
-                android:textColor="@color/colorWhite"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/example_jornada"
-                android:layout_marginStart="8dp"/>
+                tools:text="@string/example_jornada" />
 
             <TextView
                 android:id="@+id/tv_fav_team_date"
+                style="@style/text_small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                style="@style/text_small"
-                tools:text="@string/example_date"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:text="TextView"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginEnd="8dp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/example_date" />
 
             <TextView
                 android:id="@+id/tv_fav_team_place"
@@ -105,27 +106,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="right|end"
                 android:text="TextView"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_date"
-                tools:text="@string/example_place"
-                android:layout_marginEnd="8dp"/>
+                tools:text="@string/example_place" />
 
             <TextView
                 android:id="@+id/tv_fav_team_local"
+                style="@style/text_subheader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/text_subheader"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                tools:text="@string/example_team_name"
-                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_place"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+                tools:text="@string/example_team_name" />
 
 
             <android.support.constraint.Guideline
@@ -134,8 +133,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.37"
-                tools:layout_editor_absoluteY="33dp"
-                tools:layout_editor_absoluteX="135dp"/>
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="33dp" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline2"
@@ -143,154 +142,77 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.81"
-                tools:layout_editor_absoluteY="33dp"
-                tools:layout_editor_absoluteX="287dp"/>
+                tools:layout_editor_absoluteX="287dp"
+                tools:layout_editor_absoluteY="33dp" />
 
             <TextView
                 android:id="@+id/tv_fav_team_visitor"
+                style="@style/text_subheader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/text_subheader"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
                 android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_local"
-                tools:text="@string/example_team_name"
                 app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_local"
+                tools:text="@string/example_team_name" />
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toTopOf="@+id/tv_fav_team_visitor"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_fav_team_local"
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_local_score"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_local"
-                android:id="@+id/imageView"></ImageView>
+                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_local"></ImageView>
+
             <ImageView
+                android:id="@+id/imageView3"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
+                android:layout_marginBottom="16dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_fav_team_visitor"
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_visitor_score"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor"
-                android:id="@+id/imageView3"></ImageView>
+                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor"></ImageView>
+
             <TextView
                 android:id="@+id/tv_fav_team_local_score"
+                style="@style/text_subheader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/text_subheader"
                 android:layout_marginLeft="8dp"
-                android:textAlignment="textEnd"
+                android:layout_marginStart="8dp"
                 android:gravity="end"
                 android:paddingRight="8dp"
-                app:layout_constraintTop_toTopOf="@+id/tv_fav_team_local"
-                tools:text="12"
+                android:textAlignment="textEnd"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline2"
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_place"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="@+id/guideline2"/>
+                app:layout_constraintTop_toTopOf="@+id/tv_fav_team_local"
+                tools:text="12" />
 
             <TextView
                 android:id="@+id/tv_fav_team_visitor_score"
+                style="@style/text_subheader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/text_subheader"
                 android:layout_marginLeft="8dp"
-                android:textAlignment="textEnd"
+                android:layout_marginStart="8dp"
                 android:gravity="end"
                 android:paddingRight="8dp"
-                app:layout_constraintTop_toTopOf="@+id/tv_fav_team_visitor"
-                tools:text="12"
+                android:textAlignment="textEnd"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline2"
                 app:layout_constraintRight_toRightOf="@+id/tv_fav_team_local_score"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="@+id/guideline2"/>
+                app:layout_constraintTop_toTopOf="@+id/tv_fav_team_visitor"
+                tools:text="12" />
 
-            <ImageButton
-                android:id="@+id/ib_issue"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:srcCompat="@drawable/ic_warning_black_24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:tint="@color/colorPrimary"
-                app:layout_constraintRight_toRightOf="@+id/tv_fav_team_visitor_score"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="?android:attr/selectableItemBackground"
-                android:onClick="sendIssue"/>
-
-            <ImageButton
-                android:id="@+id/ib_location"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:cropToPadding="false"
-                android:onClick="showLocation"
-                android:tint="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ib_issue"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
-                app:srcCompat="@drawable/ic_directions_black_24dp"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginEnd="17dp"/>
-
-
-            <ImageButton
-                android:id="@+id/ib_calendar"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:cropToPadding="false"
-                android:onClick="addEvent"
-                android:tint="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ib_location"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
-                app:srcCompat="@drawable/ic_event_black_24dp"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginEnd="17dp"/>
-
-            <ImageButton
-                android:id="@+id/ib_share"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="17dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:cropToPadding="false"
-                android:onClick="shareMatchDetails"
-                android:tint="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ib_calendar"
-                app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_visitor_score"
-                app:srcCompat="@drawable/ic_share_black_24dp"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginEnd="17dp"/>
-
-            <TextView
-                android:id="@+id/tv_match_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/text_small"
-                android:text=""
-                android:layout_marginLeft="0dp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_fav_team_visitor"
-                app:layout_constraintBottom_toBottomOf="@+id/ib_share"
-                android:layout_marginBottom="-1dp"
-                tools:text="@string/example_match_state"
-                app:layout_constraintTop_toTopOf="@+id/ib_share"
-                android:layout_marginTop="0dp"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

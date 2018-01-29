@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "685528310190-s0i0hap6vciflmoh78pkhkm3rbsc36e7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adiaz.deportelocal",
+            "certificate_hash": "8fdac00c96c59264c5aa545c87beeee3dcca7146"
+          }
+        },
+        {
           "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685528310190-iohpre1fv3tl0hs6v3l990v8m1h53lpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

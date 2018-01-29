@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,9 +30,14 @@ import com.adiaz.deportelocal.utilities.DeporteLocalConstants;
 import com.adiaz.deportelocal.utilities.DeporteLocalUtils;
 import com.adiaz.deportelocal.utilities.NetworkUtilities;
 import com.adiaz.deportelocal.utilities.PreferencesUtils;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
@@ -120,6 +126,12 @@ public class SportsActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_main, menu);
         this.mMenu = menu;
         updateLastUpdateMenuItem(this.mMenu);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser==null) {
+            menu.findItem(R.id.action_logout).setEnabled(false);
+        } else {
+            menu.findItem(R.id.action_login).setEnabled(false);
+        }
         return true;
     }
 
@@ -133,6 +145,12 @@ public class SportsActivity extends AppCompatActivity implements
                 break;
             case R.id.action_update:
                 updateCompetitions();
+                break;
+            case R.id.action_login:
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.action_logout:
+                doLogout();
                 break;
             case R.id.action_changetown:
                 // TODO: 03/08/2017 ask user confirmation.
@@ -165,6 +183,16 @@ public class SportsActivity extends AppCompatActivity implements
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doLogout() {
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                public void onComplete(@NonNull Task<Void> task) {
+                    SportsActivity.this.recreate();
+                }
+            });
     }
 
     private void updateCompetitions() {

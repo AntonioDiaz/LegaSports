@@ -18,6 +18,10 @@ public class CompetitionDetails {
     @Expose
     private List<Classification> classification = null;
 
+    @SerializedName("weeksNames")
+    @Expose
+    private List<String> weeksNames = null;
+
     public List<Match> getMatches() {
         return matches;
     }
@@ -40,5 +44,13 @@ public class CompetitionDetails {
 
     public void setLastPublished(Long lastPublished) {
         this.lastPublished = lastPublished;
+    }
+
+    public List<String> getWeeksNames() {
+        return weeksNames;
+    }
+
+    public void setWeeksNames(List<String> weeksNames) {
+        this.weeksNames = weeksNames;
     }
 }

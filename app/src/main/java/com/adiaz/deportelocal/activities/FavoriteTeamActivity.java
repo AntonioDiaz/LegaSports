@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -46,7 +48,7 @@ import static com.adiaz.deportelocal.database.DeporteLocalDbContract.MatchesEntr
 public class FavoriteTeamActivity extends AppCompatActivity
 		implements
 				CompetitionDetailsCallbak.OnFinishLoad,
-		SendIssueDialogFragment.OnSendIssue {
+				SendIssueDialogFragment.OnSendIssue, FavoriteTeamAdapter.ListItemClickListener {
 
 	@BindView(R.id.rv_fav_team_jornadas) RecyclerView recyclerView;
 	@BindView(R.id.ll_progress_team) LinearLayout llProgressTeam;
@@ -57,6 +59,7 @@ public class FavoriteTeamActivity extends AppCompatActivity
 	private Long mIdCompetition;
 	private Competition mCompetition;
 	private boolean isHideToolbarView = false;
+	private Team mTeam;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +96,13 @@ public class FavoriteTeamActivity extends AppCompatActivity
 
 	@Override
 	public void finishLoad() {
-		Team team = FavoriteTeamActivity.initTeamCompetition(this, mTeamName, mIdCompetition);
-		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this);
+		mTeam = FavoriteTeamActivity.initTeamCompetition(this, mTeamName, mIdCompetition);
+		FavoriteTeamAdapter adapter = new FavoriteTeamAdapter(this, this);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setNestedScrollingEnabled(false);
-		adapter.setTeam(team);
+		adapter.setTeam(mTeam);
 		hideLoading();
 	}
 
@@ -120,6 +123,26 @@ public class FavoriteTeamActivity extends AppCompatActivity
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		Match match = (Match)v.getTag();
+		if (match !=null) {
+			menu.setHeaderTitle(getString(R.string.menu_match_title));
+			MenuInflater menuInflater = this.getMenuInflater();
+			menuInflater.inflate(R.menu.menu_match, menu);
+			menu.findItem(R.id.action_add_calendar).setEnabled(false);
+            if (match.isDateDefined() && match.state()== DeporteLocalConstants.STATE_PENDING) {
+                menu.findItem(R.id.action_add_calendar).setEnabled(true);
+            }
+			menu.findItem(R.id.action_view_map).setEnabled(false);
+            if (match.isCourtDefinded(this) &&
+                    (match.state() == DeporteLocalConstants.STATE_PENDING || match.state()==DeporteLocalConstants.STATE_PLAYED)) {
+			    menu.findItem(R.id.action_view_map).setEnabled(true);
+            }
+		}
 	}
 
 	@Override
@@ -147,31 +170,31 @@ public class FavoriteTeamActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Match match = (Match) activityView.getTag();
+        switch (item.getItemId()) {
+            case R.id.action_add_calendar:
+                MenuActionsUtils.addMatchEvent(this, match, mCompetition);
+                break;
+            case R.id.action_view_map:
+                MenuActionsUtils.showMatchLocation(this, match);
+                break;
+            case R.id.action_share:
+                MenuActionsUtils.shareMatchDetails(this, match, mCompetition);
+                break;
+            case R.id.action_notify_error:
+                SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(match, mCompetition);
+                dialog.show(getSupportFragmentManager(), "dialog");
+        }
+        return super.onContextItemSelected(item);
+
+    }
+
+    @Override
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
-	}
-	public void showLocation(View view) {
-		Match match = (Match) view.getTag();
-		MenuActionsUtils.showMatchLocation(this, match);
-	}
-
-	public void addEvent(View view) {
-		Match match = (Match) view.getTag();
-		MenuActionsUtils.addMatchEvent(this, match, mCompetition);
-	}
-
-	public void shareMatchDetails(View view) {
-		Match match = (Match)view.getTag();
-		MenuActionsUtils.shareMatchDetails(this, match, mCompetition);
-	}
-
-	public void sendIssue(View view) {
-		Match match = (Match)view.getTag();
-		SendIssueDialogFragment dialog = SendIssueDialogFragment.newInstance(match, mCompetition);
-		dialog.show(getSupportFragmentManager(), "dialog");
-
 	}
 
 	private static Team initTeamCompetition(Context context, String teamName, Long idCompetitionServer) {
@@ -212,5 +235,13 @@ public class FavoriteTeamActivity extends AppCompatActivity
 	@Override
 	public void doSendIssue(Competition competition, Match match, String description) {
 		DeporteLocalUtils.sendIssue(this, competition, match, description);
+	}
+
+	@Override
+	public void onListItemClick(int clickedItemIndex) {
+		Match match = mTeam.getMatches()[clickedItemIndex];
+		activityView.setTag(match);
+		registerForContextMenu(activityView);
+		openContextMenu(activityView);
 	}
 }

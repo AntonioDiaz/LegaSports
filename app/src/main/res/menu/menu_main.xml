@@ -18,4 +18,14 @@
         android:orderInCategory="3"
         android:title="@string/action_changetown"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_login"
+        android:orderInCategory="3"
+        android:title="@string/action_login"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="3"
+        android:title="@string/action_logout"
+        app:showAsAction="never"/>
 </menu>
