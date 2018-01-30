@@ -45,7 +45,6 @@
         <activity
             android:name=".activities.FavoriteTeamActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".activities.FootballActivity" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/action_preferences"

@@ -80,7 +80,7 @@
                 android:background="@drawable/rounded_corner_dark"
                 android:padding="8dp"
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -106,9 +106,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
                 android:gravity="right|end"
                 android:text="TextView"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tv_fav_team_jornada"
                 app:layout_constraintTop_toBottomOf="@+id/tv_fav_team_date"
                 tools:text="@string/example_place" />
 

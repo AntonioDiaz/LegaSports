@@ -16,8 +16,8 @@
             android:id="@+id/rv_fav_team_jornadas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
             android:scrollbars="vertical"
+            android:visibility="visible"
             tools:listitem="@layout/listitem_favorite_team_calendar" />
 
         <LinearLayout

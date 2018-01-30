@@ -10,7 +10,7 @@
     <dimen name="heart_size">32dp</dimen>
     <dimen name="classification_marginTop">8dp</dimen>
 
-    <dimen name="listheader_font_size">24sp</dimen>
+    <dimen name="listheader_font_size">20sp</dimen>
     <dimen name="listchild_font_size">18sp</dimen>
     <dimen name="listchild_detail_font_size">16sp</dimen>
     <dimen name="tablayout_font_size">16sp</dimen>

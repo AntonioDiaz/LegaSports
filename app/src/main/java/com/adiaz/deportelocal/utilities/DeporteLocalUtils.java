@@ -36,7 +36,7 @@ public class DeporteLocalUtils {
 			int resId = context.getResources().getIdentifier(aString, "string", packageName);
 			strResource = context.getString(resId);
 		} catch (Exception e) {
-			Log.e(TAG, "resource not found at getStringResourceByName: " + aString, e);
+			Log.d(TAG, "resource not found at getStringResourceByName: " + aString);
 		}
 		return strResource;
 	}
