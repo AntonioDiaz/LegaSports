@@ -72,8 +72,9 @@
     <string name="loading_team_calendar">cargando calendar</string>
     <string name="action_preferences">Preferencias</string>
     <string name="action_changetown">Cambiar municipio</string>
+    <string name="action_user_management">Gestión de usuario</string>
     <string name="action_login">Iniciar sesión</string>
-    <string name="action_logout">Cerrar sesión</string>
+    <string name="button_logout">Cerrar sesión</string>
     <string name="action_update">Actualizar (%1$s)</string>
     <string name="emptyTeamList">No hay equipos registrados para esta competición</string>
     <string name="emptyClassificationList">No hay clasificación para esta competición</string>
@@ -130,12 +131,28 @@
     <string name="dialog_description">Descripción del error</string>
     <string name="dialog_match_description">Jornada %1$s: %2$s - %3$s</string>
     <string name="dialog_description_empty">Por favor, indique una breve descripción del error.</string>
-    <string name="dialog_issue_added">Se ha enviado el notificación al servidor, gracias por su colaboración.</string>
+    <string name="dialog_issue_added">En breve revisaremos el error y será corregido, gracias por su colaboración.</string>
     <string name="dialog_issue_error">No se ha conseguido enviar la notificación.</string>
     <string name="dialog_issue_error_http">No se ha conseguido enviar la notificación. Código: %1$s</string>
     <string name="favorites_competition_added">Se añadió la competición a la lista de favoritos.</string>
     <string name="favorites_competition_removed">Se eliminó la competición de la lista de favoritos.</string>
     <string name="favorites_team_added">Se añadió el equipo a la lista de favoritos.</string>
     <string name="favorites_team_removed">Se eliminó el equipo de la lista de favoritos.</string>
-
+    <string name="facebook_login_protocol_scheme" translatable="false">fb238882116653119</string>
+    <string name="facebook_application_id" translatable="false">238882116653119</string>
+    <string name="facebook_app_id">238882116653119</string>
+    <string name="dialog_issue_not_allowed">Sólo usuarios logados pueden notificar errores</string>
+    <string name="email_not_verified">*Necesita verificar el email</string>
+    <string name="user_title">Usuario conectado</string>
+    <string name="user_name">Nombre</string>
+    <string name="user_email">Email</string>
+    <string name="user_name_example">Antonio Diaz Arroyo</string>
+    <string name="user_email_example">antonio.diaz.arroyo@gmail.com</string>
+    <string name="user_validate_mail">*Email pendiente de validar.</string>
+    <string name="user_sent_mail">Se envió un email para verficar que la dirección es correcta.</string>
+    <string name="user_bt_send_mail">Enviar email de verificación</string>
+    <string name="user_bt_close_session">Cerrar sessión</string>
+    <string name="user_bt_delete_user">Borrar usuario</string>
+    <string name="user_msg_session_closed">Se ha cerrado la sesión.</string>
+    <string name="user_msg_user_deleted">Se ha borrado el usuario.</string>
 </resources>

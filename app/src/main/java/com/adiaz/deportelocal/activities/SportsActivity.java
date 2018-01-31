@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,16 +21,15 @@ import com.adiaz.deportelocal.R;
 import com.adiaz.deportelocal.adapters.SportsAdapter;
 import com.adiaz.deportelocal.database.DeporteLocalDbContract;
 import com.adiaz.deportelocal.entities.Sport;
-import com.adiaz.deportelocal.sync.LocalSportsSyncUtils;
-import com.adiaz.deportelocal.sync.retrofit.DeporteLocalRestApi;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.CompetitionsAvailableCallback;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.SportsCallback;
-import com.adiaz.deportelocal.sync.retrofit.entities.competition.CompetitionRestEntity;
-import com.adiaz.deportelocal.sync.retrofit.entities.sport.SportsRestEntity;
 import com.adiaz.deportelocal.utilities.DeporteLocalConstants;
 import com.adiaz.deportelocal.utilities.DeporteLocalUtils;
 import com.adiaz.deportelocal.utilities.NetworkUtilities;
 import com.adiaz.deportelocal.utilities.PreferencesUtils;
+import com.adiaz.deportelocal.utilities.retrofit.DeporteLocalRestApi;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.CompetitionsAvailableCallback;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.SportsCallback;
+import com.adiaz.deportelocal.utilities.retrofit.entities.competition.CompetitionRestEntity;
+import com.adiaz.deportelocal.utilities.retrofit.entities.sport.SportsRestEntity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -99,7 +99,7 @@ public class SportsActivity extends AppCompatActivity implements
             getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
-            if (getSupportActionBar()!=null) {
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setIcon(R.mipmap.ic_launcher);
                 getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -126,11 +126,12 @@ public class SportsActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_main, menu);
         this.mMenu = menu;
         updateLastUpdateMenuItem(this.mMenu);
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser==null) {
-            menu.findItem(R.id.action_logout).setEnabled(false);
-        } else {
-            menu.findItem(R.id.action_login).setEnabled(false);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user==null) {
+            if (menu.findItem(R.id.action_user_management)!=null) {
+                String actionLogin = getString(R.string.action_login);
+                menu.findItem(R.id.action_user_management).setTitle(actionLogin);
+            }
         }
         return true;
     }
@@ -146,15 +147,12 @@ public class SportsActivity extends AppCompatActivity implements
             case R.id.action_update:
                 updateCompetitions();
                 break;
-            case R.id.action_login:
+            case R.id.action_user_management:
                 startActivity(new Intent(this, LoginActivity.class));
-                break;
-            case R.id.action_logout:
-                doLogout();
                 break;
             case R.id.action_changetown:
                 // TODO: 03/08/2017 ask user confirmation.
-				/* cleaning preferences. */
+                /* cleaning preferences. */
                 SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
                 editor.remove(DeporteLocalConstants.KEY_TOWN_NAME);
                 editor.remove(DeporteLocalConstants.KEY_TOWN_ID);
@@ -162,7 +160,7 @@ public class SportsActivity extends AppCompatActivity implements
                 editor.remove(DeporteLocalConstants.KEY_FAVORITES_COMPETITIONS);
                 editor.remove(DeporteLocalConstants.KEY_LASTUPDATE);
                 editor.commit();
-				/* cleaning database. */
+                /* cleaning database. */
                 ContentResolver contentResolver = this.getContentResolver();
                 contentResolver.delete(DeporteLocalDbContract.CompetitionsEntry.CONTENT_URI, null, null);
                 contentResolver.delete(DeporteLocalDbContract.MatchesEntry.CONTENT_URI, null, null);
@@ -170,8 +168,6 @@ public class SportsActivity extends AppCompatActivity implements
                 contentResolver.delete(DeporteLocalDbContract.SportCourtsEntry.CONTENT_URI, null, null);
                 contentResolver.delete(DeporteLocalDbContract.FavoritesEntry.CONTENT_URI, null, null);
                 contentResolver.delete(SportsEntry.CONTENT_URI, null, null);
-				/* stop the FirebaseJob. */
-                LocalSportsSyncUtils.stopJob(this);
                 SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
                 String fcmTopic = sharedPreferences.getString(DeporteLocalConstants.KEY_TOWN_TOPIC, null);
                 if (!TextUtils.isEmpty(fcmTopic)) {
@@ -187,12 +183,12 @@ public class SportsActivity extends AppCompatActivity implements
 
     private void doLogout() {
         AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                public void onComplete(@NonNull Task<Void> task) {
-                    SportsActivity.this.recreate();
-                }
-            });
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        SportsActivity.this.recreate();
+                    }
+                });
     }
 
     private void updateCompetitions() {
@@ -247,6 +243,7 @@ public class SportsActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -273,11 +270,39 @@ public class SportsActivity extends AppCompatActivity implements
         if (clickedItemIndex == 0) {
             startActivity(new Intent(this, FavoritesActivity.class));
         } else {
-            mCursorSports.moveToPosition(clickedItemIndex  - 1);
+            mCursorSports.moveToPosition(clickedItemIndex - 1);
             Sport sport = SportsEntry.initEntity(mCursorSports);
             Intent intent = new Intent(this, SelectCompetitionActivity.class);
             intent.putExtra(DeporteLocalConstants.INTENT_SPORT_TAG, (String) sport.tag());
             startActivity(intent);
+        }
+    }
+
+
+    FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null && !mAuth.getCurrentUser().isEmailVerified()) {
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    if (firebaseAuth.getCurrentUser() != null) {
+                        firebaseAuth.getCurrentUser().reload();
+                    }
+                }
+            };
+            mAuth.addAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 }

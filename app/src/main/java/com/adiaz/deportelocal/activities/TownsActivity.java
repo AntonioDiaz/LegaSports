@@ -13,9 +13,9 @@ import android.widget.LinearLayout;
 
 import com.adiaz.deportelocal.R;
 import com.adiaz.deportelocal.adapters.TownsAdapter;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.TownsAvailableCallback;
-import com.adiaz.deportelocal.sync.retrofit.DeporteLocalRestApi;
-import com.adiaz.deportelocal.sync.retrofit.entities.town.TownRestEntity;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.TownsAvailableCallback;
+import com.adiaz.deportelocal.utilities.retrofit.DeporteLocalRestApi;
+import com.adiaz.deportelocal.utilities.retrofit.entities.town.TownRestEntity;
 import com.adiaz.deportelocal.utilities.DeporteLocalConstants;
 import com.adiaz.deportelocal.utilities.DeporteLocalUtils;
 import com.adiaz.deportelocal.utilities.NetworkUtilities;

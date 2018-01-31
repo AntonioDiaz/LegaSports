@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.adiaz.deportelocal.entities.Competition;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.CompetitionDetailsCallbak;
-import com.adiaz.deportelocal.sync.retrofit.DeporteLocalRestApi;
-import com.adiaz.deportelocal.sync.retrofit.entities.competitiondetails.CompetitionDetails;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.CompetitionDetailsCallbak;
+import com.adiaz.deportelocal.utilities.retrofit.DeporteLocalRestApi;
+import com.adiaz.deportelocal.utilities.retrofit.entities.competitiondetails.CompetitionDetails;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

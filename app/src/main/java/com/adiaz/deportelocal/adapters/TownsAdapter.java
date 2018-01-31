@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adiaz.deportelocal.R;
-import com.adiaz.deportelocal.sync.retrofit.entities.town.TownRestEntity;
+import com.adiaz.deportelocal.utilities.retrofit.entities.town.TownRestEntity;
 
 import java.util.List;
 

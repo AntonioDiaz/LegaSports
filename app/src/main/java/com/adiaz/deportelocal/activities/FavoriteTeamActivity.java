@@ -29,7 +29,7 @@ import com.adiaz.deportelocal.entities.Favorite;
 import com.adiaz.deportelocal.entities.Match;
 import com.adiaz.deportelocal.entities.Team;
 import com.adiaz.deportelocal.fragments.SendIssueDialogFragment;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.CompetitionDetailsCallbak;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.CompetitionDetailsCallbak;
 import com.adiaz.deportelocal.utilities.CompetitionDbUtils;
 import com.adiaz.deportelocal.utilities.FavoritesUtils;
 import com.adiaz.deportelocal.utilities.MenuActionsUtils;
@@ -233,8 +233,8 @@ public class FavoriteTeamActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void doSendIssue(Competition competition, Match match, String description) {
-		DeporteLocalUtils.sendIssue(this, competition, match, description);
+	public void doSendIssue(Competition competition, Match match, String description, String userEmail) {
+		DeporteLocalUtils.sendIssue(this, competition, match, description, userEmail);
 	}
 
 	@Override

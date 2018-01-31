@@ -37,42 +37,42 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
     @BindView(R.id.tv_empty_list_item)
     TextView tvEmptyListItem;
 
-	private String sportTag;
-	private String sportTitle;
-	private Cursor mCursor;
-	InterstitialAd mInterstitialAd;
-	int mClickedItemIndex;
+    private String sportTag;
+    private String sportTitle;
+    private Cursor mCursor;
+    InterstitialAd mInterstitialAd;
+    int mClickedItemIndex;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_select_competition);
-		ButterKnife.bind(this);
-		sportTag = getIntent().getStringExtra(DeporteLocalConstants.INTENT_SPORT_TAG);
-		sportTitle = DeporteLocalUtils.getStringResourceByName(this, sportTag);
-		if (getSupportActionBar()!=null) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_competition);
+        ButterKnife.bind(this);
+        sportTag = getIntent().getStringExtra(DeporteLocalConstants.INTENT_SPORT_TAG);
+        sportTitle = DeporteLocalUtils.getStringResourceByName(this, sportTag);
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(sportTitle);
             String town = PreferencesUtils.queryPreferenceTown(this);
             String subtitle = getString(R.string.app_name) + " - " + town;
             getSupportActionBar().setSubtitle(subtitle);
         }
-		// TODO: 25/04/2017 should get the competitions from the contentprovider.
-		Uri uriWithSport = DeporteLocalDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
-		mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
-		if (mCursor.getCount()==0) {
-			recyclerView.setVisibility(View.INVISIBLE);
-			tvEmptyListItem.setVisibility(View.VISIBLE);
-		} else {
-			recyclerView.setVisibility(View.VISIBLE);
-			tvEmptyListItem.setVisibility(View.INVISIBLE);
-			CompetitionsAdapter competitionsAdapter = new CompetitionsAdapter(this, this);
-			competitionsAdapter.setCompetitions(mCursor);
-			recyclerView.setLayoutManager(new LinearLayoutManager(this));
-			recyclerView.setHasFixedSize(true);
-			recyclerView.setAdapter(competitionsAdapter);
-			recyclerView.setNestedScrollingEnabled(false);
-		}
+        // TODO: 25/04/2017 should get the competitions from the contentprovider.
+        Uri uriWithSport = DeporteLocalDbContract.CompetitionsEntry.buildCompetitionsUriWithSports(sportTag);
+        mCursor = getContentResolver().query(uriWithSport, CompetitionsEntry.PROJECTION, null, null, CompetitionsEntry.COLUMN_CATEGORY_ORDER);
+        if (mCursor.getCount() == 0) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            tvEmptyListItem.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            tvEmptyListItem.setVisibility(View.INVISIBLE);
+            CompetitionsAdapter competitionsAdapter = new CompetitionsAdapter(this, this);
+            competitionsAdapter.setCompetitions(mCursor);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(competitionsAdapter);
+            recyclerView.setNestedScrollingEnabled(false);
+        }
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(DeporteLocalConstants.INTESTITIAL_AD_ID);
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -84,8 +84,7 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
                 SelectCompetitionActivity.this.onAdClosed();
             }
         });
-
-	}
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,22 +95,22 @@ public class SelectCompetitionActivity extends AppCompatActivity implements Comp
         return super.onOptionsItemSelected(item);
     }
 
-	@Override
-	public void onListItemClick(int clickedItemIndex) {
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
         mClickedItemIndex = clickedItemIndex;
         SportsActivity.interstitialCount++;
-        if (mInterstitialAd.isLoaded() && SportsActivity.interstitialCount % DeporteLocalConstants.INTERSTITIAL_FRECUENCY==0) {
+        if (mInterstitialAd.isLoaded() && SportsActivity.interstitialCount % DeporteLocalConstants.INTERSTITIAL_FRECUENCY == 0) {
             mInterstitialAd.show();
         } else {
             onAdClosed();
         }
-	}
+    }
 
-	@Override
-	protected void onDestroy() {
-		mCursor.close();
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        mCursor.close();
+        super.onDestroy();
+    }
 
     private void onAdClosed() {
         mCursor.moveToPosition(mClickedItemIndex);

@@ -108,7 +108,7 @@ public class DeporteLocalDbHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {	
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FavoritesEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SportCourtsEntry.TABLE_NAME);
 		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MatchesEntry.TABLE_NAME);

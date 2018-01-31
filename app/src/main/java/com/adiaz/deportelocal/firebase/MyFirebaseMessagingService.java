@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.adiaz.deportelocal.database.daos.CompetitionsDAO;
 import com.adiaz.deportelocal.entities.Competition;
-import com.adiaz.deportelocal.sync.retrofit.DeporteLocalRestApi;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.CompetitionsAvailableCallback;
-import com.adiaz.deportelocal.sync.retrofit.callbacks.SportsCallback;
-import com.adiaz.deportelocal.sync.retrofit.entities.competition.CompetitionRestEntity;
-import com.adiaz.deportelocal.sync.retrofit.entities.competition.TeamsDeref;
-import com.adiaz.deportelocal.sync.retrofit.entities.sport.SportsRestEntity;
+import com.adiaz.deportelocal.utilities.retrofit.DeporteLocalRestApi;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.CompetitionsAvailableCallback;
+import com.adiaz.deportelocal.utilities.retrofit.callbacks.SportsCallback;
+import com.adiaz.deportelocal.utilities.retrofit.entities.competition.CompetitionRestEntity;
+import com.adiaz.deportelocal.utilities.retrofit.entities.competition.TeamsDeref;
+import com.adiaz.deportelocal.utilities.retrofit.entities.sport.SportsRestEntity;
 import com.adiaz.deportelocal.utilities.FavoritesUtils;
 import com.adiaz.deportelocal.utilities.DeporteLocalConstants;
 import com.adiaz.deportelocal.utilities.DeporteLocalUtils;
