@@ -1,7 +1,10 @@
 package com.adiaz.deportelocal.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,6 +23,7 @@ import android.widget.LinearLayout;
 import com.adiaz.deportelocal.R;
 import com.adiaz.deportelocal.adapters.SportsAdapter;
 import com.adiaz.deportelocal.database.DeporteLocalDbContract;
+import com.adiaz.deportelocal.database.DeporteLocalDbHelper;
 import com.adiaz.deportelocal.entities.Sport;
 import com.adiaz.deportelocal.utilities.DeporteLocalConstants;
 import com.adiaz.deportelocal.utilities.DeporteLocalUtils;
@@ -70,6 +74,10 @@ public class SportsActivity extends AppCompatActivity implements
     private boolean mFinishLoadSports;
     private Cursor mCursorSports;
     public static Integer interstitialCount = 0;
+    BroadcastReceiver broadcastReceiver;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     @BindView((R.id.layout_activity_sports))
     View activityView;
@@ -96,7 +104,13 @@ public class SportsActivity extends AppCompatActivity implements
             startActivity(intent);
             finish();
         } else {
-            getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    updateCompetitions();
+                }
+            };
+            registerReceiver(broadcastReceiver, new IntentFilter(DeporteLocalDbHelper.REFRESH_BROADCAST));
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
             if (getSupportActionBar() != null) {
@@ -106,7 +120,8 @@ public class SportsActivity extends AppCompatActivity implements
                 getSupportActionBar().setTitle("   " + town);
                 getSupportActionBar().setSubtitle("    " + getString(R.string.app_name));
             }
-            if (!getDefaultSharedPreferences(this).contains(DeporteLocalConstants.KEY_LASTUPDATE)) {
+            boolean containsLastUpdateKey = getDefaultSharedPreferences(this).contains(DeporteLocalConstants.KEY_LASTUPDATE);
+            if (!containsLastUpdateKey) {
                 if (NetworkUtilities.isNetworkAvailable(this)) {
                     updateCompetitions();
                 } else {
@@ -244,6 +259,14 @@ public class SportsActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
+        Log.d(TAG, "onResume: registerListener");
+        getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -278,10 +301,6 @@ public class SportsActivity extends AppCompatActivity implements
         }
     }
 
-
-    FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -303,6 +322,13 @@ public class SportsActivity extends AppCompatActivity implements
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+        try {
+            if (broadcastReceiver!=null) {
+                unregisterReceiver(broadcastReceiver);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onStop: unregistering" + e.getMessage(), e);
         }
     }
 }
