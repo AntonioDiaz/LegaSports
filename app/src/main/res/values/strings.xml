@@ -155,4 +155,5 @@
     <string name="user_bt_delete_user">Borrar usuario</string>
     <string name="user_msg_session_closed">Se ha cerrado la sesión.</string>
     <string name="user_msg_user_deleted">Se ha borrado el usuario.</string>
+    <string name="towns_error">En estos momentos no hay ningún muncipio disponible.</string>
 </resources>

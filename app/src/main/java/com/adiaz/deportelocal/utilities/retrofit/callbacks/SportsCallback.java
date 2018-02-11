@@ -32,19 +32,23 @@ public class SportsCallback implements Callback<List<SportsRestEntity>> {
 
     @Override
     public void onResponse(Call<List<SportsRestEntity>> call, Response<List<SportsRestEntity>> response) {
-        ContentValues[] sports = new ContentValues[response.body().size()];
-        for (int i = 0; i < response.body().size(); i++) {
-            SportsRestEntity sport = response.body().get(i);
-            ContentValues values = new ContentValues();
-            values.put(SportsEntry.COLUMN_ID, sport.getId());
-            values.put(SportsEntry.COLUMN_NAME, sport.getName());
-            values.put(SportsEntry.COLUMN_TAG, sport.getTag());
-            values.put(SportsEntry.COLUMN_IMAGE, sport.getImage());
-            values.put(SportsEntry.COLUMN_ORDER, sport.getOrder());
-            sports[i] = values;
-        }
         ContentResolver contentResolver = mContext.getContentResolver();
         contentResolver.delete(SportsEntry.CONTENT_URI, null, null);
+
+        ContentValues[] sports = new ContentValues[0];
+        if (response.body()!=null) {
+            sports = new ContentValues[response.body().size()];
+            for (int i = 0; i < response.body().size(); i++) {
+                ContentValues values = new ContentValues();
+                SportsRestEntity sport = response.body().get(i);
+                values.put(SportsEntry.COLUMN_ID, sport.getId());
+                values.put(SportsEntry.COLUMN_NAME, sport.getName());
+                values.put(SportsEntry.COLUMN_TAG, sport.getTag());
+                values.put(SportsEntry.COLUMN_IMAGE, sport.getImage());
+                values.put(SportsEntry.COLUMN_ORDER, sport.getOrder());
+                sports[i] = values;
+            }
+        }
         contentResolver.bulkInsert(SportsEntry.CONTENT_URI, sports);
         if (mSportsLoadedCallback!=null) {
             mSportsLoadedCallback.finishLoadSports();

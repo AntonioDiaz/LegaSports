@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.adiaz.deportelocal.R;
 import com.adiaz.deportelocal.adapters.TownsAdapter;
@@ -94,11 +95,15 @@ public class TownsActivity extends AppCompatActivity implements TownsAvailableCa
     @Override
     public void updateActivity(List<TownRestEntity> townRestEntityList) {
         // TODO: 03/08/2017 show alert when there is no towns.
-        TownsAdapter townsAdapter = new TownsAdapter(townRestEntityList, this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvTowns.setLayoutManager(linearLayoutManager);
-        rvTowns.setAdapter(townsAdapter);
-        mTownRestEntityList = townRestEntityList;
+        if(townRestEntityList==null || townRestEntityList.size()<=0) {
+            Toast.makeText(this, getString(R.string.towns_error), Toast.LENGTH_SHORT).show();
+        } else {
+            TownsAdapter townsAdapter = new TownsAdapter(townRestEntityList, this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            rvTowns.setLayoutManager(linearLayoutManager);
+            rvTowns.setAdapter(townsAdapter);
+            mTownRestEntityList = townRestEntityList;
+        }
         endLoadingTowns();
     }
 

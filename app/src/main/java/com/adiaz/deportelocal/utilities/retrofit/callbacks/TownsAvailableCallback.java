@@ -32,6 +32,7 @@ public class TownsAvailableCallback implements Callback<List<TownRestEntity>> {
 	@Override
 	public void onFailure(Call<List<TownRestEntity>> call, Throwable t) {
 		Log.d(TAG, "onFailure: " + t.getMessage());
+		townsLoadedCallback.updateActivity(null);
 	}
 
 	public interface TownsLoadedCallback {
